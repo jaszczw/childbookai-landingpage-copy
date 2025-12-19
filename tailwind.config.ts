@@ -7,6 +7,17 @@ const config: Config = {
     "./src/**/*.{ts,tsx}",
   ],
   theme: {
+    screens: {
+      mobile: "360px", // small phones and up
+      sm: "640px", // Tailwind default (small tablets)
+      tablet: "768px", // tablets portrait/landscape
+      md: "768px", // keep default alias
+      lg: "1024px", // laptops
+      laptop: "1200px", // wider laptops
+      xl: "1280px", // large desktops
+      desktop: "1440px", // full HD desktops
+      "2xl": "1536px", // very large screens
+    },
     extend: {
       colors: {
         grey: {
