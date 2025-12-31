@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AppButton } from "@/components/shared/AppButton";
 import { Sparkle } from "@/components/shared/Sparkle";
 import { DecorativeText } from "@/components/typography/DecorativeText";
-import styles from "./HeroCarousel.module.css";
+import styles from "./Sections.module.css";
 
 const slides = [
   {
@@ -60,7 +60,7 @@ export function HeroCarousel() {
 
         {/* Content Overlay */}
         <div className="absolute inset-0 z-10">
-          <div className="absolute top-1/2 left-4 sm:left-8 md:left-[140px] -translate-y-[56%] max-w-[620px] px-4 sm:px-0 w-[calc(100%-2rem)] sm:w-auto">
+          <div className="absolute top-1/2 left-4 sm:left-8 md:left-[140px] -translate-y-[56%] max-w-[620px] px-4 sm:px-0 w-[calc(100%-2rem)] sm:w-auto overflow-hidden">
             <h1 className="text-display text-primary mb-6 sm:mb-10 leading-tight text-4xl sm:text-5xl md:text-display">
               <span className="block">
                 <DecorativeText
@@ -96,7 +96,7 @@ export function HeroCarousel() {
         </div>
 
         {/* Navigation Dots */}
-        <div className="absolute left-4 sm:left-8 md:left-[140px] top-1/2 translate-y-[200px] z-10 flex items-center gap-3">
+        <div className="absolute left-4 sm:left-8 md:left-[140px] top-1/2 translate-y-[200px] z-10 flex items-center gap-3 max-w-full overflow-hidden">
           {slides.map((_, index) => (
             <button
               key={index}

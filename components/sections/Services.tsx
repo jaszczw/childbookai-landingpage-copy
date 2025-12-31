@@ -11,28 +11,28 @@ interface ServiceCard {
 const services: ServiceCard[] = [
   {
     id: 1,
-    image: "/illustrations/step-1.svg",
+    image: "/illustrations/img.svg",
     title: "Create Your Book",
     description:
       "If you have an idea for a book and want to create it based on a short description - use Create Button.",
   },
   {
     id: 2,
-    image: "/illustrations/step-2.svg",
+    image: "/illustrations/img-1.svg",
     title: "Illustrations For Your Content",
     description:
       "If you want to generate a lot of different illustrations with your defined characters - use Illustrator Feature.",
   },
   {
     id: 3,
-    image: "/illustrations/step-3.svg",
+    image: "/illustrations/img-2.svg",
     title: "Templates For Your Book",
     description:
       "Create books even faster - Choose one of the ready-made book templates and replace the character with your own.",
   },
   {
     id: 4,
-    image: "/illustrations/step-4.svg",
+    image: "/illustrations/img-3.svg",
     title: "Order Physical Book",
     description:
       "If you want to buy the book you generated in paper version - click the basket button.",
@@ -41,15 +41,19 @@ const services: ServiceCard[] = [
 
 export function Services() {
   return (
-    <section className="relative w-full py-20 min-h-[500px] mt-4">
-      <div className="absolute inset-0 z-0 scale-105">
-        <Image
-          src="/background/services-bg.svg"
-          alt=""
-          fill
-          className="object-contain"
-          priority
-        />
+    <section className="relative w-full py-24 min-h-[500px]">
+      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <svg
+          viewBox="0 0 1440 734"
+          className="w-full h-full"
+          preserveAspectRatio="none"
+          aria-hidden
+        >
+          <path
+            d="M0 80.0009C0 34.8076 37.4087 -1.41418 82.5785 0.0424697L1362.58 41.3203C1405.74 42.712 1440 78.0997 1440 121.279V600.643C1440 643.531 1406.18 678.789 1363.33 680.574L83.3304 733.907C37.8803 735.801 0 699.466 0 653.977V80.0009Z"
+            fill="white"
+          />
+        </svg>
       </div>
 
       {/* Content */}

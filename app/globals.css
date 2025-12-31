@@ -168,7 +168,7 @@
   --blue-200: #B0F2F6;
   --blue-400: #54E6ED;
   --blue-600: #4AD4DB;
-  --blue-800: #3FBBC1;
+  --blue-800: #30A0A6;
   --blue-1000: #203B53;
 
   --grey-100: #C6DADB;
@@ -224,8 +224,15 @@
   * {
     @apply border-border;
   }
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
   }
 }
 

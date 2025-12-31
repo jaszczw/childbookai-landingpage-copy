@@ -2,6 +2,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { Services } from "@/components/sections/Services";
 import { CreateABook } from "@/components/sections/CreateABook";
+import { Steps } from "@/components/sections/Steps";
+import { Pricing } from "@/components/sections/Pricing";
 
 export default function Home() {
   return (
@@ -15,7 +17,10 @@ export default function Home() {
         <Services />
         <CreateABook />
       </div>
-      <div className="relative w-full min-h-screen "></div>
+      <div className="relative w-full min-h-screen bg-blue-800 -top-4">
+        <Steps />
+        <Pricing />
+      </div>
     </main>
   );
 }

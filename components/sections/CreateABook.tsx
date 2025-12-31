@@ -16,21 +16,24 @@ const kids = [
 
 export function CreateABook() {
   return (
-    <section className="relative w-full py-10 min-h-[500px] mt-4">
-      <div className="absolute inset-0 z-0">
-        <div className="relative w-full h-full">
-          <Image
-            src="/background/create-a-book-bg.svg"
-            alt=""
-            fill
-            className="object-contain"
-            priority
+    <section className="relative w-full py-10 min-h-[500px]">
+      {/* SvgWideCard Background */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+        <svg
+          viewBox="0 0 1440 720"
+          className="w-full h-full"
+          preserveAspectRatio="none"
+          aria-hidden
+        >
+          <path
+            d="M1440 80.0008C1440 34.8075 1402.59 -1.41424 1357.42 0.0424087L77.4214 41.3202C34.2648 42.7119 0 78.0997 0 121.279V948.643C0 991.531 33.8195 1026.79 76.6696 1028.57L1356.67 1081.91C1402.12 1083.8 1440 1047.47 1440 1001.98V80.0008Z"
+            fill="white"
           />
-        </div>
+        </svg>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 lg:pt-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 lg:pt-18">
         <div className="text-center mb-4">
           <h1 className="text-heading-xl mb-4">
             <span className="inline-flex items-baseline">
@@ -139,20 +142,23 @@ export function CreateABook() {
       </div>
 
       <div
-        className="absolute bottom-0 left-0 right-0 z-1 mx-auto"
+        className="absolute bottom-0 left-0 right-0 z-1 w-full max-w-full overflow-hidden"
         style={{
-          transform: "translateY(40%) scale(110%)",
-          width: "1388px",
-          height: "330px",
+          transform: "translateY(40%)",
         }}
       >
-        <Image
-          src="/background/inverted-cloud.svg"
-          alt=""
-          fill
-          className="object-contain"
-          priority
-        />
+        <div
+          className="relative w-full mx-auto"
+          style={{ aspectRatio: "1440/330", maxWidth: "100%" }}
+        >
+          <Image
+            src="/background/inverted-cloud.svg"
+            alt=""
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
       </div>
     </section>
   );

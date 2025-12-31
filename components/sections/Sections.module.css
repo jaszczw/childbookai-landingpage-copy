@@ -30,3 +30,9 @@
     height: 640px;
   }
 }
+
+@media (min-width: 1024px) {
+  .stepColumnOffset {
+    transform: translateY(50px);
+  }
+}
