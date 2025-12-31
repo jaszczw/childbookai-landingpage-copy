@@ -176,6 +176,31 @@ export function Pricing() {
         </svg>
       </div>
 
+      {/* Decorative Elements - Behind Cards */}
+      <div className="absolute inset-0 z-[5] pointer-events-none overflow-visible" style={{ zIndex: 5 }}>
+        {/* Money Bag - Upper Right */}
+        <div className="absolute top-8 right-8">
+          <Image
+            src="/illustrations/money-bag.svg"
+            alt=""
+            width={280}
+            height={280}
+            className="object-contain"
+          />
+        </div>
+
+        {/* Coins - Bottom Left */}
+        <div className="absolute bottom-8 left-8">
+          <Image
+            src="/illustrations/coins.svg"
+            alt=""
+            width={270}
+            height={270}
+            className="object-contain"
+          />
+        </div>
+      </div>
+
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
         <div className="text-center mb-12">
