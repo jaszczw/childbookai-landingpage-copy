@@ -3,41 +3,8 @@
 import Image from "next/image";
 import { CustomCard } from "@/components/shared/CustomCard";
 import { AppButton } from "@/components/shared/AppButton";
-
-interface PricingCard {
-  id: number;
-  title: string;
-  price: string;
-  period?: string;
-  disclaimer?: string;
-  description?: string;
-  features: string[];
-  popular?: boolean;
-  badge?: string | { image: string; alt: string };
-  buttonText: string | { text: string; icon: string };
-}
-
-const businessPlans: PricingCard[] = [
-  {
-    id: 1,
-    title: "Business Plan",
-    price: "$99",
-    period: "/year*",
-    disclaimer: "*Cancel anytime",
-    description:
-      "Perfect for businesses, publishers, and professional authors who need high volume of illustrations and books without childbook.ai watermark.",
-    features: [
-      "Commercial license for all generated content",
-      "2000 illustrations per month in our Childbook Illustrator™",
-      "Up to 200 AI generated books per month with 24 pages",
-      "Export without watermarks",
-      "Upload your own illustrations for customization",
-      "Priority queue for faster AI generation",
-      "All features from Premium plan included",
-    ],
-    buttonText: "Get Business Plan",
-  },
-];
+import { pricingData } from "@/lib/data/pricing";
+import type { PricingCard } from "@/lib/types/pricing";
 
 interface BusinessPricingProps {
   isYearly: boolean;
@@ -46,9 +13,11 @@ interface BusinessPricingProps {
 export function BusinessPricing({ isYearly }: BusinessPricingProps) {
   // isYearly is available for future pricing calculations
   void isYearly;
+  const businessPlans = pricingData.business;
+  
   return (
     <div className="flex justify-center items-start">
-      {businessPlans.map((plan) => {
+      {businessPlans.map((plan: PricingCard) => {
             // Split features into two columns
             const midPoint = Math.ceil(plan.features.length / 2);
             const leftColumnFeatures = plan.features.slice(0, midPoint);
@@ -57,7 +26,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
             return (
               <div
                 key={plan.id}
-                className="flex justify-center items-start relative pb-20 z-10"
+                className="flex justify-center items-start relative pb-12 sm:pb-16 md:pb-20 z-10 w-full"
               >
                 <CustomCard
                   width={650}
@@ -65,6 +34,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                   fillColor="var(--blue-100)"
                   headerColor="#54E6ED"
                   svgVariant="business"
+                  className="max-w-[650px]"
                   headerContent={
                     <div className="flex flex-col h-full text-foreground">
                       <div className="flex items-center justify-between mb-2">
@@ -113,7 +83,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                   }
                 >
                   <div className="flex flex-col h-full">
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-2 -mt-12 mb-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-2 -mt-12 mb-3">
                       {/* Left Column */}
                       <ul className="space-y-2">
                         {leftColumnFeatures.map((feature, index) => (
@@ -160,7 +130,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                       variant="primary"
                       size="md"
                       shadow
-                      className="w-full text-heading-sm mt-8"
+                      className="w-full text-heading-sm mt-8 min-h-[44px]"
                     >
                       {typeof plan.buttonText === "string" ? plan.buttonText : plan.buttonText.text}
                     </AppButton>

@@ -1,8 +1,0 @@
-<svg width="1264" height="629" viewBox="0 0 1264 629" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <clipPath id="carouselClip">
-      <path d="M1180.92 0.537975C1227.79 -0.896792 1265.72 38.3403 1262.69 85.1356L1232.39 553.372C1229.61 596.248 1193.27 629.16 1150.33 627.69L102.847 591.827C61.9856 590.428 28.8479 558.263 26.231 517.462L0.666504 118.865C-2.21026 74.0088 32.6433 35.6897 77.5708 34.3143L1180.92 0.537975Z" />
-    </clipPath>
-  </defs>
-  <!-- Example usage: apply clip-path="url(#carouselClip)" to images -->
-</svg>

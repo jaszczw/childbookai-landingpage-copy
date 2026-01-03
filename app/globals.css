@@ -231,8 +231,16 @@
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
-    width: 100%;
-    position: relative;
+  }
+}
+
+@layer utilities {
+  .bg-hero {
+    background-image: url('/background/bg-2.png');
+  }
+  
+  .bg-footer {
+    background-image: url('/background/bg-2.png');
   }
 }
 

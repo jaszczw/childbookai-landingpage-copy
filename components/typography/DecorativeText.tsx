@@ -9,38 +9,56 @@ type DecorativeImageProps = {
   height?: number;
 };
 
-const Blue1 = ({ width = 40, height = 40 }: DecorativeImageProps) => (
-  <Image 
-    src="/illustrations/blue-1.svg" 
-    alt="" 
-    width={width} 
-    height={height} 
-    aria-hidden 
-    className="inline-block"
-  />
-);
+const Blue1 = ({ width = 40, height = 40 }: DecorativeImageProps) => {
+  const responsiveWidth = width || 40;
+  const responsiveHeight = height || 40;
+  return (
+    <Image 
+      src="/illustrations/blue-1.svg" 
+      alt="" 
+      width={responsiveWidth} 
+      height={responsiveHeight} 
+      aria-hidden 
+      className="inline-block w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-auto lg:h-auto"
+      style={{ width: responsiveWidth, height: responsiveHeight }}
+      sizes="(max-width: 640px) 24px, (max-width: 768px) 32px, (max-width: 1024px) 40px, 40px"
+    />
+  );
+};
 
-const Blue2 = ({ width = 40, height = 40 }: DecorativeImageProps) => (
-  <Image 
-    src="/illustrations/blue-2.svg" 
-    alt="" 
-    width={width} 
-    height={height} 
-    aria-hidden 
-    className="inline-block"
-  />
-);
+const Blue2 = ({ width = 40, height = 40 }: DecorativeImageProps) => {
+  const responsiveWidth = width || 40;
+  const responsiveHeight = height || 40;
+  return (
+    <Image 
+      src="/illustrations/blue-2.svg" 
+      alt="" 
+      width={responsiveWidth} 
+      height={responsiveHeight} 
+      aria-hidden 
+      className="inline-block w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-auto lg:h-auto"
+      style={{ width: responsiveWidth, height: responsiveHeight }}
+      sizes="(max-width: 640px) 24px, (max-width: 768px) 32px, (max-width: 1024px) 40px, 40px"
+    />
+  );
+};
 
-const Sparkle = ({ width = 24, height = 24 }: DecorativeImageProps) => (
-  <Image 
-    src="/illustrations/sparkle.png" 
-    alt="" 
-    width={width} 
-    height={height} 
-    aria-hidden 
-    className="inline-block"
-  />
-);
+const Sparkle = ({ width = 24, height = 24 }: DecorativeImageProps) => {
+  const responsiveWidth = width || 24;
+  const responsiveHeight = height || 24;
+  return (
+    <Image 
+      src="/illustrations/sparkle.png" 
+      alt="" 
+      width={responsiveWidth} 
+      height={responsiveHeight} 
+      aria-hidden 
+      className="inline-block w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-auto lg:h-auto"
+      style={{ width: responsiveWidth, height: responsiveHeight }}
+      sizes="(max-width: 640px) 16px, (max-width: 768px) 20px, (max-width: 1024px) 24px, 24px"
+    />
+  );
+};
 
 type DecorativeVariant = "blue1" | "blue2" | "sparkle";
 

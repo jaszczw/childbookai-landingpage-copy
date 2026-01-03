@@ -1,0 +1,2 @@
+export type NavItem = string;
+

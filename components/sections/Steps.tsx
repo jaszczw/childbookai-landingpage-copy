@@ -1,68 +1,40 @@
 import Image from "next/image";
-// import { DecorativeText } from "@/components/typography/DecorativeText";
 import styles from "./Sections.module.css";
-
-interface StepsCard {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-}
-
-const steps: StepsCard[] = [
-  {
-    id: 1,
-    image: "/illustrations/step-1.svg",
-    title: "Imagine",
-    description:
-      "Imagine your story or upload a favorite photo.",
-  },
-  {
-    id: 2,
-    image: "/illustrations/step-2.svg",
-    title: "Watch the Magic",
-    description:
-      "Our AI brings your child's adventrure to life with art.",
-  },
-  {
-    id: 3,
-    image: "/illustrations/step-3.svg",
-    title: "Cherish Forever",
-    description:
-      "Share digitally or order a printed book.",
-  },
-];
+import { steps } from "@/lib/data/steps";
+import { IMAGE_DIMENSIONS, SPACING } from "@/lib/constants";
 
 export function Steps() {
   return (
-    <section className="relative w-full py-24 mt-36 min-h-[500px]">
+    <section className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 mt-12 sm:mt-20 md:mt-28 lg:mt-36 min-h-[400px] sm:min-h-[500px]">
       {/* Dashed lines background - full screen width */}
-      <div className="absolute left-0 right-0 hidden lg:flex items-center justify-center pointer-events-none z-0" style={{ top: '50%', transform: 'translateY(-35%)' }}>
+      <div className="absolute left-0 right-0 hidden lg:flex items-center justify-center pointer-events-none z-0" style={{ top: '52%', transform: `translateY(-${SPACING.STEP_COLUMN_OFFSET})` }}>
         <Image
           src="/background/combined-stroke.svg"
           alt=""
-          width={1440}
-          height={164}
+          width={IMAGE_DIMENSIONS.COMBINED_STROKE.width}
+          height={IMAGE_DIMENSIONS.COMBINED_STROKE.height}
           className="w-full h-auto object-contain"
+          sizes="100vw"
         />
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <h1 className="text-heading-xl max-w-5xl mx-auto">
-            <span className="inline-flex items-baseline">
+            <span className="inline-flex items-baseline flex-wrap justify-center gap-1">
               <span className="text-white">
                 Creating Your&nbsp;
                 <span className="text-primary">Magical Story&nbsp;</span>
-                <br />
+                <br className="hidden sm:block" />
+                <span className="sm:hidden">&nbsp;</span>
                 in a Easy as 1-2-3
               </span>
             </span>
           </h1>
         </div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 py-12">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12">
           {steps.map((step) => (
             <div
               key={step.id}
@@ -70,18 +42,21 @@ export function Steps() {
                 step.id === 2 ? styles.stepColumnOffset : ""
               }`}
             >
-              <div className={`relative mb-6 ${
-                step.id === 2 ? "w-72 h-72 lg:w-80 lg:h-80" : "w-64 h-64"
+              <div className={`relative mb-4 sm:mb-6 ${
+                step.id === 2 
+                  ? "w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80" 
+                  : "w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64"
               }`}>
                 <Image
                   src={step.image}
                   alt={step.title}
                   fill
                   className="object-contain"
+                  sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 320px"
                 />
               </div>
 
-              <h3 className="text-heading-md font-bold text-white mb-4 max-w-[275px] mx-auto">
+              <h3 className="text-heading-md font-bold text-white mb-3 sm:mb-4 max-w-[275px] mx-auto">
                 {step.title}
               </h3>
 

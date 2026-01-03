@@ -10,7 +10,7 @@ const baloo = Baloo_2({
 
 export const metadata: Metadata = {
   title: "Home | Childbook.ai",
-  description: "",
+  description: "Create personalized AI-generated children's books with unique illustrations and stories. Bring your child's imagination to life with our easy-to-use book creator.",
   icons: {
     icon: "/logo.ico",
   },

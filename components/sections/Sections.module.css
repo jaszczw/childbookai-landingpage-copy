@@ -1,7 +1,7 @@
 .maskedCarousel {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  min-height: 300px;
   height: 50vh;
   max-height: 640px;
 
@@ -18,6 +18,13 @@
   overflow: hidden;
 }
 
+@media (min-width: 640px) {
+  .maskedCarousel {
+    min-height: 400px;
+    height: 55vh;
+  }
+}
+
 @media (min-width: 768px) {
   .maskedCarousel {
     height: 60vh;
@@ -28,11 +35,12 @@
 @media (min-width: 1024px) {
   .maskedCarousel {
     height: 640px;
+    min-height: 640px;
   }
 }
 
 @media (min-width: 1024px) {
   .stepColumnOffset {
-    transform: translateY(50px);
+    transform: translateY(40px);
   }
 }

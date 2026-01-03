@@ -3,89 +3,9 @@
 import Image from "next/image";
 import { CustomCard } from "@/components/shared/CustomCard";
 import { AppButton } from "@/components/shared/AppButton";
-
-interface PricingCard {
-  id: number;
-  title: string;
-  price: string;
-  period?: string;
-  disclaimer?: string;
-  description?: string;
-  features: string[];
-  popular?: boolean;
-  badge?: string | { image: string; alt: string };
-  buttonText: string | { text: string; icon: string };
-}
-
-const individualPlans: PricingCard[] = [
-  {
-    id: 1,
-    title: "Single Credit",
-    price: "$2.5",
-    period: "/1 credit",
-    description:
-      "You can buy a single credit to create a personalized book or use it to generate a book from a template. Illustrator is not included in the single credit purchase.",
-    features: [
-      "Listen to books come alive with text-to-speech feature",
-      "Books in your language and voiceover",
-      "Edit or change your illustrations up to 16 times",
-      "Limitless editing with canva integration",
-      "Personalized and unique characters",
-      "Up to 12 pages per AI generated book",
-      "One personalized book or a template generation",
-    ],
-    buttonText: "Buy a Single Book",
-  },
-  {
-    id: 2,
-    title: "Premium Plan",
-    price: "$29",
-    period: "/year*",
-    disclaimer: "*Cancel anytime",
-    description:
-      "Premium plan is the best option for those who want to create a lot of personalized children's books with AI or want to illustrate their own story with our Childbook Illustrator™",
-    features: [
-      "Access to Childbook Illustrator™ and Illustrate your Children's Book with AI - without pages limitation",
-      "500 illustrations per month",
-      "Up to 100 personalized AI generated books per month",
-      "Limitless editing with canva integration",
-      "Books in your language",
-      "Your name on the book cover",
-      "Edit the story and illustrations to your liking",
-      "Option for more text content per page",
-      "Up to 20 pages per generated book",
-      "Premium book cover that you can generate",
-      "Personalized and unique characters, illustrations and stories",
-      "Listen to books come alive with text-to-speech Feature",
-    ],
-    popular: true,
-    badge: { image: "/illustrations/gold-crown-icon.svg", alt: "Crown" },
-    buttonText: "Get Premium",
-  },
-  {
-    id: 3,
-    title: "Hobby Plan",
-    price: "$19",
-    period: "/year*",
-    disclaimer: "*Cancel anytime",
-    description:
-      "Hobby plan is the best option for those who want to create a few personalized children's books with AI or want to illustrate a short story with our AI Illustrator™",
-    features: [
-      "Access to Childbook Illustrator™ and Illustrate your Children's Book with AI- without pages limitation",
-      "100 illustrations per month",
-      "Up to 20 ai generated books per month",
-      "Books in your language",
-      "Limitless editing with canva integration",
-      "Your name on the book cover",
-      "Option for more text content per page",
-      "Up to 16 pages per generated book",
-      "Personalized and unique characters, illustrations and stories",
-      "Listen to books come alive with text-to-speech Feature",
-    ],
-    badge: { image: "/illustrations/silver-crown-icon.svg", alt: "Crown" },
-    buttonText: "Buy Hobby Plan",
-  },
-];
+import { cn } from "@/lib/utils";
+import { pricingData } from "@/lib/data/pricing";
+import type { PricingCard } from "@/lib/types/pricing";
 
 interface IndividualPricingProps {
   isYearly: boolean;
@@ -94,9 +14,11 @@ interface IndividualPricingProps {
 export function IndividualPricing({ isYearly }: IndividualPricingProps) {
   // isYearly is available for future pricing calculations
   void isYearly;
+  const individualPlans = pricingData.individual;
+  
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 justify-items-center items-start">
-      {individualPlans.map((plan, index) => {
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 justify-items-center items-start">
+      {individualPlans.map((plan: PricingCard, index: number) => {
             const isAlternate = index % 2 === 1;
             const headerColor = isAlternate
               ? "var(--blue-800)"
@@ -110,17 +32,20 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
             return (
               <div
                 key={plan.id}
-                className={`flex justify-center items-start ${
+                className={`flex justify-center items-start w-full ${
                   plan.popular ? "relative z-20" : "relative z-10"
                 }`}
               >
                 <CustomCard
-                  width={400}
+                  width="100%"
                   height={cardHeight}
                   fillColor="var(--blue-100)"
                   headerColor={headerColor}
                   svgVariant={index % 2 === 0 ? "first" : "second"}
-                  className={plan.popular ? " origin-top" : ""}
+                  className={cn(
+                    plan.popular ? "origin-top" : "",
+                    "max-w-[400px]"
+                  )}
                   headerContent={
                     <div className={`flex flex-col h-full ${textColorClass}`}>
                       {plan.popular && <div></div>}
@@ -213,7 +138,7 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                       variant="primary"
                       size="md"
                       shadow
-                      className="w-full text-heading-sm"
+                      className="w-full text-heading-sm min-h-[44px]"
                     >
                       {typeof plan.buttonText === "string"
                         ? plan.buttonText

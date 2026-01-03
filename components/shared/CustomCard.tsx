@@ -71,8 +71,8 @@ export function CustomCard({
 
   return (
     <div
-      className={cn("relative isolate", className)}
-      style={{ width: w, height: h }}
+      className={cn("relative isolate w-full max-w-full", className)}
+      style={{ width: w, height: h, maxWidth: "100%" }}
       {...props}
     >
       {/* Main Card SVG Background */}
@@ -80,7 +80,7 @@ export function CustomCard({
         viewBox={currentSvg.viewBox}
         className="absolute inset-0 w-full h-full"
         preserveAspectRatio="none"
-        aria-hidden
+        aria-hidden="true"
       >
         <path
           d={currentSvg.path}
@@ -94,7 +94,7 @@ export function CustomCard({
         className="absolute top-0 left-0 w-full z-10"
         style={{ height: `${headerHeightRatio * 100}%` }}
         preserveAspectRatio="none"
-        aria-hidden
+        aria-hidden="true"
       >
         <path
           d={currentSvg.headerPath}
@@ -113,7 +113,7 @@ export function CustomCard({
           zIndex: 15,
         }}
         preserveAspectRatio="none"
-        aria-hidden
+        aria-hidden="true"
       >
         {currentSvg.cloudPaths.map((path, index) => (
           <path key={index} d={path} fill={fillColor} />
@@ -123,7 +123,7 @@ export function CustomCard({
       {/* Header Content - Above cloud divider */}
       {headerContent && (
         <div
-          className="absolute top-0 left-0 w-full z-20 p-4 pb-4"
+          className="absolute top-0 left-0 w-full z-20 p-3 sm:p-4 pb-3 sm:pb-4"
           style={{ height: `${headerHeightRatio * 100}%` }}
         >
           {headerContent}
@@ -132,7 +132,7 @@ export function CustomCard({
 
       {/* Body Content - Below cloud divider */}
       <div
-        className="absolute left-0 w-full z-20 px-6 pt-6 pb-4 flex flex-col"
+        className="absolute left-0 w-full z-20 px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 flex flex-col"
         style={{
           top: `${(headerHeightRatio + cloudHeightRatio * 0.5) * 100}%`,
           height: `${(1 - headerHeightRatio - cloudHeightRatio * 0.5) * 100}%`,

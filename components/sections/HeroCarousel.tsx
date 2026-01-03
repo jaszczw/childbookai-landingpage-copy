@@ -60,8 +60,8 @@ export function HeroCarousel() {
 
         {/* Content Overlay */}
         <div className="absolute inset-0 z-10">
-          <div className="absolute top-1/2 left-4 sm:left-8 md:left-[140px] -translate-y-[56%] max-w-[620px] px-4 sm:px-0 w-[calc(100%-2rem)] py-2 sm:w-auto overflow-hidden">
-            <h1 className="text-display text-primary mb-6 sm:mb-10 leading-tight text-4xl sm:text-5xl md:text-display">
+          <div className="absolute top-1/2 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-[140px] -translate-y-[56%] max-w-[620px] px-4 sm:px-0 w-[calc(100%-2rem)] sm:w-auto py-2 overflow-hidden">
+            <h1 className="text-display text-primary mb-4 sm:mb-6 md:mb-8 lg:mb-10 leading-tight">
               <span className="block">
                 <DecorativeText
                   text="Become the"
@@ -89,6 +89,7 @@ export function HeroCarousel() {
               size="lg"
               leading={<Sparkle />}
               trailing={<Sparkle />}
+              className="min-h-[44px] w-full sm:w-auto sm:min-w-[295px]"
             >
               Create a Book
             </AppButton>
@@ -96,16 +97,16 @@ export function HeroCarousel() {
         </div>
 
         {/* Navigation Dots */}
-        <div className="absolute left-4 sm:left-8 md:left-[140px] top-1/2 translate-y-[200px] z-10 flex items-center gap-3 max-w-full overflow-hidden">
+        <div className="absolute left-4 sm:left-6 md:left-8 lg:left-12 xl:left-[140px] top-1/2 translate-y-[180px] sm:translate-y-[200px] z-10 flex items-center gap-2 sm:gap-3 max-w-full overflow-hidden">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setActive(index)}
               aria-label={`Go to slide ${index + 1}`}
               className={`
-        transition-all duration-300 rounded-full
-        ${index === active ? "w-6 h-3 bg-primary" : "w-3 h-3 bg-primary/50"}
-      `}
+                transition-all duration-300 rounded-full touch-manipulation flex items-center justify-center
+                ${index === active ? "w-6 h-3 bg-primary" : "w-3 h-3 bg-primary/50"}
+              `}
             />
           ))}
         </div>

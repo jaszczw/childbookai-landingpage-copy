@@ -5,35 +5,25 @@ import { CreateABook } from "@/components/sections/CreateABook";
 import { Steps } from "@/components/sections/Steps";
 import { Pricing } from "@/components/sections/Pricing";
 import { Features } from "@/components/sections/Features";
-import { Footer } from "@/components/sections/Footer";
+import { Footer } from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col bg-blue-800">
-      <div
-        className="relative w-full min-h-screen bg-cover bg-center bg-fixed bg-no-repeat"
-        style={{ backgroundImage: "url('/background/bg-2.png')" }}
-      >
+    <main className="min-h-screen flex flex-col bg-blue-800 overflow-x-hidden">
+      <div className="relative w-full min-h-screen bg-contain bg-hero bg-repeat bg-center">
         <Navbar />
         <Hero />
         <Services />
         <CreateABook />
       </div>
-      <div className="relative w-full min-h-screen bg-blue-800 -top-4">
+      <div className="relative w-full min-h-screen bg-blue-800 -top-2 sm:-top-4">
         <Steps />
         <Pricing />
       </div>
-      <div
-        className="relative w-full bg-cover bg-center bg-fixed mt-24"
-        style={{
-          backgroundImage: "url('/background/footer-bg.svg')",
-        }}
-      >
+      <div className="relative w-full min-h-screen bg-cover bg-center mt-12 sm:mt-16 lg:mt-24 bg-footer">
         <Features />
         <Footer />
       </div>
     </main>
   );
 }
-
-
