@@ -82,7 +82,7 @@ export function Footer() {
                 Contact Us
               </h3>
               <div className="flex flex-wrap gap-4">
-                {socialMediaLinks.map((social) => {
+                {socialMediaLinks.map((social, index) => {
                   const IconComponent = socialIconMap[social.name];
                   return (
                     <SocialIcon
@@ -90,6 +90,7 @@ export function Footer() {
                       name={social.name}
                       href={social.href}
                       ariaLabel={social.ariaLabel}
+                      backgroundIndex={index}
                     >
                       <IconComponent className="text-white" />
                     </SocialIcon>
