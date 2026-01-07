@@ -20,7 +20,7 @@ export default function Home() {
         <Steps />
         <Pricing />
       </div>
-      <div className="relative w-full min-h-screen bg-cover bg-center mt-12 sm:mt-16 lg:mt-24 bg-footer">
+      <div className="relative w-full min-h-screen bg-contain bg-center mt-12 sm:mt-16 lg:mt-24 bg-footer">
         <Features />
         <Footer />
       </div>

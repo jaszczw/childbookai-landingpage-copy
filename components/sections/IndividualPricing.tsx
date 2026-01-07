@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { CustomCard } from "@/components/shared/CustomCard";
 import { AppButton } from "@/components/shared/AppButton";
+import { HeadingText } from "@/components/typography/HeadingText";
+import { ParagraphText } from "@/components/typography/ParagraphText";
 import { cn } from "@/lib/utils";
 import { pricingData } from "@/lib/data/pricing";
 import type { PricingCard } from "@/lib/types/pricing";
@@ -17,7 +19,7 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
   const individualPlans = pricingData.individual;
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 justify-items-center items-start">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 justify-items-center md:justify-center items-start max-w-6xl mx-auto">
       {individualPlans.map((plan: PricingCard, index: number) => {
             const isAlternate = index % 2 === 1;
             const headerColor = isAlternate
@@ -52,11 +54,13 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
 
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <h3
-                            className={`text-heading-sm font-bold ${textColorClass}`}
-                          >
-                            {plan.title}
-                          </h3>
+                          <HeadingText
+                            as="h5"
+                            variant="h5"
+                            title={plan.title}
+                            className={cn("font-bold", textColorClass)}
+                            defaultTextColor={textColorClass}
+                          />
                           {plan.badge &&
                             (typeof plan.badge === "string" ? (
                               <span className="text-2xl">{plan.badge}</span>
@@ -66,18 +70,25 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                                 alt={plan.badge.alt}
                                 width={24}
                                 height={24}
-                                className="shrink-0"
+                                className="shrink-0 w-6 h-6 sm:w-7 sm:h-7"
+                                sizes="24px"
                               />
                             ))}
                         </div>
                         {plan.disclaimer && (
-                          <p
-                            className={`text-sm ${
+                          <ParagraphText
+                            as="p"
+                            variant="body-sm"
+                            className={cn(
+                              "text-sm",
                               isAlternate ? "text-white" : "text-foreground"
-                            }`}
+                            )}
+                            defaultTextColor={
+                              isAlternate ? "text-white" : "text-foreground"
+                            }
                           >
                             {plan.disclaimer}
-                          </p>
+                          </ParagraphText>
                         )}
                       </div>
 
@@ -99,19 +110,25 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                       </div>
 
                       {plan.description && (
-                        <p
-                          className={`text-body-sm ${
+                        <ParagraphText
+                          as="p"
+                          variant="body-sm"
+                          className={cn(
+                            "text-body-sm mb-6",
                             isAlternate ? "text-white" : "text-foreground"
-                          } mb-6`}
+                          )}
+                          defaultTextColor={
+                            isAlternate ? "text-white" : "text-foreground"
+                          }
                         >
                           {plan.description}
-                        </p>
+                        </ParagraphText>
                       )}
                     </div>
                   }
                 >
                   <div className="flex flex-col h-full">
-                    <ul className="space-y-2 -mt-12 mb-3">
+                    <ul className="space-y-1 xl:space-y-2 -mt-12 mb-3">
                       {plan.features.map((feature, index) => {
                         const isLast = index === plan.features.length - 1;
                         return (
@@ -126,7 +143,8 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                               alt=""
                               width={20}
                               height={20}
-                              className="mr-2 shrink-0 mt-0.5"
+                              className="mr-2 shrink-0 mt-0.5 w-5 h-5 sm:w-5 sm:h-5"
+                              sizes="20px"
                             />
                             <span>{feature}</span>
                           </li>

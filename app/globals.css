@@ -329,11 +329,5 @@
     font-weight: var(--text-body-sm-weight);
   }
 
-  .text-cta {
-    font-size: var(--text-cta-size);
-    line-height: var(--text-cta-line-height);
-    letter-spacing: var(--text-cta-letter-spacing);
-    font-weight: var(--text-cta-weight);
-  }
 }
 

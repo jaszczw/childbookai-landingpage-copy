@@ -13,6 +13,8 @@ export type GlyphConfig = {
   variant?: DecorativeGlyphVariant;
   /** Optional responsive visibility classes (e.g., "hidden sm:inline") */
   responsiveVisibility?: string;
+  /** Optional size classes for this specific glyph. Overrides glyphSizeClassName if provided. Supports responsive classes */
+  glyphSizeClassName?: string;
 };
 
 export type ColoredPhrase = {
@@ -54,6 +56,7 @@ type TextSegment = {
   isLineBreak?: boolean;
   glyphVariant?: DecorativeGlyphVariant;
   glyphVisibility?: string;
+  glyphSizeClassName?: string;
   wordGroupId?: number; // Groups segments that belong to the same word with a glyph
 };
 
@@ -63,7 +66,7 @@ type TextSegment = {
  */
 const variantClasses: Record<NonNullable<HeadingTextProps['variant']>, string> = {
   display: 'text-display-responsive',
-  h1: 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl',
+  h1: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl',
   h2: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl',
   h3: 'text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl',
   h4: 'text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl',
@@ -222,6 +225,7 @@ export function HeadingText({
             isGlyph: true,
             glyphVariant: variant || defaultGlyphVariant,
             glyphVisibility: glyphConfig.responsiveVisibility,
+            glyphSizeClassName: glyphConfig.glyphSizeClassName,
             wordGroupId,
           });
           
@@ -493,7 +497,7 @@ export function HeadingText({
                   >
                     <DecorativeGlyph
                       variant={segment.glyphVariant!}
-                      sizeClassName={glyphSizeClassName}
+                      sizeClassName={segment.glyphSizeClassName || glyphSizeClassName}
                     />
                   </span>
                 );
@@ -553,7 +557,7 @@ export function HeadingText({
           >
             <DecorativeGlyph
               variant={segment.glyphVariant!}
-              sizeClassName={glyphSizeClassName}
+              sizeClassName={segment.glyphSizeClassName || glyphSizeClassName}
             />
           </span>
         );

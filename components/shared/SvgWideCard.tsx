@@ -4,32 +4,29 @@ import { cn } from "@/lib/utils";
 export interface SvgWideCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   fillColor?: string;
-  width?: number | string;
-  height?: number | string;
 }
 
 export function SvgWideCard({
   children,
   className,
   fillColor = "#FFFFFF",
-  width = "100%",
-  height = 1200,
   ...props
 }: SvgWideCardProps) {
-  const w = typeof width === "number" ? `${width}px` : width;
-  const h = typeof height === "number" ? `${height}px` : height;
-
   return (
     <div
-      className={cn("relative isolate", className)}
-      style={{ width: w, height: h }}
+      className={cn(
+        "relative w-full isolate",
+        // Responsive ratio control
+        "aspect-[1440/1082] sm:aspect-[1440/900] lg:aspect-[1440/734]",
+        className
+      )}
       {...props}
     >
-      {/* SVG Background */}
+      {/* SVG Frame */}
       <svg
         viewBox="0 0 1440 1082"
         className="absolute inset-0 w-full h-full"
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid meet"
         aria-hidden
       >
         <path
@@ -39,7 +36,15 @@ export function SvgWideCard({
       </svg>
 
       {/* Content Layer */}
-      <div className="relative z-10 w-full h-full p-12">{children}</div>
+      <div
+        className="
+          relative z-10 h-full w-full
+          p-6 sm:p-8 md:p-10 lg:p-12
+          flex flex-col
+        "
+      >
+        {children}
+      </div>
     </div>
   );
 }
