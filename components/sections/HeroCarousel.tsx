@@ -106,7 +106,7 @@ export function HeroCarousel() {
           </div>
 
           {/* Navigation Dots */}
-          <div className="absolute left-8 sm:left-12 md:left-16 lg:left-22 xl:left-[120px] top-1/2 translate-y-[66px] sm:translate-y-[110px] md:translate-y-[140px] lg:translate-y-[180px] xl:translate-y-[210px] z-10 flex items-center gap-2 sm:gap-3 max-w-full overflow-hidden">
+          <div className="absolute hidden sm:inline-flex left-8 sm:left-12 md:left-16 lg:left-22 xl:left-[120px] top-1/2 translate-y-[66px] sm:translate-y-[110px] md:translate-y-[140px] lg:translate-y-[180px] xl:translate-y-[210px] z-10 items-center gap-2 sm:gap-3 max-w-full overflow-hidden">
             {slides.map((_, index) => (
               <button
                 key={index}
