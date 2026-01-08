@@ -28,13 +28,13 @@ export function Navbar() {
           {/* Navbar content */}
           <div className="absolute inset-0 flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 top-[-8px] sm:top-[-12px] md:top-[-16px] lg:top-[-20px] xl:top-[-24px]">
             {/* Logo */}
-            <Link href="/" aria-label="ChildbookAI Home" className="flex-shrink-0">
+            <Link href="/" aria-label="ChildbookAI Home" className="shrink-0">
               <Image
                 src="/images/logo.svg"
                 alt="ChildbookAI"
                 width={IMAGE_DIMENSIONS.LOGO.width}
                 height={IMAGE_DIMENSIONS.LOGO.height}
-                className="w-[32px] sm:w-[48px] md:w-[64px] lg:w-[80px] xl:w-[96px] h-auto"
+                className="w-[40px] sm:w-[54px] md:w-[64px] lg:w-[80px] xl:w-[96px] h-auto ml-2 md:ml-4"
                 priority
               />
             </Link>
@@ -57,7 +57,7 @@ export function Navbar() {
               <AppButton
                 variant="primary"
                 size="sm"
-                className="hidden md:inline-flex rounded-[10px] text-heading-sm min-h-[44px]"
+                className="hidden lg:inline-flex rounded-[10px] text-heading-sm min-h-[44px]"
               >
                 Create
               </AppButton>
@@ -69,7 +69,7 @@ export function Navbar() {
                 aria-label="Open menu"
               >
                 <HambergerMenu
-                  className="h-6 w-6 sm:h-7 sm:w-7"
+                  className="h-4 w-4 sm:h-6 sm:w-6"
                   color="#1E3A8A"
                 />
               </button>
