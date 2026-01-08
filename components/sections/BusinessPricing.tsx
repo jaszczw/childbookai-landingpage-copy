@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { CustomCard } from "@/components/shared/CustomCard";
 import { AppButton } from "@/components/shared/AppButton";
+import { HeadingText } from "@/components/typography/HeadingText";
+import { ParagraphText } from "@/components/typography/ParagraphText";
+import { cn } from "@/lib/utils";
 import { pricingData } from "@/lib/data/pricing";
 import type { PricingCard } from "@/lib/types/pricing";
 
@@ -39,9 +42,13 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                     <div className="flex flex-col h-full text-foreground">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-heading-sm font-bold text-foreground">
-                            {plan.title}
-                          </h3>
+                          <HeadingText
+                            as="h3"
+                            variant="h5"
+                            title={plan.title}
+                            className={cn("font-bold", "text-foreground")}
+                            defaultTextColor="text-foreground"
+                          />
                           {plan.badge && (
                             typeof plan.badge === "string" ? (
                               <span className="text-2xl">{plan.badge}</span>
@@ -51,20 +58,26 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                                 alt={plan.badge.alt}
                                 width={24}
                                 height={24}
-                                className="shrink-0"
+                                className="shrink-0 w-4 h-4 sm:w-7 sm:h-7"
+                                sizes="24px"
                               />
                             )
                           )}
                         </div>
                         {plan.disclaimer && (
-                          <p className="text-sm text-foreground">
+                          <ParagraphText
+                            as="p"
+                            variant="body-sm"
+                            className={cn("text-sm", "text-foreground")}
+                            defaultTextColor="text-foreground"
+                          >
                             {plan.disclaimer}
-                          </p>
+                          </ParagraphText>
                         )}
                       </div>
 
                       <div className="mb-2">
-                        <span className="text-heading-xl font-bold text-foreground">
+                        <span className="text-heading-lg md:text-heading-xl font-bold text-foreground">
                           {plan.price}
                         </span>
                         {plan.period && (
@@ -75,7 +88,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                       </div>
 
                       {plan.description && (
-                        <p className="text-body-sm text-foreground mb-6">
+                        <p className="text-xs sm:text-sm md:text-body-sm text-foreground mb-4 sm:mb-5 md:mb-6">
                           {plan.description}
                         </p>
                       )}
@@ -85,18 +98,19 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                   <div className="flex flex-col h-full">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-2 -mt-12 mb-3">
                       {/* Left Column */}
-                      <ul className="space-y-2">
+                      <ul className="space-y-0 xl:space-y-2">
                         {leftColumnFeatures.map((feature, index) => (
                           <li
                             key={index}
-                            className="flex items-start text-body text-foreground py-2"
+                            className="flex items-start text-xs md:text-body text-foreground py-2"
                           >
                             <Image
                               src="/illustrations/check-icon.svg"
                               alt=""
                               width={20}
                               height={20}
-                              className="mr-2 shrink-0 mt-0.5"
+                              className="mr-2 shrink-0 mt-0.5 w-3 h-3 sm:w-4 sm:h-4"
+                              sizes="20px"
                             />
                             <span>{feature}</span>
                           </li>
@@ -104,20 +118,21 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                       </ul>
 
                       {/* Right Column */}
-                      <ul className="space-y-2">
+                      <ul className="space-y-0 xl:space-y-2">
                         {rightColumnFeatures.map((feature, index) => {
                           const isLast = index === rightColumnFeatures.length - 1;
                           return (
                             <li
                               key={index}
-                              className={`flex items-start text-body text-foreground ${isLast ? "pt-2 pb-4" : "py-2"}`}
+                              className={`flex items-start text-xs md:text-body text-foreground ${isLast ? "pt-2 pb-4" : "py-2"}`}
                             >
                               <Image
                                 src="/illustrations/check-icon.svg"
                                 alt=""
                                 width={20}
                                 height={20}
-                                className="mr-2 shrink-0 mt-0.5"
+                                className="mr-2 shrink-0 mt-0.5 w-3 h-3 sm:w-4 sm:h-4"
+                                sizes="20px"
                               />
                               <span>{feature}</span>
                             </li>
@@ -130,7 +145,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                       variant="primary"
                       size="md"
                       shadow
-                      className="w-full text-heading-sm mt-8 min-h-[44px]"
+                      className="w-full text-body-sm md:text-heading-sm mt-2 md:mt-8 min-h-10 md:min-h-[44px]"
                     >
                       {typeof plan.buttonText === "string" ? plan.buttonText : plan.buttonText.text}
                     </AppButton>

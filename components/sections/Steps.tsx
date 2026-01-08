@@ -55,12 +55,14 @@ export function Steps() {
           />
         </div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12 md:justify-items-center">
           {steps.map((step) => (
             <div
               key={step.id}
               className={`relative z-10 flex flex-col items-center text-center ${
                 step.id === 2 ? styles.stepColumnOffset : ""
+              } ${
+                step.id === 3 ? "md:col-span-2 md:justify-self-center lg:col-span-1" : ""
               }`}
             >
               <div

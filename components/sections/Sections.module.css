@@ -39,8 +39,12 @@
   }
 }
 
+.stepColumnOffset {
+  transform: translateY(0);
+}
+
 @media (min-width: 1024px) {
   .stepColumnOffset {
-    transform: translateY(40px);
+    transform: translateY(30px);
   }
 }

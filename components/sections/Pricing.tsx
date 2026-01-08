@@ -67,25 +67,25 @@ export function Pricing() {
         ) : (
           <>
             {/* Money Bag - Different position for business */}
-            <div className="absolute top-8 right-8 lg:top-16 lg:right-[300px]">
+            <div className="absolute top-8 right-8 md:top-18 lg:top-16 md:right-12 lg:right-[100px] xl:right-[150px]">
               <Image
                 src="/illustrations/money-bag.svg"
                 alt=""
                 width={IMAGE_DIMENSIONS.MONEY_BAG_BUSINESS.width}
                 height={IMAGE_DIMENSIONS.MONEY_BAG_BUSINESS.height}
-                className="object-contain w-32 h-32 sm:w-40 sm:h-40 lg:w-auto lg:h-auto"
+                className="object-contain w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-auto lg:h-auto"
                 sizes="(max-width: 768px) 128px, (max-width: 1024px) 160px, 250px"
               />
             </div>
 
             {/* Coins - Different position for business */}
-            <div className="absolute bottom-4 left-4 lg:bottom-6 lg:left-[300px]">
+            <div className="absolute bottom-4 left-0 lg:bottom-6 lg:left-[100px] xl:bottom-6 xl:left-[200px]">
               <Image
                 src="/illustrations/coins.svg"
                 alt=""
                 width={IMAGE_DIMENSIONS.COINS_BUSINESS.width}
                 height={IMAGE_DIMENSIONS.COINS_BUSINESS.height}
-                className="object-contain w-24 h-24 sm:w-32 sm:h-32 lg:w-auto lg:h-auto"
+                className="object-contain w-24 h-24 sm:w-48 sm:h-48 md:w-72 md:h-72 lg:w-auto lg:h-auto"
                 sizes="(max-width: 768px) 96px, (max-width: 1024px) 128px, 250px"
               />
             </div>
