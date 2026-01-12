@@ -1,4 +1,4 @@
-import type { Kid } from "@/lib/types/kid";
+import type { Kid } from "@/lib/types";
 
 export const kids: Kid[] = [
   { id: 1, name: "Kid Name", image: "/illustrations/kid-1.svg", },

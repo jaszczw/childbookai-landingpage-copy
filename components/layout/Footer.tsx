@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { footerSections, socialMediaLinks } from "@/lib/data/footer";
+import { footerSections, socialMediaLinks } from "@/lib/data";
 import {
   TwitterIcon,
   InstagramIcon,
   YouTubeIcon,
   DiscordIcon,
   EmailIcon,
-} from "@/components/shared/social-icons";
-import { SocialIcon } from "@/components/shared/SocialIcon";
+  SocialIcon,
+} from "@/components/shared";
 
 const socialIconMap = {
   "Twitter/X": TwitterIcon,

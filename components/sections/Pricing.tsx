@@ -6,13 +6,10 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { IndividualPricing } from "./IndividualPricing";
-import { BusinessPricing } from "./BusinessPricing";
-import { IMAGE_DIMENSIONS, Z_INDEX } from "@/lib/constants";
-import { BackgroundShape } from "@/components/shared/BackgroundShape";
-import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
-import { HeadingText } from "../typography/HeadingText";
-import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
+import { IndividualPricing, BusinessPricing } from "./";
+import { IMAGE_DIMENSIONS, Z_INDEX, BACKGROUND_SHAPES } from "@/lib/constants";
+import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
+import { HeadingText } from "@/components/typography";
 
 export function Pricing() {
   const [activeTab, setActiveTab] = useState<"individual" | "business">(

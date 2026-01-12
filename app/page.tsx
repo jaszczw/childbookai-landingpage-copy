@@ -1,23 +1,21 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Hero } from "@/components/sections/Hero";
-import { Services } from "@/components/sections/Services";
-import { CreateABook } from "@/components/sections/CreateABook";
+import { Navbar } from "@/components/layout";
+import { Hero, Services, CreateABook } from "@/components/sections";
 import dynamic from "next/dynamic";
 
 // Lazy load below-the-fold components for better initial load performance
-const Steps = dynamic(() => import("@/components/sections/Steps").then((mod) => ({ default: mod.Steps })), {
+const Steps = dynamic(() => import("@/components/sections").then((mod) => ({ default: mod.Steps })), {
   loading: () => <div className="min-h-[400px]" />, // Prevent layout shift
 });
 
-const Pricing = dynamic(() => import("@/components/sections/Pricing").then((mod) => ({ default: mod.Pricing })), {
+const Pricing = dynamic(() => import("@/components/sections").then((mod) => ({ default: mod.Pricing })), {
   loading: () => <div className="min-h-[500px]" />,
 });
 
-const Features = dynamic(() => import("@/components/sections/Features").then((mod) => ({ default: mod.Features })), {
+const Features = dynamic(() => import("@/components/sections").then((mod) => ({ default: mod.Features })), {
   loading: () => <div className="min-h-[600px]" />,
 });
 
-const Footer = dynamic(() => import("@/components/layout/Footer").then((mod) => ({ default: mod.Footer })));
+const Footer = dynamic(() => import("@/components/layout").then((mod) => ({ default: mod.Footer })));
 
 export default function Home() {
   return (
@@ -30,12 +28,12 @@ export default function Home() {
         Skip to main content
       </a>
       <main id="main-content" className="min-h-screen flex flex-col bg-blue-800 overflow-x-hidden">
-        <div className="relative w-full min-h-screen bg-contain bg-hero bg-repeat bg-center">
-          <Navbar />
-          <Hero />
-          <Services />
-          <CreateABook />
-        </div>
+      <div className="relative w-full min-h-screen bg-contain bg-hero bg-repeat bg-center">
+        <Navbar />
+        <Hero />
+        <Services />
+        <CreateABook />
+      </div>
       <div className="relative w-full min-h-screen bg-blue-800 -top-2 sm:-top-4">
         <Steps />
         <Pricing />

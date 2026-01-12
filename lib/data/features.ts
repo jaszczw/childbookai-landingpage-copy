@@ -1,4 +1,4 @@
-import type { Feature } from "@/lib/types/feature";
+import type { Feature } from "@/lib/types";
 
 export const features: Feature[] = [
   {

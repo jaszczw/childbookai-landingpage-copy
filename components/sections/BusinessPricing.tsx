@@ -1,13 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { CustomCard } from "@/components/shared/CustomCard";
-import { AppButton } from "@/components/shared/AppButton";
-import { HeadingText } from "@/components/typography/HeadingText";
-import { ParagraphText } from "@/components/typography/ParagraphText";
+import { CustomCard, AppButton } from "@/components/shared";
+import { HeadingText, ParagraphText } from "@/components/typography";
 import { cn } from "@/lib/utils";
-import { pricingData } from "@/lib/data/pricing";
-import type { PricingCard } from "@/lib/types/pricing";
+import { pricingData } from "@/lib/data";
+import type { PricingCard } from "@/lib/types";
 
 interface BusinessPricingProps {
   isYearly: boolean;

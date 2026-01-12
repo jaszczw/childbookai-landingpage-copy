@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { features } from "@/lib/data/features";
-import { HeadingText } from "@/components/typography/HeadingText";
-import { BackgroundShape } from "@/components/shared/BackgroundShape";
-import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
-import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
+import { features } from "@/lib/data";
+import { HeadingText } from "@/components/typography";
+import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
+import { BACKGROUND_SHAPES } from "@/lib/constants";
 
 export function Features() {
   return (

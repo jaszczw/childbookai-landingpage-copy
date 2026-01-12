@@ -4,9 +4,8 @@ import { useState } from "react";
 import { HambergerMenu, CloseCircle } from "iconsax-react";
 import Link from "next/link";
 import Image from "next/image";
-import { AppButton } from "@/components/shared/AppButton";
-
-import { navItems } from "@/lib/data/navigation";
+import { AppButton } from "@/components/shared";
+import { navItems } from "@/lib/data";
 import { IMAGE_DIMENSIONS } from "@/lib/constants";
 
 export function Navbar() {

@@ -1,11 +1,8 @@
 import Image from "next/image";
-import { services } from "@/lib/data/services";
-import { BackgroundShape } from "@/components/shared/BackgroundShape";
-import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
-import { HeadingText } from "../typography/HeadingText";
-import { ParagraphText } from "../typography/ParagraphText";
-import { SERVICE_IDS } from "@/lib/constants";
-import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
+import { services } from "@/lib/data";
+import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
+import { HeadingText, ParagraphText } from "@/components/typography";
+import { SERVICE_IDS, BACKGROUND_SHAPES } from "@/lib/constants";
 
 export function Services() {
   return (

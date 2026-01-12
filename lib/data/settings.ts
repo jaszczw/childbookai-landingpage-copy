@@ -1,4 +1,4 @@
-import type { Setting } from "@/lib/types/settings";
+import type { Setting } from "@/lib/types";
 
 export const settings: Setting[] = [
   { id: 1, image: "/illustrations/character-1.svg", label: "Wonderland" },

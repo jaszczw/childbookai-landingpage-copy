@@ -3,11 +3,9 @@
 import Image from "next/image";
 import { useEffect, useState, useCallback, memo } from "react";
 import type { KeyboardEvent } from "react";
-import { AppButton } from "@/components/shared/AppButton";
-import { CarouselMask } from "@/components/shared/CarouselMask";
-import { DecorativeElements } from "@/components/shared/DecorativeElement";
-import HeadingText from "../typography/HeadingText";
-import { heroCarouselDecorations } from "@/lib/data/heroCarousel";
+import { AppButton, CarouselMask, DecorativeElements } from "@/components/shared";
+import { HeadingText } from "@/components/typography";
+import { heroCarouselDecorations } from "@/lib/data";
 import { CAROUSEL_CONFIG } from "@/lib/constants";
 
 // Move slides outside component to prevent recreation on each render

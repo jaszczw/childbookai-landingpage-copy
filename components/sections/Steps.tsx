@@ -1,8 +1,8 @@
 import Image from "next/image";
 import styles from "./Sections.module.css";
-import { steps } from "@/lib/data/steps";
+import { steps } from "@/lib/data";
 import { IMAGE_DIMENSIONS, SPACING, STEP_IDS } from "@/lib/constants";
-import { HeadingText } from "../typography/HeadingText";
+import { HeadingText } from "@/components/typography";
 
 export function Steps() {
   return (

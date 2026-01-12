@@ -1,13 +1,9 @@
 import Image from "next/image";
-import { AppButton } from "@/components/shared/AppButton";
-import { settings } from "@/lib/data/settings";
-import { kids } from "@/lib/data/kids";
-import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE, CREATE_BOOK_CONFIG } from "@/lib/constants";
-import { BackgroundShape } from "@/components/shared/BackgroundShape";
-import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
-import HeadingText from "../typography/HeadingText";
-import { ParagraphText } from "../typography/ParagraphText";
-import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
+import { AppButton } from "@/components/shared";
+import { settings, kids } from "@/lib/data";
+import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE, CREATE_BOOK_CONFIG, BACKGROUND_SHAPES } from "@/lib/constants";
+import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
+import { HeadingText, ParagraphText } from "@/components/typography";
 
 export function CreateABook() {
   return (

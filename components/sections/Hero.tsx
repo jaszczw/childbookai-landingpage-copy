@@ -1,4 +1,4 @@
-import { HeroCarousel } from "@/components/sections/HeroCarousel";
+import { HeroCarousel } from "./HeroCarousel";
 
 export function Hero() {
   return (
