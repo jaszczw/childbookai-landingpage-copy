@@ -8,6 +8,7 @@ import { CarouselMask } from "@/components/shared/CarouselMask";
 import { DecorativeElements } from "@/components/shared/DecorativeElement";
 import HeadingText from "../typography/HeadingText";
 import { heroCarouselDecorations } from "@/lib/data/heroCarousel";
+import { CAROUSEL_CONFIG } from "@/lib/constants";
 
 // Move slides outside component to prevent recreation on each render
 const slides = [
@@ -55,7 +56,7 @@ function HeroCarousel() {
 
   // Auto-play carousel
   useEffect(() => {
-    const id = setInterval(nextSlide, 6000);
+    const id = setInterval(nextSlide, CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL);
     return () => clearInterval(id);
   }, [nextSlide]);
 
@@ -170,8 +171,9 @@ function HeroCarousel() {
                 aria-selected={index === active}
                 role="tab"
                 tabIndex={index === active ? 0 : -1}
+                style={{ transitionDuration: `${CAROUSEL_CONFIG.TRANSITION_DURATION}ms` }}
                 className={`
-                transition-all duration-300 rounded-full touch-manipulation flex items-center justify-center
+                transition-all rounded-full touch-manipulation flex items-center justify-center
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
                 ${
                   index === active

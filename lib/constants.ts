@@ -35,3 +35,29 @@ export const SCALE = {
   BOOK_MOCKUP: 2.1, // scale-210 converted to decimal (210% = 2.1)
 } as const;
 
+// Carousel configuration
+export const CAROUSEL_CONFIG = {
+  AUTO_PLAY_INTERVAL: 6000, // milliseconds
+  TRANSITION_DURATION: 300, // milliseconds
+} as const;
+
+// Step IDs (for conditional rendering)
+export const STEP_IDS = {
+  FIRST: 1,
+  SECOND: 2,
+  THIRD: 3,
+} as const;
+
+// Service IDs (for conditional rendering)
+export const SERVICE_IDS = {
+  FIRST: 1,
+  SECOND: 2,
+  THIRD: 3,
+  FOURTH: 4,
+} as const;
+
+// Create a Book configuration
+export const CREATE_BOOK_CONFIG = {
+  CURRENT_STEP: "1/4",
+  STEP_TEXT: "Choose character options",
+} as const;

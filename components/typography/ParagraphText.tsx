@@ -11,9 +11,9 @@ export type ColoredPhrase = {
 };
 
 export type ParagraphTextProps = {
-  /** The main text content */
-  children: string;
-  /** Phrases to color differently */
+  /** The main text content - can be string or ReactNode */
+  children: React.ReactNode;
+  /** Phrases to color differently (only works with string children) */
   coloredPhrases?: ColoredPhrase[];
   /** Default text color (Tailwind class or CSS color). Can include responsive classes */
   defaultTextColor?: string;
@@ -101,16 +101,33 @@ export function ParagraphText({
   as: Component = 'p',
   'aria-label': ariaLabel,
 }: ParagraphTextProps) {
+  // Check if children is a string
+  const isStringChildren = typeof children === 'string';
+  
+  // Convert children to string only if needed for color processing
+  const childrenString = React.useMemo(() => {
+    if (isStringChildren) {
+      return children;
+    }
+    // For non-string children, return empty string (won't be used for color processing)
+    return '';
+  }, [children, isStringChildren]);
+
   // Process text into segments with colors
   const segments = React.useMemo(() => {
-    const result: TextSegment[] = [];
-    
-    if (coloredPhrases.length === 0) {
-      // No colored phrases, return single segment
-      return [{ text: children }];
+    // If children is not a string, skip color processing
+    if (!isStringChildren) {
+      return [];
     }
     
-    const lowerText = children.toLowerCase();
+    const result: TextSegment[] = [];
+    
+    // If no colored phrases, return single segment
+    if (coloredPhrases.length === 0) {
+      return [{ text: childrenString }];
+    }
+    
+    const lowerText = childrenString.toLowerCase();
     
     // Find all phrase matches in the text
     const phraseMatches: Array<{
@@ -146,14 +163,14 @@ export function ParagraphText({
     phraseMatches.forEach(match => {
       // Add text before the match
       if (match.start > currentPos) {
-        const before = children.slice(currentPos, match.start);
+        const before = childrenString.slice(currentPos, match.start);
         if (before) {
           result.push({ text: before });
         }
       }
       
       // Add the colored phrase
-      const phraseText = children.slice(match.start, match.end);
+      const phraseText = childrenString.slice(match.start, match.end);
       if (phraseText) {
         result.push({ text: phraseText, color: match.color });
       }
@@ -162,8 +179,8 @@ export function ParagraphText({
     });
     
     // Add remaining text after the last match
-    if (currentPos < children.length) {
-      const after = children.slice(currentPos);
+    if (currentPos < childrenString.length) {
+      const after = childrenString.slice(currentPos);
       if (after) {
         result.push({ text: after });
       }
@@ -171,11 +188,11 @@ export function ParagraphText({
     
     // If no matches were found, return the whole text as a single segment
     if (result.length === 0) {
-      return [{ text: children }];
+      return [{ text: childrenString }];
     }
     
     return result;
-  }, [children, coloredPhrases]);
+  }, [childrenString, coloredPhrases, isStringChildren]);
 
   // Render segments
   const renderContent = () => {
@@ -205,10 +222,22 @@ export function ParagraphText({
   // Get variant classes if variant is provided
   const variantClassName = variant ? variantClasses[variant] : undefined;
 
+  // If children is not a string, render it directly without color processing
+  if (typeof children !== 'string') {
+    return (
+      <Component
+        className={clsx(variantClassName, className)}
+        aria-label={ariaLabel || (typeof children === 'string' ? children : undefined)}
+      >
+        {children}
+      </Component>
+    );
+  }
+
   return (
     <Component
       className={clsx(variantClassName, className)}
-      aria-label={ariaLabel || children}
+      aria-label={ariaLabel || childrenString}
     >
       {renderContent()}
     </Component>

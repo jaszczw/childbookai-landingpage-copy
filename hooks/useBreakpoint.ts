@@ -2,11 +2,24 @@
 
 import { useEffect, useState } from "react";
 
+/**
+ * Custom hook to detect current breakpoint
+ * @returns Object with boolean flags for mobile, tablet, and desktop breakpoints
+ */
 export function useBreakpoint() {
   const [width, setWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    const onResize = () => setWidth(window.innerWidth);
+    // Check if window is available (SSR safety)
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const onResize = () => {
+      setWidth(window.innerWidth);
+    };
+    
+    // Set initial width
     onResize();
 
     window.addEventListener("resize", onResize);

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./Sections.module.css";
 import { steps } from "@/lib/data/steps";
-import { IMAGE_DIMENSIONS, SPACING } from "@/lib/constants";
+import { IMAGE_DIMENSIONS, SPACING, STEP_IDS } from "@/lib/constants";
 import { HeadingText } from "../typography/HeadingText";
 
 export function Steps() {
@@ -62,12 +62,12 @@ export function Steps() {
             <div
               key={step.id}
               className={`relative z-10 flex flex-col items-center text-center ${
-                step.id === 2 ? styles.stepColumnOffset : ""
+                step.id === STEP_IDS.SECOND ? styles.stepColumnOffset : ""
               } ${
-                step.id === 3 ? "md:col-span-2 md:justify-self-center lg:col-span-1" : ""
+                step.id === STEP_IDS.THIRD ? "md:col-span-2 md:justify-self-center lg:col-span-1" : ""
               }`}
             >
-              {step.id === 1 && (
+              {step.id === STEP_IDS.FIRST && (
                 <div className="absolute lg:-left-8 xl:-left-28 lg:top-[32%] xl:top-[30%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
                   <Image
                     src="/illustrations/blue-2.svg"
@@ -80,7 +80,7 @@ export function Steps() {
                   />
                 </div>
               )}
-              {step.id === 1 && (
+              {step.id === STEP_IDS.FIRST && (
                 <div className="absolute lg:-right-18 xl:-right-16 lg:top-[40%] xl:top-[38%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
                   <Image
                     src="/illustrations/blue-2.svg"
@@ -93,7 +93,7 @@ export function Steps() {
                   />
                 </div>
               )}
-              {step.id === 3 && (
+              {step.id === STEP_IDS.THIRD && (
                 <div className="absolute lg:-left-20 xl:-left-32 lg:top-[22%] xl:top-[20%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
                   <Image
                     src="/illustrations/white-1.svg"
@@ -106,7 +106,7 @@ export function Steps() {
                   />
                 </div>
               )}
-              {step.id === 3 && (
+              {step.id === STEP_IDS.THIRD && (
                 <div className="absolute lg:-right-4 xl:-right-22 lg:top-[32%] xl:top-[30%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
                   <Image
                     src="/illustrations/white-2.svg"
@@ -121,7 +121,7 @@ export function Steps() {
               )}
               <div
                 className={`relative mb-4 sm:mb-6 ${
-                  step.id === 2
+                  step.id === STEP_IDS.SECOND
                     ? "w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80"
                     : "w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64"
                 }`}

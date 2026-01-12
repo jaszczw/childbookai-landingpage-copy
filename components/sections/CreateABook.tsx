@@ -2,26 +2,26 @@ import Image from "next/image";
 import { AppButton } from "@/components/shared/AppButton";
 import { settings } from "@/lib/data/settings";
 import { kids } from "@/lib/data/kids";
-import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE } from "@/lib/constants";
+import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE, CREATE_BOOK_CONFIG } from "@/lib/constants";
 import { BackgroundShape } from "@/components/shared/BackgroundShape";
+import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
 import HeadingText from "../typography/HeadingText";
 import { ParagraphText } from "../typography/ParagraphText";
+import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
 
 export function CreateABook() {
   return (
     <section className="relative w-full py-8 sm:py-10 md:py-12 lg:py-16 min-h-[400px] sm:min-h-[500px]">
       {/* Desktop / large screens: SVG background */}
       <BackgroundShape
-        viewBox="0 0 1440 720"
-        path="M1440 80.0008C1440 34.8075 1402.59 -1.41424 1357.42 0.0424087L77.4214 41.3202C34.2648 42.7119 0 78.0997 0 121.279V948.643C0 991.531 33.8195 1026.79 76.6696 1028.57L1356.67 1081.91C1402.12 1083.8 1440 1047.47 1440 1001.98V80.0008Z"
+        viewBox={BACKGROUND_SHAPES.CREATE_BOOK.viewBox}
+        path={BACKGROUND_SHAPES.CREATE_BOOK.path}
         fill="white"
         className="hidden lg:flex"
       />
 
       {/* Tablet / mobile: soft white background card */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none lg:hidden">
-        <div className="w-full h-[97%] rounded-[40px] bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]" />
-      </div>
+      <MobileBackgroundCard />
 
       <div className="relative z-10 max-w-7xl mx-auto p-8 sm:p-10 md:p-12 lg:pt-16">
         <div className="mb-4 sm:mb-8">
@@ -73,12 +73,12 @@ export function CreateABook() {
             defaultTextColor="text-foreground"
             coloredPhrases={[
               {
-                text: "1/4",
+                text: CREATE_BOOK_CONFIG.CURRENT_STEP,
                 color: "text-primary",
               },
             ]}
           >
-            Choose character options 1/4
+            {CREATE_BOOK_CONFIG.STEP_TEXT} {CREATE_BOOK_CONFIG.CURRENT_STEP}
           </ParagraphText>
         </div>
 

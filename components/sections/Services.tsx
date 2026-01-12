@@ -1,24 +1,25 @@
 import Image from "next/image";
 import { services } from "@/lib/data/services";
 import { BackgroundShape } from "@/components/shared/BackgroundShape";
+import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
 import { HeadingText } from "../typography/HeadingText";
 import { ParagraphText } from "../typography/ParagraphText";
+import { SERVICE_IDS } from "@/lib/constants";
+import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
 
 export function Services() {
   return (
     <section className="relative w-full overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
       {/* Desktop / large screens: SVG background */}
       <BackgroundShape
-        viewBox="0 0 1440 734"
-        path="M0 80.0009C0 34.8076 37.4087 -1.41418 82.5785 0.0424697L1362.58 41.3203C1405.74 42.712 1440 78.0997 1440 121.279V600.643C1440 643.531 1406.18 678.789 1363.33 680.574L83.3304 733.907C37.8803 735.801 0 699.466 0 653.977V80.0009Z"
+        viewBox={BACKGROUND_SHAPES.SERVICES.viewBox}
+        path={BACKGROUND_SHAPES.SERVICES.path}
         fill="white"
         className="hidden lg:flex"
       />
 
       {/* Tablet / mobile: soft white background card */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none lg:hidden">
-        <div className="w-full h-[97%] rounded-[40px] bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]" />
-      </div>
+      <MobileBackgroundCard />
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 ">
@@ -61,7 +62,7 @@ export function Services() {
                 />
 
                 {/* Ellipse decorations based on column */}
-                {service.id === 1 && (
+                {service.id === SERVICE_IDS.FIRST && (
                   <div className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-2 lg:right-2 -rotate-24 flex items-center justify-center pointer-events-none" aria-hidden="true">
                     <Image
                       src="/illustrations/Ellipse 4.svg"
@@ -73,7 +74,7 @@ export function Services() {
                     />
                   </div>
                 )}
-                {service.id === 2 && (
+                {service.id === SERVICE_IDS.SECOND && (
                   <>
                     <div className="absolute -bottom-3 -left-4 sm:-bottom-6 sm:-left-2 lg:left-2 rotate-18 flex items-center justify-center pointer-events-none" aria-hidden="true">
                       <Image
@@ -97,7 +98,7 @@ export function Services() {
                     </div>
                   </>
                 )}
-                {service.id === 3 && (
+                {service.id === SERVICE_IDS.THIRD && (
                   <div className="absolute -bottom-8 -left-8 sm:-bottom-10 sm:-left-2 md:-left-4 lg:-bottom-12 lg:left-10 xl:-bottom-12 xl:left-4 flex items-center justify-center pointer-events-none" aria-hidden="true">
                     <Image
                       src="/illustrations/Ellipse 7.svg"
@@ -109,7 +110,7 @@ export function Services() {
                     />
                   </div>
                 )}
-                {service.id === 4 && (
+                {service.id === SERVICE_IDS.FOURTH && (
                   <div className="absolute -bottom-10 -right-4 sm:-bottom-12 sm:-right-8 md:-right-6 lg:-right-4 -rotate-10 flex items-center justify-center pointer-events-none" aria-hidden="true">
                     <Image
                       src="/illustrations/Ellipse 8.svg"

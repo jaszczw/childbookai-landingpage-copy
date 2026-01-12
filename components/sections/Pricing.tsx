@@ -10,7 +10,9 @@ import { IndividualPricing } from "./IndividualPricing";
 import { BusinessPricing } from "./BusinessPricing";
 import { IMAGE_DIMENSIONS, Z_INDEX } from "@/lib/constants";
 import { BackgroundShape } from "@/components/shared/BackgroundShape";
+import { MobileBackgroundCard } from "@/components/shared/MobileBackgroundCard";
 import { HeadingText } from "../typography/HeadingText";
+import { BACKGROUND_SHAPES } from "@/lib/constants/backgroundShapes";
 
 export function Pricing() {
   const [activeTab, setActiveTab] = useState<"individual" | "business">(
@@ -22,16 +24,14 @@ export function Pricing() {
     <section className="relative w-full py-24 min-h-[500px] overflow-visible">
       {/* Desktop / large screens: SVG background */}
       <BackgroundShape
-        viewBox="0 0 1440 1200"
-        path="M1440 80.0008C1440 34.8075 1402.59 -1.41424 1357.42 0.0424087L77.4214 41.3202C34.2648 42.7119 0 78.0997 0 121.279V948.643C0 991.531 33.8195 1026.79 76.6696 1028.57L1356.67 1081.91C1402.12 1083.8 1440 1047.47 1440 1001.98V80.0008Z"
+        viewBox={BACKGROUND_SHAPES.PRICING.viewBox}
+        path={BACKGROUND_SHAPES.PRICING.path}
         fill="white"
         className="hidden lg:flex overflow-visible"
       />
 
       {/* Tablet / mobile: soft white background card */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none lg:hidden">
-        <div className="w-full h-[97%] mb-10 rounded-[40px] bg-white shadow-[0_18px_60px_rgba(15,23,42,0.14)]" />
-      </div>
+      <MobileBackgroundCard className="mb-10" />
 
       {/* Decorative Elements - Behind Cards */}
       <div

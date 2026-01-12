@@ -11,7 +11,6 @@ type AppButtonProps = Omit<
   variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "hero";
   loading?: boolean;
-  iconOnly?: boolean;
   leading?: React.ReactNode;
   trailing?: React.ReactNode;
   shadow?: boolean;
@@ -91,7 +90,6 @@ export function AppButton({
   variant = "primary",
   size = "md",
   loading = false,
-  // iconOnly = false,
   leading,
   trailing,
   disabled,
