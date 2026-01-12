@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { AppButton } from "@/components/shared";
 import { settings, kids } from "@/lib/data";
 import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE, CREATE_BOOK_CONFIG, BACKGROUND_SHAPES } from "@/lib/constants";
 import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
 import { HeadingText, ParagraphText } from "@/components/typography";
+import { scrollReveal, scrollRevealLeft, scrollRevealRight, staggerContainer, scaleIn, viewportOnce } from "@/lib/utils/animations";
 
 export function CreateABook() {
   return (
@@ -20,8 +24,21 @@ export function CreateABook() {
       <MobileBackgroundCard />
 
       <div className="relative z-10 max-w-7xl mx-auto p-8 sm:p-10 md:p-12 lg:pt-16">
-        <div className="mb-4 sm:mb-8">
-          <div className="absolute shrink-0 -top-4 right-12 sm:-top-7 lg:-top-16 sm:right-[80px] md:-top-9 md:right-[100px] lg:right-[160px] hidden min-[421px]:block" aria-hidden="true">
+        <motion.div
+          className="mb-4 sm:mb-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={scrollReveal}
+        >
+          <motion.div
+            className="absolute shrink-0 -top-4 right-12 sm:-top-7 lg:-top-16 sm:right-[80px] md:-top-9 md:right-[100px] lg:right-[160px] hidden min-[421px]:block"
+            aria-hidden="true"
+            initial={{ opacity: 0, rotate: -10 }}
+            whileInView={{ opacity: 1, rotate: 0 }}
+            viewport={viewportOnce}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <Image
               src="/illustrations/bookmark.svg"
               alt=""
@@ -32,7 +49,7 @@ export function CreateABook() {
               priority
               aria-hidden="true"
             />
-          </div>
+          </motion.div>
           <div className="relative flex items-start justify-center gap-2 sm:gap-3 md:gap-4 mb-2">
             <div className="text-center flex-1">
               <HeadingText
@@ -76,25 +93,38 @@ export function CreateABook() {
           >
             {CREATE_BOOK_CONFIG.STEP_TEXT} {CREATE_BOOK_CONFIG.CURRENT_STEP}
           </ParagraphText>
-        </div>
+        </motion.div>
 
         {/* Responsive Layout: 
             - Mobile (xs): single column (all stacked)
             - Small/Medium (sm, md): two columns (first and third side by side, book preview full-width)
             - Large+ (lg): three columns (first | preview | third)
         */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[auto_1fr_auto] gap-6 sm:gap-8 mb-6 sm:mb-8">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[auto_1fr_auto] gap-6 sm:gap-8 mb-6 sm:mb-8 overflow-visible"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={staggerContainer}
+        >
           {/* First Column - Setting */}
-          <div className="flex flex-col justify-center mt-6 md:mt-0 items-center md:items-start order-2 sm:order-2 lg:order-1">
+          <motion.div
+            className="flex flex-col justify-center mt-6 md:mt-0 items-center md:items-start order-2 sm:order-2 lg:order-1 overflow-visible relative z-10"
+            variants={scrollRevealLeft}
+          >
             <h2 className="text-heading-md text-foreground mb-4 sm:mb-6 text-center lg:text-left">
               Setting
             </h2>
-            <div className="flex flex-col gap-3 sm:gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4 w-full overflow-visible">
               {settings.map((setting) => (
-                <button
+                <motion.button
                   key={setting.id}
-                  className="flex items-center gap-3 sm:gap-4 cursor-pointer hover:opacity-80 transition-opacity min-h-[44px] touch-manipulation"
+                  className="flex items-center gap-3 sm:gap-4 cursor-pointer hover:opacity-80 min-h-[44px] touch-manipulation w-full overflow-visible"
                   aria-label={`Select ${setting.label}`}
+                  whileHover={{ x: 4 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  style={{ willChange: "transform" }}
                 >
                   <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-16 lg:h-16 xl:w-20 xl:h-20 shrink-0">
                     <Image
@@ -113,20 +143,23 @@ export function CreateABook() {
                   >
                     {setting.label}
                   </ParagraphText>
-                </button>
+                </motion.button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Second Column - Book Preview */}
-          <div className="flex flex-col items-center justify-center order-1 sm:order-1 lg:order-2 pb-8 mb-4 sm:mb-0 sm:col-span-2 lg:col-span-1">
-            <div className="relative w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-md xl:max-w-xl aspect-4/3 overflow-visible">
+          <motion.div
+            className="flex flex-col items-center justify-center order-1 sm:order-1 lg:order-2 pb-8 mb-4 sm:mb-0 sm:col-span-2 lg:col-span-1 relative z-0"
+            variants={scaleIn}
+          >
+            <div className="relative w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-md xl:max-w-xl aspect-4/3 overflow-visible z-0">
               <Image
                 src="/illustrations/Childrens_Book_Mockup_3.svg"
                 alt="Book Preview"
                 width={IMAGE_DIMENSIONS.BOOK_MOCKUP.width}
                 height={IMAGE_DIMENSIONS.BOOK_MOCKUP.height}
-                className="object-contain absolute inset-0 w-full h-full"
+                className="object-contain absolute inset-0 w-full h-full z-0"
                 style={{ transform: `scale(${SCALE.BOOK_MOCKUP})` }}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 50vw"
                 loading="eager"
@@ -144,19 +177,26 @@ export function CreateABook() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Third Column - Kid Photo */}
-          <div className="flex flex-col justify-center mt-6 lg:mt-0 items-center md:items-end order-3 sm:order-2 lg:order-3">
+          <motion.div
+            className="flex flex-col justify-center mt-6 lg:mt-0 items-center md:items-end order-3 sm:order-2 lg:order-3 overflow-visible"
+            variants={scrollRevealRight}
+          >
             <h2 className="text-heading-md text-foreground mb-4 sm:mb-6 text-center lg:text-right">
               Kid photo
             </h2>
-            <div className="flex flex-col gap-3 sm:gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4 w-full overflow-visible">
               {kids.map((kid) => (
-                <button
+                <motion.button
                   key={kid.id}
-                  className="flex items-center gap-3 sm:gap-4 cursor-pointer hover:opacity-80 transition-opacity min-h-[44px] touch-manipulation"
+                  className="flex items-center gap-3 sm:gap-4 cursor-pointer hover:opacity-80 min-h-[44px] touch-manipulation w-full overflow-visible"
                   aria-label={`Select ${kid.name}`}
+                  whileHover={{ x: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  style={{ willChange: "transform" }}
                 >
                   <ParagraphText
                     as="span"
@@ -175,11 +215,15 @@ export function CreateABook() {
                       sizes="(max-width: 640px) 64px, 80px"
                     />
                   </div>
-                </button>
+                </motion.button>
               ))}
-              <button 
-                className="relative flex items-center gap-4 sm:gap-5 cursor-pointer hover:opacity-80 transition-opacity min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md"
+              <motion.button
+                className="relative flex items-center gap-4 sm:gap-5 cursor-pointer hover:opacity-80 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md w-full overflow-visible"
                 aria-label="Sign up and use your photo"
+                whileHover={{ x: -4 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                style={{ willChange: "transform" }}
               >
                 <div className="relative flex-1 text-right lg:order-1">
                   <ParagraphText
@@ -216,21 +260,33 @@ export function CreateABook() {
                     sizes="(max-width: 640px) 64px, 80px"
                   />
                 </div>
-              </button>
+              </motion.button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Next Step Button */}
-        <div className="flex justify-center">
-          <AppButton
-            size="md"
-            shadow
-            className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px] mt-4"
+        <motion.div
+          className="flex justify-center relative z-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={scrollReveal}
+        >
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
-            Next Step
-          </AppButton>
-        </div>
+            <AppButton
+              size="md"
+              shadow
+              className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px] mt-4"
+            >
+              Next Step
+            </AppButton>
+          </motion.div>
+        </motion.div>
       </div>
 
       <div

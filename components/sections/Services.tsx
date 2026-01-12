@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { services } from "@/lib/data";
 import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
 import { HeadingText, ParagraphText } from "@/components/typography";
 import { SERVICE_IDS, BACKGROUND_SHAPES } from "@/lib/constants";
+import { scrollReveal, staggerContainer, scaleIn, viewportOnce } from "@/lib/utils/animations";
 
 export function Services() {
   return (
@@ -20,7 +24,13 @@ export function Services() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 ">
-        <div className="text-center mb-4 sm:mb-8 md:mb-10">
+        <motion.div
+          className="text-center mb-4 sm:mb-8 md:mb-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={scrollReveal}
+        >
           <HeadingText
             variant="h1"
             title="We offer"
@@ -41,15 +51,25 @@ export function Services() {
             defaultTextColor="text-foreground"
             glyphSizeClassName="w-[0.9em] h-[0.9em] sm:w-[0.8em] sm:h-[0.8m] md:w-[0.9em] md:h-[0.9em]"
           />
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 pb-8 sm:pb-10 md:pb-12">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 pb-8 sm:pb-10 md:pb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={staggerContainer}
+        >
           {services.map((service) => (
-            <div
+            <motion.div
               key={service.id}
-              className="flex flex-col items-center text-center"
+              className="flex flex-col items-center text-center transition-transform duration-200 ease-out hover:-translate-y-2"
+              variants={scrollReveal}
             >
-              <div className="relative w-40 h-40 mobile:w-48 mobile:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 mb-4 sm:mb-6">
+              <motion.div
+                className="relative w-40 h-40 mobile:w-48 mobile:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 mb-4 sm:mb-6"
+                variants={scaleIn}
+              >
                 <Image
                   src={service.image}
                   alt={service.title}
@@ -119,7 +139,7 @@ export function Services() {
                     />
                   </div>
                 )}
-              </div>
+              </motion.div>
 
               <HeadingText
                 variant="h3"
@@ -136,9 +156,9 @@ export function Services() {
               >
                 {service.description}
               </ParagraphText>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

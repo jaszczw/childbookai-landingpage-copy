@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,6 +11,7 @@ import { IndividualPricing, BusinessPricing } from "./";
 import { IMAGE_DIMENSIONS, Z_INDEX, BACKGROUND_SHAPES } from "@/lib/constants";
 import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
 import { HeadingText } from "@/components/typography";
+import { scrollReveal, viewportOnce } from "@/lib/utils/animations";
 
 export function Pricing() {
   const [activeTab, setActiveTab] = useState<"individual" | "business">(
@@ -96,7 +98,13 @@ export function Pricing() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <motion.div
+          className="text-center mb-8 sm:mb-10 md:mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={scrollReveal}
+        >
           <HeadingText
             variant="h1"
             title="Customers Pricing"
@@ -131,7 +139,7 @@ export function Pricing() {
                 aria-controls="pricing-content"
                 id="tab-individual"
                 className={cn(
-                  "px-3 sm:px-4 md:px-5 py-2 sm:py-3 font-semibold text-sm sm:text-body transition-all rounded-l-sm rounded-r-none border-0 min-h-[40px] sm:min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+                  "px-3 sm:px-4 md:px-5 py-2 sm:py-3 font-semibold text-sm sm:text-body transition-all duration-200 ease-out rounded-l-sm rounded-r-none border-0 min-h-[40px] sm:min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:scale-105 active:scale-95",
                   activeTab === "individual"
                     ? "bg-blue-800 text-white hover:bg-blue-800"
                     : "bg-white text-foreground hover:bg-white"
@@ -146,7 +154,7 @@ export function Pricing() {
                 aria-controls="pricing-content"
                 id="tab-business"
                 className={cn(
-                  "px-3 sm:px-4 md:px-5 py-2 sm:py-3 font-semibold text-sm sm:text-body transition-all rounded-r-sm rounded-l-none border-0 min-h-[40px] sm:min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary",
+                  "px-3 sm:px-4 md:px-5 py-2 sm:py-3 font-semibold text-sm sm:text-body transition-all duration-200 ease-out rounded-r-sm rounded-l-none border-0 min-h-[40px] sm:min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:scale-105 active:scale-95",
                   activeTab === "business"
                     ? "bg-blue-800 text-white hover:bg-blue-800"
                     : "bg-white text-foreground hover:bg-white"
@@ -159,7 +167,7 @@ export function Pricing() {
             {/* Yearly Checkbox */}
             <label
               className={cn(
-                "px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-md font-semibold text-sm sm:text-body transition-all border-2 border-blue-800 flex items-center gap-2 bg-white text-foreground cursor-pointer hover:bg-white min-h-[40px] sm:min-h-[44px] touch-manipulation justify-center focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary"
+                "px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-md font-semibold text-sm sm:text-body transition-all duration-200 ease-out border-2 border-blue-800 flex items-center gap-2 bg-white text-foreground cursor-pointer hover:bg-white hover:scale-105 active:scale-95 min-h-[40px] sm:min-h-[44px] touch-manipulation justify-center focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary"
               )}
             >
               <Checkbox
@@ -171,21 +179,28 @@ export function Pricing() {
               <span>Yearly</span>
             </label>
           </div>
-        </div>
+        </motion.div>
 
         {/* Render appropriate pricing component based on active tab */}
-        <div
-          id="pricing-content"
-          role="tabpanel"
-          aria-labelledby={activeTab === "individual" ? "tab-individual" : "tab-business"}
-          aria-live="polite"
-        >
-          {activeTab === "individual" ? (
-            <IndividualPricing isYearly={isYearly} />
-          ) : (
-            <BusinessPricing isYearly={isYearly} />
-          )}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            id="pricing-content"
+            role="tabpanel"
+            aria-labelledby={activeTab === "individual" ? "tab-individual" : "tab-business"}
+            aria-live="polite"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {activeTab === "individual" ? (
+              <IndividualPricing isYearly={isYearly} />
+            ) : (
+              <BusinessPricing isYearly={isYearly} />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

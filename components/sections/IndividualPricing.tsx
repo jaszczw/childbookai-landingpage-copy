@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { CustomCard, AppButton } from "@/components/shared";
 import { HeadingText, ParagraphText } from "@/components/typography";
 import { cn } from "@/lib/utils";
 import { pricingData } from "@/lib/data";
 import type { PricingCard } from "@/lib/types";
+import { scrollReveal, staggerContainer, viewportOnce } from "@/lib/utils/animations";
 
 interface IndividualPricingProps {
   isYearly: boolean;
@@ -17,7 +19,13 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
   const individualPlans = pricingData.individual;
   
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 justify-items-center md:justify-center items-start max-w-6xl mx-auto">
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 justify-items-center md:justify-center items-start max-w-6xl mx-auto"
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+      variants={staggerContainer}
+    >
       {individualPlans.map((plan: PricingCard, index: number) => {
             const isAlternate = index % 2 === 1;
             const headerColor = isAlternate
@@ -30,11 +38,14 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
             const baseHeight = 930;
             const cardHeight = plan.popular ? 1060 : baseHeight;
             return (
-              <div
+              <motion.div
                 key={plan.id}
                 className={`flex justify-center items-start w-full ${
                   plan.popular ? "relative z-20" : "relative z-10"
                 }`}
+                variants={scrollReveal}
+                whileHover={{ y: -8, scale: plan.popular ? 1.02 : 1.01 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               >
                 <CustomCard
                   width="100%"
@@ -154,7 +165,7 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                       variant="primary"
                       size="md"
                       shadow
-                      className="w-full text-heading-sm min-h-[44px]"
+                      className="w-full text-heading-sm min-h-[44px] transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
                     >
                       {typeof plan.buttonText === "string"
                         ? plan.buttonText
@@ -162,9 +173,9 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                     </AppButton>
                   </div>
                 </CustomCard>
-              </div>
+              </motion.div>
             );
           })}
-    </div>
+    </motion.div>
   );
 }

@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { CustomCard, AppButton } from "@/components/shared";
 import { HeadingText, ParagraphText } from "@/components/typography";
 import { cn } from "@/lib/utils";
 import { pricingData } from "@/lib/data";
 import type { PricingCard } from "@/lib/types";
+import { scrollReveal, viewportOnce } from "@/lib/utils/animations";
 
 interface BusinessPricingProps {
   isYearly: boolean;
@@ -25,9 +27,15 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
             const rightColumnFeatures = plan.features.slice(midPoint);
 
             return (
-              <div
+              <motion.div
                 key={plan.id}
                 className="flex justify-center items-start relative pb-12 sm:pb-16 md:pb-20 z-10 w-full"
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+                variants={scrollReveal}
+                whileHover={{ y: -8, scale: 1.01 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               >
                 <CustomCard
                   width={650}
@@ -143,13 +151,13 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                       variant="primary"
                       size="md"
                       shadow
-                      className="w-full text-body-sm md:text-heading-sm mt-2 md:mt-8 min-h-10 md:min-h-[44px]"
+                      className="w-full text-body-sm md:text-heading-sm mt-2 md:mt-8 min-h-10 md:min-h-[44px] transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
                     >
                       {typeof plan.buttonText === "string" ? plan.buttonText : plan.buttonText.text}
                     </AppButton>
                   </div>
                 </CustomCard>
-              </div>
+              </motion.div>
             );
           })}
     </div>

@@ -4,9 +4,11 @@ import { useState } from "react";
 import { HambergerMenu, CloseCircle } from "iconsax-react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { AppButton } from "@/components/shared";
 import { navItems } from "@/lib/data";
 import { IMAGE_DIMENSIONS } from "@/lib/constants";
+import { mobileMenu, mobileMenuContainer, fadeInUp } from "@/lib/utils/animations";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -46,9 +48,10 @@ export function Navbar() {
                 <Link
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  className="text-heading-sm font-medium text-blue-1000 hover:text-blue-600 transition-colors px-2 py-1 min-h-[44px] flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md"
+                  className="text-heading-sm font-medium text-blue-1000 hover:text-blue-600 transition-all duration-200 ease-out hover:scale-105 px-2 py-1 min-h-[44px] flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md relative group"
                 >
                   {item}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full" />
                 </Link>
               ))}
             </nav>
@@ -58,7 +61,7 @@ export function Navbar() {
               <AppButton
                 variant="primary"
                 size="sm"
-                className="hidden lg:inline-flex rounded-[10px] text-heading-sm min-h-[44px]"
+                className="hidden lg:inline-flex rounded-[10px] text-heading-sm min-h-[44px] transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
               >
                 Create
               </AppButton>
@@ -80,47 +83,73 @@ export function Navbar() {
       </div>
 
       {/* Mobile / Tablet Menu Overlay */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md overflow-y-auto">
-          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100">
-            <Image
-              src="/images/logo.png"
-              alt="ChildbookAI"
-              width={IMAGE_DIMENSIONS.LOGO.width}
-              height={IMAGE_DIMENSIONS.LOGO.height}
-              className="w-[64px] sm:w-[80px] md:w-[96px] h-auto"
-            />
-            <button
-              onClick={() => setMenuOpen(false)}
-              aria-label="Close menu"
-              className="inline-flex items-center justify-center rounded-full min-h-[44px] min-w-[44px] p-2 bg-white shadow-sm touch-manipulation"
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-white/95 backdrop-blur-md overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100"
+              initial="closed"
+              animate="open"
+              variants={mobileMenu}
             >
-              <CloseCircle size={24} color="#1E3A8A" />
-            </button>
-          </div>
-
-          <nav className="flex flex-col items-center gap-4 sm:gap-5 mt-6 sm:mt-8 px-4 sm:px-6 pb-8" aria-label="Mobile navigation">
-            {navItems.map((item) => (
-              <Link
-                key={item}
-                href={`#${item.toLowerCase()}`}
+              <Image
+                src="/images/logo.png"
+                alt="ChildbookAI"
+                width={IMAGE_DIMENSIONS.LOGO.width}
+                height={IMAGE_DIMENSIONS.LOGO.height}
+                className="w-[64px] sm:w-[80px] md:w-[96px] h-auto"
+              />
+              <button
                 onClick={() => setMenuOpen(false)}
-                className="text-base sm:text-lg font-semibold text-blue-1000 hover:text-blue-600 transition-colors min-h-[44px] flex items-center px-4 py-2 w-full justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md"
+                aria-label="Close menu"
+                className="inline-flex items-center justify-center rounded-full min-h-[44px] min-w-[44px] p-2 bg-white shadow-sm touch-manipulation transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
               >
-                {item}
-              </Link>
-            ))}
+                <CloseCircle size={24} color="#1E3A8A" />
+              </button>
+            </motion.div>
 
-            <AppButton
-              variant="primary"
-              size="lg"
-              className="mt-4 w-full max-w-xs text-base sm:text-lg min-h-[44px]"
+            <motion.nav
+              className="flex flex-col items-center gap-4 sm:gap-5 mt-6 sm:mt-8 px-4 sm:px-6 pb-8"
+              aria-label="Mobile navigation"
+              initial="closed"
+              animate="open"
+              variants={mobileMenuContainer}
             >
-              Create
-            </AppButton>
-          </nav>
-        </div>
-      )}
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item}
+                  variants={fadeInUp}
+                  className="w-full flex justify-center"
+                >
+                  <Link
+                    href={`#${item.toLowerCase()}`}
+                    onClick={() => setMenuOpen(false)}
+                    className="text-base sm:text-lg font-semibold text-blue-1000 hover:text-blue-600 transition-all duration-200 ease-out hover:scale-105 min-h-[44px] flex items-center px-4 py-2 w-full justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md"
+                  >
+                    {item}
+                  </Link>
+                </motion.div>
+              ))}
+
+              <motion.div variants={fadeInUp} className="w-full flex justify-center mt-4">
+                <AppButton
+                  variant="primary"
+                  size="lg"
+                  className="w-full max-w-xs text-base sm:text-lg min-h-[44px] transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  Create
+                </AppButton>
+              </motion.div>
+            </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

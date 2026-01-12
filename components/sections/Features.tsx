@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { features } from "@/lib/data";
 import { HeadingText } from "@/components/typography";
 import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
 import { BACKGROUND_SHAPES } from "@/lib/constants";
+import { scrollReveal, staggerContainerSlow, scaleIn, viewportOnce } from "@/lib/utils/animations";
 
 export function Features() {
   return (
@@ -21,7 +23,13 @@ export function Features() {
       <MobileBackgroundCard />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <motion.div
+          className="text-center mb-8 sm:mb-10 md:mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={scrollReveal}
+        >
           <HeadingText
             as="h1"
             variant="h1"
@@ -52,16 +60,26 @@ export function Features() {
             defaultTextColor="text-foreground"
             endl={["Generated"]}
           />
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-4 xl:gap-6 mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-16">
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-4 xl:gap-6 mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={staggerContainerSlow}
+        >
           <div className="space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-4">
             {features.slice(0, 3).map((feature) => (
-              <div
+              <motion.div
                 key={feature.id}
-                className="text-center md:text-center lg:text-left"
+                className="text-center md:text-center lg:text-left transition-transform duration-200 ease-out hover:-translate-y-1"
+                variants={scrollReveal}
               >
-                <div className="flex justify-center md:justify-center lg:justify-start">
+                <motion.div
+                  className="flex justify-center md:justify-center lg:justify-start"
+                  variants={scaleIn}
+                >
                   <Image
                     src={feature.icon}
                     alt={feature.iconAlt}
@@ -70,18 +88,21 @@ export function Features() {
                     className="mb-2 sm:mb-3 md:mb-4 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-[85px] xl:h-[85px]"
                     sizes="(max-width: 640px) 48px, (max-width: 768px) 64px, (max-width: 1024px) 80px, (max-width: 1280px) 96px, 85px"
                   />
-                </div>
+                </motion.div>
                 <h3 className="text-sm sm:text-base md:text-lg lg:text-heading-sm mb-1 sm:mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-xs sm:text-xs md:text-body-sm lg:text-body-sm">
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          <div className="flex items-center justify-center order-2 lg:order-0 my-4 sm:my-6 md:my-8 lg:my-0">
+          <motion.div
+            className="flex items-center justify-center order-2 lg:order-0 my-4 sm:my-6 md:my-8 lg:my-0"
+            variants={scaleIn}
+          >
             <Image
               src="/images/book-illustration.svg"
               alt="Book Illustration"
@@ -90,15 +111,19 @@ export function Features() {
               className="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-[1240px] h-auto object-contain"
               sizes="(max-width: 640px) 280px, (max-width: 768px) 384px, (max-width: 1024px) 448px, (max-width: 1280px) 512px, 1240px"
             />
-          </div>
+          </motion.div>
 
           <div className="space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-8 order-3 lg:order-0">
             {features.slice(3).map((feature) => (
-              <div
+              <motion.div
                 key={feature.id}
-                className="text-center md:text-center lg:text-left"
+                className="text-center md:text-center lg:text-left transition-transform duration-200 ease-out hover:-translate-y-1"
+                variants={scrollReveal}
               >
-                <div className="flex justify-center md:justify-center lg:justify-start">
+                <motion.div
+                  className="flex justify-center md:justify-center lg:justify-start"
+                  variants={scaleIn}
+                >
                   <Image
                     src={feature.icon}
                     alt={feature.iconAlt}
@@ -107,17 +132,17 @@ export function Features() {
                     className="mb-2 sm:mb-3 md:mb-4 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-[85px] xl:h-[85px]"
                     sizes="(max-width: 640px) 48px, (max-width: 768px) 64px, (max-width: 1024px) 80px, (max-width: 1280px) 96px, 85px"
                   />
-                </div>
+                </motion.div>
                 <h3 className="text-sm sm:text-base md:text-lg lg:text-heading-sm mb-1 sm:mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-xs sm:text-xs md:text-body-sm lg:text-body-sm">
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import styles from "./Sections.module.css";
 import { steps } from "@/lib/data";
 import { IMAGE_DIMENSIONS, SPACING, STEP_IDS } from "@/lib/constants";
 import { HeadingText } from "@/components/typography";
+import { scrollReveal, staggerContainerSlow, scaleIn, viewportOnce } from "@/lib/utils/animations";
 
 export function Steps() {
   return (
@@ -29,7 +33,13 @@ export function Steps() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12 max-w-[800px] mx-auto">
+        <motion.div
+          className="text-center mb-8 sm:mb-10 md:mb-12 max-w-[800px] mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={scrollReveal}
+        >
           <HeadingText
             variant="h1"
             title="Creating Your Magical Story in a Easy as 1-2-3"
@@ -55,17 +65,24 @@ export function Steps() {
             defaultTextColor="text-white"
             glyphSizeClassName="w-[0.6em] h-[0.6em] sm:w-[0.5em] sm:h-[0.5m] md:w-[0.6em] md:h-[0.6em]"
           />
-        </div>
+        </motion.div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12 md:justify-items-center">
+        <motion.div
+          className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 py-8 sm:py-10 md:py-12 md:justify-items-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          variants={staggerContainerSlow}
+        >
           {steps.map((step) => (
-            <div
+            <motion.div
               key={step.id}
-              className={`relative z-10 flex flex-col items-center text-center ${
+              className={`relative z-10 flex flex-col items-center text-center transition-transform duration-200 ease-out hover:-translate-y-2 ${
                 step.id === STEP_IDS.SECOND ? styles.stepColumnOffset : ""
               } ${
                 step.id === STEP_IDS.THIRD ? "md:col-span-2 md:justify-self-center lg:col-span-1" : ""
               }`}
+              variants={scrollReveal}
             >
               {step.id === STEP_IDS.FIRST && (
                 <div className="absolute lg:-left-8 xl:-left-28 lg:top-[32%] xl:top-[30%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
@@ -119,12 +136,13 @@ export function Steps() {
                   />
                 </div>
               )}
-              <div
+              <motion.div
                 className={`relative mb-4 sm:mb-6 ${
                   step.id === STEP_IDS.SECOND
                     ? "w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80"
                     : "w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64"
                 }`}
+                variants={scaleIn}
               >
                 <Image
                   src={step.image}
@@ -133,7 +151,7 @@ export function Steps() {
                   className="object-contain"
                   sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 320px"
                 />
-              </div>
+              </motion.div>
 
               <h3 className="text-heading-md font-bold text-white mb-3 sm:mb-4 max-w-[275px] mx-auto">
                 {step.title}
@@ -142,9 +160,9 @@ export function Steps() {
               <p className="text-white text-body max-w-[270px]">
                 {step.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

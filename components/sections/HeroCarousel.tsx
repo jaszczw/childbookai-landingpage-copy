@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useEffect, useState, useCallback, memo } from "react";
 import type { KeyboardEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { AppButton, CarouselMask, DecorativeElements } from "@/components/shared";
 import { HeadingText } from "@/components/typography";
 import { heroCarouselDecorations } from "@/lib/data";
 import { CAROUSEL_CONFIG } from "@/lib/constants";
+import { heroText, staggerContainer, fadeInUp, carouselSlide } from "@/lib/utils/animations";
 
 // Move slides outside component to prevent recreation on each render
 const slides = [
@@ -99,56 +101,79 @@ function HeroCarousel() {
           aria-live="polite"
           aria-atomic="true"
         >
-          <Image
-            src={slides[active].src}
-            alt={`${slides[active].alt} - Slide ${active + 1} of ${slides.length}`}
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-            quality={85}
-            fetchPriority="high"
-          />
-          <div className="absolute inset-0 z-10 flex items-center pt-4 sm:pt-0 overflow-visible">
-            <div className=" w-full max-w-[620px] p-2 sm:p-4 md:p-6 lg:p-6 ml-6 sm:ml-8 md:ml-10 lg:ml-16 xl:ml-[100px] overflow-visible">
-              <HeadingText
-                title="Become the hero of your own story"
-                variant="display"
-                className="font-bold"
-                glyphs={[
-                  {
-                    word: "Become",
-                    position: 3,
-                  },
-                  {
-                    word: "hero",
-                    position: 3,
-                    variant: "blue2",
-                  },
-                ]}
-                coloredPhrases={[
-                  {
-                    text: "Become the hero",
-                    color: "text-primary",
-                  },
-                ]}
-                defaultTextColor="text-white"
-                defaultGlyphVariant="blue1"
-                glyphSizeClassName="w-[0.5em] h-[0.5em] sm:w-[0.5em] sm:h-[0.5em] md:w-[0.6em] md:h-[0.6em]"
-                endl={["hero of your own", "story"]}
+          <AnimatePresence mode="sync" initial={false}>
+            <motion.div
+              key={active}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              variants={carouselSlide}
+              custom={1}
+              transition={{
+                duration: 0.5,
+                ease: [0.4, 0, 0.2, 1],
+              }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={slides[active].src}
+                alt={`${slides[active].alt} - Slide ${active + 1} of ${slides.length}`}
+                fill
+                priority
+                className="object-cover"
+                sizes="100vw"
+                quality={85}
+                fetchPriority="high"
               />
-              <div className="overflow-visible pb-2 sm:pb-3">
+            </motion.div>
+          </AnimatePresence>
+          <div className="absolute inset-0 z-10 flex items-center pt-4 sm:pt-0 overflow-visible">
+            <motion.div
+              className=" w-full max-w-[620px] p-2 sm:p-4 md:p-6 lg:p-6 ml-6 sm:ml-8 md:ml-10 lg:ml-16 xl:ml-[100px] overflow-visible"
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              <motion.div variants={heroText}>
+                <HeadingText
+                  title="Become the hero of your own story"
+                  variant="display"
+                  className="font-bold"
+                  glyphs={[
+                    {
+                      word: "Become",
+                      position: 3,
+                    },
+                    {
+                      word: "hero",
+                      position: 3,
+                      variant: "blue2",
+                    },
+                  ]}
+                  coloredPhrases={[
+                    {
+                      text: "Become the hero",
+                      color: "text-primary",
+                    },
+                  ]}
+                  defaultTextColor="text-white"
+                  defaultGlyphVariant="blue1"
+                  glyphSizeClassName="w-[0.5em] h-[0.5em] sm:w-[0.5em] sm:h-[0.5em] md:w-[0.6em] md:h-[0.6em]"
+                  endl={["hero of your own", "story"]}
+                />
+              </motion.div>
+              <motion.div className="overflow-visible pb-2 sm:pb-3" variants={fadeInUp}>
                 <AppButton
                   variant="primary"
                   size="hero"
                   shadow
                   withSparkles
-                  className="mt-2 sm:mt-4"
+                  className="mt-2 sm:mt-4 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Create a Book
                 </AppButton>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* Decorative Elements */}
