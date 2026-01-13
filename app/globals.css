@@ -181,9 +181,33 @@
   --button-shadow: #30A0A6;
 
   --red: #FA5252;
-  --yellow: #FBF4B4;
-  --green: #B2FADF;
-  --pink: #FCC3E9;
+  --yellow-100: #FFFBEF;
+  --yellow-200: #FBF4B4;
+  --yellow-300: #F7EE8E;
+  --yellow-400: #F3E868;
+  --yellow-500: #EFE242;
+  --yellow-600: #EBEC1C;
+  --yellow-700: #E7E616;
+  --yellow-800: #E3E010;
+  --yellow-900: #DFDA0A;
+  --green-100: #B2FADF;
+  --green-200: #A0E9D1;
+  --green-300: #8EE7C7;
+  --green-400: #7CE5BD;
+  --green-500: #6AE3B3;
+  --green-600: #58E1A9;
+  --green-700: #46DF9F;
+  --green-800: #34DD95;
+  --green-900: #22DB8B;
+  --pink-100: #FCC3E9;
+  --pink-200: #F8A8D9;
+  --pink-300: #F48DCB;
+  --pink-400: #F072BD;
+  --pink-500: #EC56AF;
+  --pink-600: #E83A91;
+  --pink-700: #E41E73;
+  --pink-800: #E00255;
+  --pink-900: #C8024A;
 }
 
 .dark {

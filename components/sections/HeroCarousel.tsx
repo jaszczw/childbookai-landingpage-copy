@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState, useCallback, memo } from "react";
 import type { KeyboardEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -163,15 +164,17 @@ function HeroCarousel() {
                 />
               </motion.div>
               <motion.div className="overflow-visible pb-2 sm:pb-3" variants={fadeInUp}>
-                <AppButton
-                  variant="primary"
-                  size="hero"
-                  shadow
-                  withSparkles
-                  className="mt-2 sm:mt-4 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  Create a Book
-                </AppButton>
+                <Link href="/createbook">
+                  <AppButton
+                    variant="primary"
+                    size="hero"
+                    shadow
+                    withSparkles
+                    className="mt-2 sm:mt-4 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    Create a Book
+                  </AppButton>
+                </Link>
               </motion.div>
             </motion.div>
           </div>
