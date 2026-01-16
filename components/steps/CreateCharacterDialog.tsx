@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import {
@@ -38,6 +37,7 @@ import {
   ATTRIBUTES,
 } from "@/lib/constants";
 import { MultiSelectAutocomplete } from "../ui/multi-select-autocomplete";
+import { cn } from "@/lib/utils";
 
 // ============================================================================
 // Types
@@ -519,32 +519,127 @@ export default function CreateCharacterDialog({
               <Label htmlFor="attributes">Attributes</Label>
               <MultiSelectAutocomplete
                 value={formData.attributes}
-                onChange={(attributes) =>
-                  updateFormData({ attributes })
-                }
+                onChange={(attributes) => updateFormData({ attributes })}
                 options={[...ATTRIBUTES]}
                 placeholder="Briefly describe visual traits or ad..."
                 className="w-full"
               />
-              <p className="text-xs text-gray-500 mt-2">
-                Briefly describe visual traits or accessories (e.g., clothing,
-                accessories, attire) - these details will be reflected in the
-                character design.
+              <p className="text-sm text-gray-500 mt-2">
+                Briefly describe visual traits or accessories (e.g., golden
+                earrings, wheelchair, pirate outfit, Cleopatra attire) - these
+                details will be reflected in all images of this character
               </p>
+              
+              {/* Suggestion Buttons */}
+              <div className="flex flex-wrap gap-2 mt-3">
+                {ATTRIBUTES.map((option, index) => {
+                  const isSelected = formData.attributes.includes(option);
+                  const isAISuggested = index < 3;
+
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => {
+                        if (isSelected) {
+                          updateFormData({
+                            attributes: formData.attributes.filter(
+                              (attr) => attr !== option
+                            ),
+                          });
+                        } else {
+                          updateFormData({
+                            attributes: [...formData.attributes, option],
+                          });
+                        }
+                      }}
+                      className={cn(
+                        "px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2 transition-all whitespace-nowrap",
+                        isSelected
+                          ? "bg-gray-200 text-gray-600 cursor-pointer"
+                          : "bg-gray-100 text-gray-800 hover:bg-gray-200 cursor-pointer"
+                      )}
+                    >
+                      {isAISuggested && (
+                        <Image
+                          src={
+                            isSelected
+                              ? "/illustrations/dark-autobrightness.svg"
+                              : "/illustrations/light-autobrightness.svg"
+                          }
+                          alt="AI suggested"
+                          width={16}
+                          height={16}
+                        />
+                      )}
+                      <span>{option}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Preview Image Section */}
+            <div className="bg-gray-100 rounded-lg p-6 mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left: Character Illustration Preview */}
+                <div className="relative aspect-square rounded-lg overflow-hidden bg-white">
+                  <Image
+                    src="/images/child-preview-image.png"
+                    alt="Character preview"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Right: Description and Generate Button */}
+                <div className="flex flex-col justify-center gap-4">
+                  <h3 className="text-heading-sm font-bold text-foreground text-center">
+                    Preview image
+                  </h3>
+                  <div className="space-y-2 text-sm text-center">
+                    <p className="text-foreground">
+                      The photo will be generated based on the visual attributes
+                      already entered
+                    </p>
+                    <p className="text-gray-500">
+                      You can preview character illustration in the book only if
+                      you uploaded a photo and filled all the fields.
+                    </p>
+                  </div>
+                  <AppButton
+                    variant="primary"
+                    size="sm"
+                    shadow
+                    className="text-foreground font-medium"
+                  >
+                    Generate
+                  </AppButton>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <DialogFooter className="flex flex-row justify-end gap-4 px-8 sm:px-10 pb-2 border-t border-slate-200 sm:py-4 mt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleCreateCharacter}
-            className="bg-blue-800 text-white hover:bg-teal-700"
+        <DialogFooter className="flex flex-row justify-center gap-4 px-8 sm:px-10 pb-2 sm:py-4">
+          <AppButton
+            variant="secondary"
+            size="sm"
+            shadow
+            onClick={() => onOpenChange(false)}
+            className="font-medium"
           >
-            Create Character
-          </Button>
+            Save character
+          </AppButton>
+          <AppButton
+            variant="primary"
+            size="sm"
+            shadow
+            onClick={handleCreateCharacter}
+            className="font-medium"
+          >
+            Next Step
+          </AppButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -105,7 +105,8 @@ export function MultiSelectAutocomplete({
   };
 
   const handleFocus = () => {
-    if (inputValue.trim() && filteredOptions.length > 0) {
+    // Only open if there's actual input text
+    if (inputValue.trim().length > 0 && filteredOptions.length > 0) {
       setIsOpen(true);
     }
   };
@@ -167,7 +168,7 @@ export function MultiSelectAutocomplete({
         {/* Inline autocomplete input */}
         <div className="relative flex-1 min-w-[120px]">
           {autocompletePrediction && (
-            <div className="absolute inset-0 text-sm text-white/40 pointer-events-none whitespace-pre">
+            <div className="absolute top-1 text-sm text-foreground/40 pointer-events-none whitespace-pre">
               {inputValue}
               <span>{autocompletePrediction}</span>
             </div>
@@ -181,15 +182,13 @@ export function MultiSelectAutocomplete({
             onKeyDown={handleKeyDown}
             onFocus={handleFocus}
             placeholder={value.length === 0 && !inputValue ? placeholder : ""}
-            className="relative z-10 w-full bg-transparent text-transparent caret-white outline-none text-sm"
-            style={{ caretColor: "#ffffff" }}
+            className="relative z-10 w-full bg-transparent text-foreground caret-foreground outline-none text-sm"
+            // style={{ caretColor: "#ffffff" }}
           />
-        </div>
-      </div>
 
-      {/* Suggestions */}
-      {isOpen && filteredOptions.length > 0 && (
-        <div ref={dropdownRef} className="absolute z-50 top-full left-0 mt-2">
+          {/* Suggestions */}
+          {isOpen && inputValue.trim().length > 0 && filteredOptions.length > 0 && (
+            <div ref={dropdownRef} className="absolute z-50 top-full left-0 mt-2">
           <div className="bg-white rounded-xl shadow-lg p-2 flex gap-2">
             {filteredOptions.map((option, index) => {
               const isHovered = index === hoveredIndex;
@@ -227,6 +226,8 @@ export function MultiSelectAutocomplete({
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }
