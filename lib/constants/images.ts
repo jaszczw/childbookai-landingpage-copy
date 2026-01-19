@@ -7,6 +7,8 @@ export const IMAGE_DIMENSIONS = {
   LOGO: { width: 96, height: 38 },
   BOOK_ILLUSTRATION: { width: 1240, height: 883 },
   BOOK_MOCKUP: { width: 1240, height: 930 },
+  BOOK_MOCKUP_3: { width: 1240, height: 930 },
+  BOOK_MOCKUP_4: { width: 1250, height: 960 },
   COMBINED_STROKE: { width: 1440, height: 164 },
   MONEY_BAG: { width: 280, height: 280 },
   MONEY_BAG_BUSINESS: { width: 250, height: 250 },

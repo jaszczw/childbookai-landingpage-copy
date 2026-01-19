@@ -161,12 +161,17 @@ export function CreateABook() {
           >
             <div className="relative w-full max-w-[300px] sm:max-w-md md:max-w-xl lg:max-w-md xl:max-w-xl aspect-4/3 overflow-visible z-0">
               <Image
+                key={isBookMockupActive ? "mockup-4" : "mockup-3"}
                 src={isBookMockupActive ? "/images/Childrens_Book_Mockup_4.svg" : "/images/Childrens_Book_Mockup_3.svg"}
                 alt="Book Preview"
-                width={IMAGE_DIMENSIONS.BOOK_MOCKUP.width}
-                height={IMAGE_DIMENSIONS.BOOK_MOCKUP.height}
-                className="object-contain absolute inset-0 w-full h-full z-0"
-                style={{ transform: `scale(${SCALE.BOOK_MOCKUP})` }}
+                width={isBookMockupActive ? IMAGE_DIMENSIONS.BOOK_MOCKUP_4.width : IMAGE_DIMENSIONS.BOOK_MOCKUP_3.width}
+                height={isBookMockupActive ? IMAGE_DIMENSIONS.BOOK_MOCKUP_4.height : IMAGE_DIMENSIONS.BOOK_MOCKUP_3.height}
+                className="object-contain absolute inset-0 w-full h-full z-0 transition-all duration-300 ease-in-out"
+                style={{
+                  transform: isBookMockupActive
+                    ? `scale(${SCALE.BOOK_MOCKUP * 1.06}) translateY(8px)`
+                    : `scale(${SCALE.BOOK_MOCKUP})`,
+                }}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, 50vw"
                 loading="eager"
               />
