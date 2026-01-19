@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { AppButton } from "@/components/shared";
+import { AppButton, InnerIconButton } from "@/components/shared";
 import { settings, kids } from "@/lib/data";
 import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE, CREATE_BOOK_CONFIG, BACKGROUND_SHAPES } from "@/lib/constants";
 import { BackgroundShape, MobileBackgroundCard } from "@/components/shared";
@@ -10,6 +11,11 @@ import { HeadingText, ParagraphText } from "@/components/typography";
 import { scrollReveal, scrollRevealLeft, scrollRevealRight, staggerContainer, scaleIn, viewportOnce } from "@/lib/utils/animations";
 
 export function CreateABook() {
+  const [isBookMockupActive, setIsBookMockupActive] = useState(false);
+
+  const handleInnerIconClick = () => {
+    setIsBookMockupActive((prev) => !prev);
+  };
   return (
     <section className="relative w-full py-8 sm:py-10 md:py-12 lg:py-16 min-h-[400px] sm:min-h-[500px]">
       {/* Desktop / large screens: SVG background */}
@@ -155,7 +161,7 @@ export function CreateABook() {
           >
             <div className="relative w-full max-w-[300px] sm:max-w-md md:max-w-xl lg:max-w-md xl:max-w-xl aspect-4/3 overflow-visible z-0">
               <Image
-                src="/illustrations/Childrens_Book_Mockup_3.svg"
+                src={isBookMockupActive ? "/images/Childrens_Book_Mockup_4.svg" : "/images/Childrens_Book_Mockup_3.svg"}
                 alt="Book Preview"
                 width={IMAGE_DIMENSIONS.BOOK_MOCKUP.width}
                 height={IMAGE_DIMENSIONS.BOOK_MOCKUP.height}
@@ -167,16 +173,14 @@ export function CreateABook() {
               {/* Inner icon at bottom left */}
               <div
                 className="absolute -bottom-6 sm:-bottom-8 md:-bottom-12 left-0 z-10"
-                aria-hidden="true"
               >
-                <Image
-                  src="/illustrations/inner-icon.svg"
-                  alt=""
+                <InnerIconButton
+                  onClick={handleInnerIconClick}
+                  active={isBookMockupActive}
                   width={85}
                   height={83}
-                  className="w-12 h-auto sm:w-14 md:w-16 lg:w-[72px] xl:w-20"
-                  style={{ objectFit: "contain" }}
-                  aria-hidden="true"
+                  imageClassName="w-12 h-auto sm:w-14 md:w-16 lg:w-[72px] xl:w-20"
+                  ariaLabel="Toggle book preview"
                 />
               </div>
             </div>
@@ -220,14 +224,7 @@ export function CreateABook() {
                   </div>
                 </motion.button>
               ))}
-              <motion.button
-                className="relative flex items-center gap-4 sm:gap-5 cursor-pointer hover:opacity-80 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md w-full overflow-visible"
-                aria-label="Sign up and use your photo"
-                whileHover={{ x: -4 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                style={{ willChange: "transform" }}
-              >
+              <div className="relative flex items-center gap-4 sm:gap-5 min-h-[44px] w-full overflow-visible">
                 <div className="relative flex-1 text-right lg:order-1">
                   <ParagraphText
                     as="span"
@@ -257,7 +254,14 @@ export function CreateABook() {
                     aria-hidden="true"
                   />
                 </div>
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-16 lg:h-16 shrink-0 lg:order-2">
+                <motion.button
+                  className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-16 lg:h-16 shrink-0 lg:order-2 focus:outline-none"
+                  aria-label="Sign up and use your photo"
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
+                  style={{ willChange: "transform" }}
+                >
                   <Image
                     src="/illustrations/plus-icon.svg"
                     alt="Add photo"
@@ -265,8 +269,8 @@ export function CreateABook() {
                     className="object-contain"
                     sizes="(max-width: 640px) 64px, 80px"
                   />
-                </div>
-              </motion.button>
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         </motion.div>
