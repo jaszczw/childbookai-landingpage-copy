@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { services } from "@/lib/data";
@@ -9,6 +10,21 @@ import { SERVICE_IDS, BACKGROUND_SHAPES } from "@/lib/constants";
 import { scrollReveal, staggerContainer, scaleIn, viewportOnce } from "@/lib/utils/animations";
 
 export function Services() {
+  const [isXs, setIsXs] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const updateIsXs = () => {
+      const next = window.innerWidth < 640;
+      setIsXs((prev) => (prev === next ? prev : next));
+    };
+
+    updateIsXs();
+    window.addEventListener("resize", updateIsXs);
+    return () => window.removeEventListener("resize", updateIsXs);
+  }, []);
+
   return (
     <section className="relative w-full overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
       {/* Desktop / large screens: SVG background */}
@@ -27,8 +43,9 @@ export function Services() {
         <motion.div
           className="text-center mb-4 sm:mb-8 md:mb-10"
           initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          animate={isXs ? "visible" : undefined}
+          whileInView={isXs ? undefined : "visible"}
+          viewport={isXs ? undefined : viewportOnce}
           variants={scrollReveal}
         >
           <HeadingText
@@ -56,8 +73,9 @@ export function Services() {
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 pb-8 sm:pb-10 md:pb-12"
           initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          animate={isXs ? "visible" : undefined}
+          whileInView={isXs ? undefined : "visible"}
+          viewport={isXs ? undefined : viewportOnce}
           variants={staggerContainer}
         >
           {services.map((service) => (

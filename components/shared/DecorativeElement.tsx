@@ -1,5 +1,7 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
 import type { Decoration } from "@/lib/types";
+import { decorativeElementIn } from "@/lib/utils/animations";
 
 interface DecorativeElementProps {
   decoration: Decoration;
@@ -10,9 +12,13 @@ export function DecorativeElement({ decoration }: DecorativeElementProps) {
   const isDecorative = !decoration.alt || decoration.alt.trim() === "";
   
   return (
-    <div
+    <motion.div
       className={`${decoration.className} ${decoration.responsive?.hidden || ""} ${decoration.responsive?.visible || ""}`}
       aria-hidden={isDecorative ? "true" : undefined}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={decorativeElementIn}
     >
       <Image
         src={decoration.src}
@@ -23,7 +29,7 @@ export function DecorativeElement({ decoration }: DecorativeElementProps) {
         style={{ objectFit: "contain" }}
         aria-hidden={isDecorative ? "true" : undefined}
       />
-    </div>
+    </motion.div>
   );
 }
 

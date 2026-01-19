@@ -2,14 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useCallback, memo } from "react";
+import { useEffect, useState, useCallback, useRef, memo } from "react";
 import type { KeyboardEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { AppButton, CarouselMask, DecorativeElements } from "@/components/shared";
 import { HeadingText } from "@/components/typography";
 import { heroCarouselDecorations } from "@/lib/data";
 import { CAROUSEL_CONFIG } from "@/lib/constants";
-import { heroText, staggerContainer, fadeInUp, carouselSlide } from "@/lib/utils/animations";
+import { heroText, staggerContainer, fadeInUp } from "@/lib/utils/animations";
 
 // Move slides outside component to prevent recreation on each render
 const slides = [
@@ -42,48 +44,87 @@ const slides = [
 function HeroCarousel() {
   const [active, setActive] = useState(0);
 
-  // Memoize slide change handlers to prevent unnecessary re-renders
-  const goToSlide = useCallback((index: number) => {
-    setActive(index);
-  }, []);
+  // Stable autoplay plugin instance so it doesn't get recreated on every render
+  const autoplay = useRef(
+    Autoplay({
+      delay: CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL,
+      // Keep autoplay running even after user interactions or leaving viewport
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+    })
+  );
 
-  const nextSlide = useCallback(() => {
-    setActive((prev) => (prev + 1) % slides.length);
-  }, []);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      duration: 30, // higher = smoother/slower
+    },
+    [autoplay.current]
+  );
 
-  const prevSlide = useCallback(() => {
-    setActive((prev) => (prev - 1 + slides.length) % slides.length);
-  }, []);
-
-  // Auto-play carousel
   useEffect(() => {
-    const id = setInterval(nextSlide, CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL);
-    return () => clearInterval(id);
-  }, [nextSlide]);
+    if (!emblaApi) return;
+
+    // Ensure autoplay starts when Embla is ready
+    autoplay.current?.play?.();
+
+    const onSelect = () => {
+      setActive(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  // Restart autoplay when tab/window becomes active again
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const handleVisibilityOrFocus = () => {
+      if (document.visibilityState === "visible") {
+        autoplay.current?.reset?.();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+    window.addEventListener("focus", handleVisibilityOrFocus);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
+      window.removeEventListener("focus", handleVisibilityOrFocus);
+    };
+  }, [emblaApi]);
 
   // Handle keyboard navigation for carousel
   const handleKeyDown = useCallback((e: KeyboardEvent<HTMLButtonElement>, index: number) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      goToSlide(index);
+      if (emblaApi) {
+        emblaApi.scrollTo(index);
+      }
     }
-  }, [goToSlide]);
+  }, [emblaApi]);
 
   // Handle arrow key navigation
   useEffect(() => {
     const handleArrowKeys = (e: globalThis.KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        prevSlide();
+        emblaApi?.scrollPrev();
       } else if (e.key === "ArrowRight") {
         e.preventDefault();
-        nextSlide();
+        emblaApi?.scrollNext();
       }
     };
 
     window.addEventListener("keydown", handleArrowKeys);
     return () => window.removeEventListener("keydown", handleArrowKeys);
-  }, [nextSlide, prevSlide]);
+  }, [emblaApi]);
 
   return (
     <section 
@@ -102,85 +143,84 @@ function HeroCarousel() {
           aria-live="polite"
           aria-atomic="true"
         >
-          <AnimatePresence mode="sync" initial={false}>
-            <motion.div
-              key={active}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              variants={carouselSlide}
-              custom={1}
-              transition={{
-                duration: 0.5,
-                ease: [0.4, 0, 0.2, 1],
-              }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={slides[active].src}
-                alt={`${slides[active].alt} - Slide ${active + 1} of ${slides.length}`}
-                fill
-                priority
-                className="object-cover"
-                sizes="100vw"
-                quality={85}
-                fetchPriority="high"
-              />
-            </motion.div>
-          </AnimatePresence>
-          <div className="absolute inset-0 z-10 flex items-center pt-4 sm:pt-0 overflow-visible">
-            <motion.div
-              className=" w-full max-w-[620px] p-2 sm:p-4 md:p-6 lg:p-6 ml-6 sm:ml-8 md:ml-10 lg:ml-16 xl:ml-[100px] overflow-visible"
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-            >
-              <motion.div variants={heroText}>
-                <HeadingText
-                  title="Become the hero of your own story"
-                  variant="display"
-                  className="font-bold"
-                  glyphs={[
-                    {
-                      word: "Become",
-                      position: 3,
-                    },
-                    {
-                      word: "hero",
-                      position: 3,
-                      variant: "blue2",
-                    },
-                  ]}
-                  coloredPhrases={[
-                    {
-                      text: "Become the hero",
-                      color: "text-primary",
-                    },
-                  ]}
-                  defaultTextColor="text-white"
-                  defaultGlyphVariant="blue1"
-                  glyphSizeClassName="w-[0.5em] h-[0.5em] sm:w-[0.5em] sm:h-[0.5em] md:w-[0.6em] md:h-[0.6em]"
-                  endl={["hero of your own", "story"]}
-                />
-              </motion.div>
-              <motion.div className="overflow-visible pb-2 sm:pb-3" variants={fadeInUp}>
-                <Link href="/createbook">
-                  <AppButton
-                    variant="primary"
-                    size="hero"
-                    shadow
-                    withSparkles
-                    className="mt-2 sm:mt-4 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
-                  >
-                    Create a Book
-                  </AppButton>
-                </Link>
-              </motion.div>
-            </motion.div>
-          </div>
+          <div ref={emblaRef} className="absolute inset-0">
+            <div className="flex h-full">
+              {slides.map((slide, index) => (
+                <div
+                  key={slide.id}
+                  className="relative flex-[0_0_100%] h-full"
+                  aria-hidden={index !== active}
+                >
+                  <Image
+                    src={slide.src}
+                    alt={`${slide.alt} - Slide ${index + 1} of ${slides.length}`}
+                    fill
+                    priority={index === 0}
+                    className="object-cover"
+                    sizes="100vw"
+                    quality={85}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                  />
 
-          {/* Decorative Elements */}
-          <DecorativeElements decorations={heroCarouselDecorations} />
+                  {/* Slide content (headline + CTA) */}
+                  <div className="absolute inset-0 z-10 flex items-center pt-4 sm:pt-0 overflow-visible">
+                    <motion.div
+                      className=" w-full max-w-[620px] p-2 sm:p-4 md:p-6 lg:p-6 ml-6 sm:ml-8 md:ml-10 lg:ml-16 xl:ml-[100px] overflow-visible"
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.4 }}
+                      variants={staggerContainer}
+                    >
+                      <motion.div variants={heroText}>
+                        <HeadingText
+                          title={slide.title}
+                          variant="display"
+                          className="font-bold"
+                          glyphs={[
+                            {
+                              word: "Become",
+                              position: 3,
+                            },
+                            {
+                              word: "hero",
+                              position: 3,
+                              variant: "blue2",
+                            },
+                          ]}
+                          coloredPhrases={[
+                            {
+                              text: "Become the hero",
+                              color: "text-primary",
+                            },
+                          ]}
+                          defaultTextColor="text-white"
+                          defaultGlyphVariant="blue1"
+                          glyphSizeClassName="w-[0.5em] h-[0.5em] sm:w-[0.5em] sm:h-[0.5em] md:w-[0.6em] md:h-[0.6em]"
+                          endl={["hero of your own", "story"]}
+                        />
+                      </motion.div>
+                      <motion.div className="overflow-visible pb-2 sm:pb-3" variants={fadeInUp}>
+                        <Link href="/createbook">
+                          <AppButton
+                            variant="primary"
+                            size="hero"
+                            shadow
+                            withSparkles
+                            className="mt-2 sm:mt-4 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                          >
+                            Create a Book
+                          </AppButton>
+                        </Link>
+                      </motion.div>
+                    </motion.div>
+                  </div>
+
+                  {/* Decorative Elements - scoped to each slide */}
+                  <DecorativeElements decorations={heroCarouselDecorations} />
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Navigation Dots */}
           <div 
@@ -191,7 +231,7 @@ function HeroCarousel() {
             {slides.map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToSlide(index)}
+                onClick={() => emblaApi && emblaApi.scrollTo(index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
                 aria-label={`Go to slide ${index + 1} of ${slides.length}`}
                 aria-selected={index === active}

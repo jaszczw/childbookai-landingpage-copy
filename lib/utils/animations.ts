@@ -285,21 +285,76 @@ export const mobileMenuContainer: Variants = {
  * Carousel slide transition - Horizontal slide only (no fade)
  */
 export const carouselSlide: Variants = {
-  enter: (direction: number) => ({
+enter: (direction: number) => ({
     x: direction > 0 ? "100%" : "-100%",
+    opacity: 0,
   }),
   center: {
     x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
   },
   exit: (direction: number) => ({
     x: direction > 0 ? "-100%" : "100%",
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+    },
   }),
+};
+
+
+/**
+ * Entrance + exit for decorative elements (used in hero carousel)
+ * Includes floating animation that starts after entrance completes
+ */
+export const decorativeElementIn: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 8,
+    scale: 0.96,
+  },
+  visible: {
+    opacity: 1,
+    y: [0, -6, 0],
+    scale: 1,
+    transition: {
+      opacity: {
+        ...transitions.gentle,
+        delay: 0.25,
+      },
+      y: {
+        duration: 6,
+        repeat: Infinity,
+        repeatType: "loop" as const,
+        ease: "easeInOut",
+        delay: 0.25 + transitions.gentle.duration, // Start floating after entrance completes
+      },
+      scale: {
+        ...transitions.gentle,
+        delay: 0.25,
+      },
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -6,
+    scale: 0.96,
+    transition: transitions.quick,
+  },
 };
 
 /**
  * Gentle floating animation (for decorative elements)
  */
 export const floating: Variants = {
+  hidden: {
+    y: 0,
+  },
   animate: {
     y: [0, -6, 0],
     transition: {
