@@ -6,6 +6,12 @@
  * import { AppButton, BackgroundShape } from "@/components/shared";
  */
 
+export { AnimatedDashedLine } from "./animated-graphics/AnimatedDashedLine";
+export { AnimatedSparkleIcon } from "./animated-graphics/AnimatedSparkleIcon";
+export { AnimatedSparkleIconSecond } from "./animated-graphics/AnimatedSparkleIconSecond";
+export { AnimatedImageIcon } from "./animated-graphics/AnimatedImageIcon";
+export { AnimatedImageIconSecond } from "./animated-graphics/AnimatedImageIconSecond";
+export { AnimatedImageIconThird } from "./animated-graphics/AnimatedImageIconThird";
 export { AppButton } from "./AppButton";
 export { BackgroundShape } from "./BackgroundShape";
 export { CarouselMask } from "./CarouselMask";

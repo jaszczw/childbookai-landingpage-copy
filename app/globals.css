@@ -419,5 +419,56 @@
     background: #27858b; /* Darker when dragging */
   }
 
+  /* Animated dashed line fill effect - mask reveal from left to right */
+  @keyframes maskReveal {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  .animate-mask-reveal {
+    animation: maskReveal 2s ease-in-out forwards;
+  }
+
+  /* Alternative: stroke-dashoffset animation for drawing effect */
+  @keyframes dashDraw {
+    from {
+      stroke-dashoffset: 100%;
+    }
+    to {
+      stroke-dashoffset: 0%;
+    }
+  }
+
+  .animate-dash-draw {
+    animation: dashDraw 2s ease-in-out forwards;
+  }
+
+  /* Sparkle icon color change animation */
+  @keyframes sparkleScaleUp {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.10);
+    }
+  }
+
+  @keyframes sparkleFill {
+    from {
+      fill: white;
+    }
+    to {
+      fill: var(--sparkle-fill-color, #54E6ED);
+    }
+  }
+
+  .animate-sparkle-fill {
+    animation: sparkleFill 0.9s ease-in-out forwards;
+  }
+
 }
 

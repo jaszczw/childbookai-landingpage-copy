@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import styles from "./Sections.module.css";
@@ -7,8 +8,28 @@ import { steps } from "@/lib/data";
 import { IMAGE_DIMENSIONS, SPACING, STEP_IDS } from "@/lib/constants";
 import { HeadingText } from "@/components/typography";
 import { scaleIn } from "@/lib/utils/animations";
+import {
+  AnimatedDashedLine,
+  AnimatedSparkleIcon,
+  AnimatedSparkleIconSecond,
+  AnimatedImageIcon,
+  AnimatedImageIconSecond,
+  AnimatedImageIconThird
+} from "@/components/shared";
+
+const DASHED_DURATION_SECONDS = 20;
 
 export function Steps() {
+  const [cycleKey, setCycleKey] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setCycleKey((prev) => prev + 1),
+      DASHED_DURATION_SECONDS * 1000
+    );
+
+    return () => clearInterval(intervalId);
+  }, []);
   return (
     <section className="relative w-full py-12 sm:py-16 md:py-20 lg:py-24 mt-12 sm:mt-20 md:mt-28 lg:mt-36 min-h-[400px] sm:min-h-[500px]">
       {/* Dashed lines background - full screen width */}
@@ -20,14 +41,13 @@ export function Steps() {
         }}
         aria-hidden="true"
       >
-        <Image
-          src="/background/combined-stroke.svg"
-          alt=""
+        <AnimatedDashedLine
+          key={cycleKey}
           width={IMAGE_DIMENSIONS.COMBINED_STROKE.width}
           height={IMAGE_DIMENSIONS.COMBINED_STROKE.height}
           className="w-full h-auto object-contain"
-          sizes="100vw"
-          aria-hidden="true"
+          duration={DASHED_DURATION_SECONDS}
+          fillColor="#54E6ED"
         />
       </div>
 
@@ -77,53 +97,53 @@ export function Steps() {
             >
               {step.id === STEP_IDS.FIRST && (
                 <div className="absolute lg:-left-8 xl:-left-28 lg:top-[32%] xl:top-[30%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
-                  <Image
-                    src="/illustrations/blue-2.svg"
-                    alt=""
-                    width={40}
-                    height={40}
-                    className=" lg:w-12 lg:h-12 xl:w-14 xl:h-14"
-                    style={{ objectFit: "contain" }}
-                    aria-hidden="true"
+                  <AnimatedSparkleIcon
+                    key={cycleKey}
+                    width={60}
+                    height={60}
+                    className="lg:w-12 lg:h-12 xl:w-14 xl:h-14"
+                    duration={2}
+                    delay={2.5}
+                    fillColor="#54E6ED"
                   />
                 </div>
               )}
               {step.id === STEP_IDS.FIRST && (
                 <div className="absolute lg:-right-18 xl:-right-16 lg:top-[40%] xl:top-[38%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
-                  <Image
-                    src="/illustrations/blue-2.svg"
-                    alt=""
+                  <AnimatedSparkleIcon
+                    key={cycleKey}
                     width={40}
                     height={40}
                     className="lg:w-12 lg:h-12 xl:w-14 xl:h-14"
-                    style={{ objectFit: "contain" }}
-                    aria-hidden="true"
+                    duration={1}
+                    delay={7.4}
+                    fillColor="#54E6ED"
                   />
                 </div>
               )}
               {step.id === STEP_IDS.THIRD && (
                 <div className="absolute lg:-left-20 xl:-left-32 lg:top-[22%] xl:top-[20%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
-                  <Image
-                    src="/illustrations/white-1.svg"
-                    alt=""
-                    width={35}
-                    height={35}
+                  <AnimatedSparkleIconSecond
+                    key={cycleKey}
+                    width={60}
+                    height={60}
                     className="lg:w-12 lg:h-12 xl:w-14 xl:h-14"
-                    style={{ objectFit: "contain" }}
-                    aria-hidden="true"
+                    duration={1}
+                    delay={11}
+                    fillColor="#54E6ED"
                   />
                 </div>
               )}
               {step.id === STEP_IDS.THIRD && (
                 <div className="absolute lg:-right-4 xl:-right-22 lg:top-[32%] xl:top-[30%] z-10 pointer-events-none hidden lg:block" aria-hidden="true">
-                  <Image
-                    src="/illustrations/white-2.svg"
-                    alt=""
+                  <AnimatedSparkleIcon
+                    key={cycleKey}
                     width={60}
                     height={60}
                     className="lg:w-12 lg:h-12 xl:w-14 xl:h-14"
-                    style={{ objectFit: "contain" }}
-                    aria-hidden="true"
+                    duration={1}
+                    delay={15}
+                    fillColor="#54E6ED"
                   />
                 </div>
               )}
@@ -136,13 +156,37 @@ export function Steps() {
                 variants={scaleIn}
                 whileHover={{ scale: 1.05 }}
               >
-                <Image
-                  src={step.image}
-                  alt={step.title}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 320px"
-                />
+                {step.id === STEP_IDS.FIRST ? (
+                  <AnimatedImageIcon
+                    key={cycleKey}
+                    width="100%"
+                    height="100%"
+                    className="w-full h-full"
+                    duration={2.3}
+                    delay={5.3}
+                    fillColor="#54E6ED"
+                  />
+                ) : step.id === STEP_IDS.SECOND ? (
+                  <AnimatedImageIconSecond
+                    key={cycleKey}
+                    width="100%"
+                    height="100%"
+                    className="w-full h-full"
+                    duration={2.3}
+                    delay={8.5}
+                    fillColor="#54E6ED"
+                  />
+                ) : (
+                    <AnimatedImageIconThird
+                      key={cycleKey}
+                      width="100%"
+                      height="100%"
+                      className="w-full h-full"
+                      duration={2.3}
+                      delay={12}
+                      fillColor="#54E6ED"
+                    />
+                )}
               </motion.div>
 
               <h3 className="text-heading-md font-bold text-white mb-3 sm:mb-4 max-w-[275px] mx-auto">
