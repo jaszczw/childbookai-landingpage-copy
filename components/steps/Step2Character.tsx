@@ -19,9 +19,10 @@ export type Character = {
 export type Step2CharacterProps = {
   characters: Character[];
   onNext?: () => void;
+  onAddCharacter?: () => void;
 };
 
-export default function Step2Character({ characters, onNext }: Step2CharacterProps) {
+export default function Step2Character({ characters, onNext, onAddCharacter }: Step2CharacterProps) {
 
   const cardColumnsClass =
     characters.length <= 1
@@ -145,16 +146,29 @@ export default function Step2Character({ characters, onNext }: Step2CharacterPro
         ))}
       </div>
 
-      {onNext && (
+      {(onNext || onAddCharacter) && (
         <div className="mt-2 flex flex-wrap items-center justify-center gap-4">
-          <AppButton
-            onClick={onNext}
-            size="md"
-            shadow
-            className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px]"
-          >
-            Next Step
-          </AppButton>
+          {onAddCharacter && (
+            <AppButton
+              onClick={onAddCharacter}
+              variant="secondary"
+              size="md"
+              shadow
+              className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px]"
+            >
+              Add a Character
+            </AppButton>
+          )}
+          {onNext && (
+            <AppButton
+              onClick={onNext}
+              size="md"
+              shadow
+              className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px]"
+            >
+              Next Step
+            </AppButton>
+          )}
         </div>
       )}
     </div>

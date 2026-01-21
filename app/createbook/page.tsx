@@ -136,7 +136,7 @@ export default function CreateBook() {
               {/* Step content - positioned inside SVG card, below stepper, centered */}
               <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full max-w-5xl px-8 z-10">
                 {activeStep === 1 && <Step1Story onNext={handleNextStep} />}
-                {activeStep === 2 && <Step2Character characters={characters} onNext={handleNextStep} />}
+                {activeStep === 2 && <Step2Character characters={characters} onNext={handleNextStep} onAddCharacter={handleOpenAddCharacterDialog} />}
                 {activeStep === 3 && <Step3Settings />}
               </div>
 
