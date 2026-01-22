@@ -17,12 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
-import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { DocumentUpload } from "iconsax-react";
 import { AppButton } from "../shared/AppButton";
@@ -427,6 +423,14 @@ export default function CreateCharacterDialog({
 }: CreateCharacterDialogProps) {
   const [formData, setFormData] =
     useState<ExtendedCharacterFormData>(DEFAULT_FORM_DATA);
+  const [showAttributesPopover, setShowAttributesPopover] = useState(false);
+  const [attributesPopoverDismissed, setAttributesPopoverDismissed] =
+    useState(false);
+
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const attributesSectionRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const prevOpenRef = useRef(open);
 
   const handleCreateCharacter = () => {
     if (!formData.name.trim()) return;
@@ -434,16 +438,130 @@ export default function CreateCharacterDialog({
     onCharacterCreated?.(formData);
     onOpenChange(false);
     setFormData(DEFAULT_FORM_DATA);
+    setAttributesPopoverDismissed(false);
+    setShowAttributesPopover(false);
   };
 
   const updateFormData = (updates: Partial<ExtendedCharacterFormData>) => {
     setFormData({ ...formData, ...updates });
   };
 
+  // Reset popover state when dialog closes. We schedule state updates
+  // asynchronously so they're not called directly in the effect body.
+  useEffect(() => {
+    if (!open && prevOpenRef.current) {
+      setTimeout(() => {
+        setAttributesPopoverDismissed(false);
+        setShowAttributesPopover(false);
+      }, 0);
+    }
+    prevOpenRef.current = open;
+  }, [open]);
+
+  // Auto-show glasses suggestion popover when the attributes section
+  // scrolls into view inside the dialog.
+  useEffect(() => {
+    if (attributesPopoverDismissed || !open) return;
+
+    const root = scrollContainerRef.current;
+    let scrollHandler: (() => void) | null = null;
+
+    const checkVisibility = () => {
+      const currentRoot = scrollContainerRef.current;
+      const target = attributesSectionRef.current;
+
+      if (!currentRoot || !target) return false;
+
+      const rootRect = currentRoot.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      // Check if target is visible within the scroll container
+      const isVisible =
+        targetRect.top >= rootRect.top &&
+        targetRect.top <= rootRect.bottom - 200 && // At least 200px from bottom
+        targetRect.bottom > rootRect.top;
+
+      return isVisible;
+    };
+
+    // Wait a bit for refs to be set, then check initial visibility
+    const timeoutId = setTimeout(() => {
+      if (checkVisibility()) {
+        setShowAttributesPopover(true);
+        return;
+      }
+
+      // Use IntersectionObserver for scroll detection
+      const currentRoot = scrollContainerRef.current;
+      const target = attributesSectionRef.current;
+
+      if (!currentRoot || !target) return;
+
+      // Clean up previous observer
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry?.isIntersecting && entry.intersectionRatio > 0.1) {
+            setShowAttributesPopover(true);
+            observer.disconnect();
+            observerRef.current = null;
+            if (scrollHandler && currentRoot) {
+              currentRoot.removeEventListener("scroll", scrollHandler);
+              scrollHandler = null;
+            }
+          }
+        },
+        {
+          root: currentRoot,
+          rootMargin: "0px",
+          threshold: [0, 0.1, 0.5],
+        }
+      );
+
+      observerRef.current = observer;
+      observer.observe(target);
+
+      // Also add scroll listener as fallback
+      scrollHandler = () => {
+        if (checkVisibility()) {
+          setShowAttributesPopover(true);
+          if (currentRoot && scrollHandler) {
+            currentRoot.removeEventListener("scroll", scrollHandler);
+          }
+          scrollHandler = null;
+          if (observerRef.current) {
+            observerRef.current.disconnect();
+            observerRef.current = null;
+          }
+        }
+      };
+
+      currentRoot.addEventListener("scroll", scrollHandler, { passive: true });
+    }, 200);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+      if (scrollHandler && root) {
+        root.removeEventListener("scroll", scrollHandler);
+      }
+    };
+  }, [attributesPopoverDismissed, open]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[820px] max-h-[90vh] rounded-3xl p-0 bg-[#F4FAFA] overflow-hidden flex flex-col">
-        <div className="overflow-y-auto flex-1 px-8 sm:px-10 pt-8 sm:pt-10 custom-scrollbar">
+        <div
+          ref={scrollContainerRef}
+          className="overflow-y-auto flex-1 px-8 sm:px-10 pt-8 sm:pt-10 custom-scrollbar"
+        >
           <DialogHeader className="items-center text-center pt-8">
             <DialogTitle className="text-5xl font-bold text-foreground">
               Create Character
@@ -544,7 +662,7 @@ export default function CreateCharacterDialog({
               </div>
             </div>
 
-            {/* Fourth Row: Eye color and Hair length */}
+          {/* Fourth Row: Eye color and Hair length */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-2">
               <div className="flex flex-col gap-4">
                 <EyeColorPicker
@@ -562,8 +680,50 @@ export default function CreateCharacterDialog({
             </div>
 
             {/* Attributes Section */}
-            <div className="space-y-2 pt-4 border-t border-gray-200">
-              <Label htmlFor="attributes">Attributes</Label>
+            <div
+              ref={attributesSectionRef}
+              className="space-y-2 pt-4 border-t border-gray-200"
+            >
+              <div className="flex items-center justify-between gap-3 relative">
+                <Label htmlFor="attributes">Attributes</Label>
+
+                {showAttributesPopover && (
+                  <div className="relative shrink-0 z-10">
+                    <div className="absolute -left-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-blue-800" />
+                    <div className="flex items-center gap-3 rounded-lg bg-blue-800 px-4 py-1 text-sm text-white shadow-lg whitespace-nowrap">
+                      <span>
+                        Would you like to add glasses to this character?
+                      </span>
+                      <AppButton
+                        variant="primary"
+                        size="sm"
+                        onClick={() => {
+                          if (!formData.attributes.includes("Glasses")) {
+                            updateFormData({
+                              attributes: [...formData.attributes, "Glasses"],
+                            });
+                          }
+                          setShowAttributesPopover(false);
+                          setAttributesPopoverDismissed(true);
+                        }}
+                        className="text-sm max-h-8 w-12 text-foreground font-semibold"
+                      >
+                        Yes
+                      </AppButton>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowAttributesPopover(false);
+                          setAttributesPopoverDismissed(true);
+                        }}
+                        className="text-sm font-semibold text-white/90 hover:text-white transition-colors"
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
               <MultiSelectAutocomplete
                 value={formData.attributes}
                 onChange={(attributes) => updateFormData({ attributes })}
