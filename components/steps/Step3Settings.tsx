@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { HeadingText } from "../typography";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { Edit2, Trash, VideoSquare } from "iconsax-react";
+import { Edit2, Trash, VideoSquare, Crown } from "iconsax-react";
+import { Maximize2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { AppButton } from "@/components/shared";
 import type { Character } from "./Step2Character";
 import type { StoryData } from "@/app/createbook/page";
 import Image from "next/image";
@@ -51,10 +53,19 @@ export type Step3SettingsProps = {
   showMore?: boolean;
 };
 
+type CoverStyle = "old" | "new" | "premium";
+
+const COVER_OPTIONS: { id: CoverStyle; label: string; image: string }[] = [
+  { id: "old", label: "Old Style", image: "/images/old-style.png" },
+  { id: "new", label: "New Style", image: "/images/new-style.png" },
+  { id: "premium", label: "Premium", image: "/images/premium.png" },
+];
+
 const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, onShowMoreToggle, showMore = false }) => {
   const [isAudiobookEnabled, setIsAudiobookEnabled] = useState(true);
   const [selectedVoice, setSelectedVoice] = useState("ruth");
   const [selectedBookColor, setSelectedBookColor] = useState("#FFFFFF");
+  const [selectedCoverStyle, setSelectedCoverStyle] = useState<CoverStyle>("new");
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center gap-8">
@@ -153,7 +164,7 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                 <HeadingText
                   variant="h5"
                   title="Audiobook"
-                  className="font-bold text-foreground"
+                  className="font-semibold text-foreground"
                 />
                 <p className="text-sm text-gray-600">
                   Add voice narration to your book
@@ -219,76 +230,157 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
             </div>
           </CardContent>
         </Card>
-        {showMore && (
-        <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
-          <CardContent className="flex flex-col gap-6 px-0">
-            {/* Top Row: Heading, Description */}
-            <div className="flex items-start justify-between">
-              <div className="flex flex-col gap-1">
-                <HeadingText
-                  variant="h5"
-                  title="Book Color"
-                  className="font-bold text-foreground"
-                />
-                <p className="text-sm text-gray-600">
-                  Select page color
-                </p>
-              </div>
-              <div className="flex items-center justify-center -space-x-2">
-                {BOOK_COLORS.primary.map((bookColor, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => setSelectedBookColor(bookColor.color)}
-                    className={cn(
-                      "relative w-10 h-10 rounded-full border-2 transition-all hover:z-10",
-                      selectedBookColor === bookColor.color
-                        ? "border-blue-800 ring-2 ring-blue-800 ring-offset-1 z-10"
-                        : "border-white hover:border-blue-800"
-                    )}
-                    style={{ backgroundColor: bookColor.color }}
-                    aria-label={`Select book color ${bookColor.name}`}
-                  />
-                ))}
 
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <button
-                      type="button"
-                      className="relative w-10 h-10 rounded-full border-2 border-blue-800 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors hover:z-10 ml-2"
-                      aria-label="More book color options"
-                    >
-                      <div className="flex gap-0.5">
-                        <div className="w-1 h-1 rounded-full bg-blue-800" />
-                        <div className="w-1 h-1 rounded-full bg-blue-800" />
-                        <div className="w-1 h-1 rounded-full bg-blue-800" />
-                      </div>
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-4 bg-[#F4FAFA]">
-                    <div className="grid grid-cols-3 gap-3">
-                      {BOOK_COLORS.extended.map((bookColor, index) => (
+        {showMore && (
+          <>
+            <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
+              <CardContent className="flex flex-col gap-6 px-0">
+                {/* Top Row: Heading, Description */}
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <HeadingText
+                      variant="h5"
+                      title="Book Color"
+                      className="font-semibold text-foreground"
+                      />
+                    <p className="text-sm text-gray-600">
+                      Select page color
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-center -space-x-2">
+                    {BOOK_COLORS.primary.map((bookColor, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setSelectedBookColor(bookColor.color)}
+                        className={cn(
+                          "relative w-10 h-10 rounded-full border-2 transition-all hover:z-10",
+                          selectedBookColor === bookColor.color
+                            ? "border-blue-800 ring-2 ring-blue-800 ring-offset-1 z-10"
+                            : "border-white hover:border-blue-800"
+                        )}
+                        style={{ backgroundColor: bookColor.color }}
+                        aria-label={`Select book color ${bookColor.name}`}
+                      />
+                    ))}
+
+                    <Popover>
+                      <PopoverTrigger asChild>
                         <button
-                          key={index}
                           type="button"
-                          onClick={() => setSelectedBookColor(bookColor.color)}
+                          className="relative w-10 h-10 rounded-full border-2 border-blue-800 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors hover:z-10 ml-2"
+                          aria-label="More book color options"
+                        >
+                          <div className="flex gap-0.5">
+                            <div className="w-1 h-1 rounded-full bg-blue-800" />
+                            <div className="w-1 h-1 rounded-full bg-blue-800" />
+                            <div className="w-1 h-1 rounded-full bg-blue-800" />
+                          </div>
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-4 bg-[#F4FAFA]">
+                        <div className="grid grid-cols-3 gap-3">
+                          {BOOK_COLORS.extended.map((bookColor, index) => (
+                            <button
+                              key={index}
+                              type="button"
+                              onClick={() => setSelectedBookColor(bookColor.color)}
+                              className={cn(
+                                "w-10 h-10 rounded-full border-2 transition-all",
+                                selectedBookColor === bookColor.color
+                                  ? "border-blue-800 ring-2 ring-blue-800 ring-offset-1"
+                                  : "border-gray-300 hover:border-blue-800"
+                              )}
+                              style={{ backgroundColor: bookColor.color }}
+                              aria-label={`Select book color ${bookColor.name}`}
+                            />
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Cover Style Card */}
+            <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
+              <CardContent className="flex flex-col gap-6 px-0">
+                <div className="flex flex-col gap-1">
+                  <HeadingText
+                    variant="h5"
+                    title="Cover Style"
+                    className="font-semibold text-foreground"
+                  />
+                  <p className="text-sm text-gray-600">
+                    Choose cover design for your book
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {COVER_OPTIONS.map((option) => (
+                    <div key={option.id} className="flex flex-col gap-3 items-center sm:items-start">
+                      {option.id === "premium" ? (
+                        <div className="relative w-[190px] h-[190px] shrink-0 overflow-hidden rounded-md">
+                          <Image
+                            src={option.image}
+                            alt={option.label}
+                            fill
+                            className="object-cover rounded-md"
+                            sizes="190px"
+                          />
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedCoverStyle(option.id)}
                           className={cn(
-                            "w-10 h-10 rounded-full border-2 transition-all",
-                            selectedBookColor === bookColor.color
-                              ? "border-blue-800 ring-2 ring-blue-800 ring-offset-1"
-                              : "border-gray-300 hover:border-blue-800"
+                            "relative w-[190px] h-[190px] shrink-0 overflow-hidden rounded-md transition-all",
+                            selectedCoverStyle === option.id && "ring-2 ring-blue-800 ring-offset-2"
                           )}
-                          style={{ backgroundColor: bookColor.color }}
-                          aria-label={`Select book color ${bookColor.name}`}
-                        />
-                      ))}
+                          aria-pressed={selectedCoverStyle === option.id}
+                          aria-label={`${option.label} cover`}
+                        >
+                          <Image
+                            src={option.image}
+                            alt={option.label}
+                            fill
+                            className="object-cover rounded-md"
+                            sizes="190px"
+                          />
+                          {selectedCoverStyle === option.id && (
+                            <span className="absolute inset-0 flex items-center justify-center rounded-md bg-primary/30">
+                              <span className="rounded-full bg-white p-2" aria-hidden>
+                                <Maximize2 size={20} className="text-blue-800" />
+                              </span>
+                            </span>
+                          )}
+                        </button>
+                      )}
+                      {option.id === "premium" ? (
+                        <div className="flex w-full items-center justify-between gap-2">
+                          <div className="flex items-center gap-1.5">
+                            <Crown size={20} color="#EDBD38" variant="Bold" className="shrink-0" />
+                            <span className="font-semibold text-foreground text-lg">{option.label}</span>
+                          </div>
+                          <AppButton
+                            variant="primary"
+                            size="sm"
+                            className="shrink-0 font-semibold w-12"
+                          >
+                            Buy
+                          </AppButton>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center gap-1">
+                          <span className="font-semibold text-foreground text-lg">{option.label}</span>
+                        </div>
+                      )}
                     </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </>
         )}
       </div>
     </div>
