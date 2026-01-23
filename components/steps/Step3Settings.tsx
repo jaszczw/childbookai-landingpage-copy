@@ -24,6 +24,7 @@ import { AppButton, RadioButton } from "@/components/shared";
 import type { Character } from "./Step2Character";
 import type { StoryData } from "@/app/createbook/page";
 import Image from "next/image";
+import Step3Creating from "./Step3Creating";
 
 // Book color options
 const BOOK_COLORS = {
@@ -54,6 +55,7 @@ export type Step3SettingsProps = {
   characters: Character[];
   onShowMoreToggle?: () => void;
   showMore?: boolean;
+  onCreateClick?: () => void;
 };
 
 type CoverStyle = "old" | "new" | "premium";
@@ -64,7 +66,7 @@ const COVER_OPTIONS: { id: CoverStyle; label: string; image: string }[] = [
   { id: "premium", label: "Premium", image: "/images/premium.png" },
 ];
 
-const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, onShowMoreToggle, showMore = false }) => {
+const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, onShowMoreToggle, showMore = false, onCreateClick }) => {
   const [isAudiobookEnabled, setIsAudiobookEnabled] = useState(true);
   const [selectedVoice, setSelectedVoice] = useState("ruth");
   const [selectedBookColor, setSelectedBookColor] = useState("#FFFFFF");
@@ -75,6 +77,17 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
   const [extrasRhymingStory, setExtrasRhymingStory] = useState("disabled");
   const [isRhymingStoryChecked, setIsRhymingStoryChecked] = useState(false);
   const [maximizedCover, setMaximizedCover] = useState<CoverStyle | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const handleCreateClick = () => {
+    setIsCreating(true);
+    onCreateClick?.();
+  };
+
+  // Show creating state UI
+  if (isCreating) {
+    return <Step3Creating />;
+  }
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center gap-8">
@@ -461,7 +474,29 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                           label={
                             <span className="flex items-center gap-1.5">
                               <span>16</span>
-                              <Crown size={16} color="#EDBD38" variant="Bold" />
+                              <span 
+                                className="inline-block relative"
+                                style={{
+                                  width: '16px',
+                                  height: '16px',
+                                }}
+                              >
+                                <span
+                                  className="absolute inset-0"
+                                  style={{
+                                    background: 'linear-gradient(to bottom, #E6EFF6, #82AAC7)',
+                                    WebkitMaskImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23000\' d=\'M12 2L10 7.5H12V16H12V7.5H14L12 2ZM4 20H12H16H20V22H4H8C4 22 4 20 4 20Z\'/%3E%3C/svg%3E")',
+                                    maskImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23000\' d=\'M12 2L10 7.5H12V16H12V7.5H14L12 2ZM4 20H12H16H20V22H4H8C4 22 4 20 4 20Z\'/%3E%3C/svg%3E")',
+                                    WebkitMaskSize: 'contain',
+                                    maskSize: 'contain',
+                                    WebkitMaskRepeat: 'no-repeat',
+                                    maskRepeat: 'no-repeat',
+                                    WebkitMaskPosition: 'center',
+                                    maskPosition: 'center',
+                                  }}
+                                  aria-hidden="true"
+                                />
+                              </span>
                             </span>
                           }
                           isSelected={selectedPageCount === 16}
@@ -653,13 +688,22 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                           <SelectItem value="disabled">No rhymes</SelectItem>
                           <SelectItem value="enabled">Rhyming enabled</SelectItem>
                           <div className="mt-2 border-t border-gray-200 pt-2">
-                            <button
-                              type="button"
-                              className="flex w-full items-start gap-2 text-left"
+                            <div
+                              className="flex w-full items-start gap-2 text-left cursor-pointer"
                               onClick={() => {
                                 const next = !isRhymingStoryChecked;
                                 setIsRhymingStoryChecked(next);
                                 setExtrasRhymingStory(next ? "enabled" : "disabled");
+                              }}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  const next = !isRhymingStoryChecked;
+                                  setIsRhymingStoryChecked(next);
+                                  setExtrasRhymingStory(next ? "enabled" : "disabled");
+                                }
                               }}
                             >
                               <Checkbox
@@ -675,7 +719,7 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                               <span className="text-xs text-gray-600">
                                 You can choose to have a rhyming story, so the story will be generated with rhymes.
                               </span>
-                            </button>
+                            </div>
                           </div>
                         </SelectContent>
                       </Select>
@@ -693,16 +737,23 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                 </div>
               </CardContent>
             </Card>
+
+            {/* Bottom Create CTA */}
+            <div className="w-full flex justify-center pb-8">
+              <AppButton
+                variant="primary"
+                size="md"
+                shadow
+                className="text-heading-sm font-semibold w-36"
+                onClick={handleCreateClick}
+              >
+                Create
+              </AppButton>
+            </div>
           </>
         )}
       </div>
 
-      {/* Bottom Create CTA */}
-      <div className="w-full flex justify-center pb-8">
-        <AppButton variant="primary" size="md" shadow className="text-heading-sm font-semibold w-36">
-          Create
-        </AppButton>
-      </div>
 
       {/* Maximized Cover Image Dialog */}
       <Dialog open={maximizedCover !== null} onOpenChange={(open) => !open && setMaximizedCover(null)}>

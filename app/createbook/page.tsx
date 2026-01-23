@@ -27,6 +27,7 @@ export default function CreateBook() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [addCharacterDialogOpen, setAddCharacterDialogOpen] = useState(false);
   const [showMoreContent, setShowMoreContent] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [storyData, setStoryData] = useState<StoryData>({
     title: "Unlikely Friends",
     description: "A shy bookworm and an outgoing athlete form an unexpected friendship that changes both their lives.",
@@ -58,6 +59,10 @@ export default function CreateBook() {
 
   const handleShowMoreToggle = () => {
     setShowMoreContent((prev) => !prev);
+  };
+
+  const handleCreateClick = () => {
+    setIsCreating(true);
   };
 
   // Reset showMoreContent when step changes
@@ -142,7 +147,20 @@ export default function CreateBook() {
               </div>
 
               {activeStep === 3 ? (
-                showMoreContent ? (
+                isCreating ? (
+                  <svg
+                    width="1240"
+                    height="853"
+                    viewBox="0 0 1240 853"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1240 812.689C1240 834.781 1222.09 852.689 1200 852.689L39.9999 852.689C17.9086 852.689 -0.000120505 834.781 -0.000118573 812.689L-5.42941e-05 77.4199C-5.24067e-05 55.8306 17.1322 38.1368 38.7103 37.4408L1198.71 0.0215418C1221.3 -0.706972 1240 17.4039 1240 40.0007L1240 812.689Z"
+                      fill="white"
+                    />
+                  </svg>
+                ) : showMoreContent ? (
                   <svg
                     width="1240"
                     height="2497"
@@ -188,7 +206,7 @@ export default function CreateBook() {
               <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full max-w-5xl px-8 z-10">
                 {activeStep === 1 && <Step1Story onNext={handleNextStep} onStoryChange={setStoryData} />}
                 {activeStep === 2 && <Step2Character characters={characters} onNext={handleNextStep} onAddCharacter={handleOpenAddCharacterDialog} />}
-                {activeStep === 3 && <Step3Settings storyData={storyData} characters={characters} onShowMoreToggle={handleShowMoreToggle} showMore={showMoreContent} />}
+                {activeStep === 3 && <Step3Settings storyData={storyData} characters={characters} onShowMoreToggle={handleShowMoreToggle} showMore={showMoreContent} onCreateClick={handleCreateClick} />}
               </div>
 
               {/* Back button - bottom left corner of SVG */}
