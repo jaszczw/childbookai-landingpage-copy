@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import { HeadingText } from "../typography";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
-import { Edit2, Trash, VideoSquare, Crown } from "iconsax-react";
+import { Edit2, Trash, VideoSquare, Crown, InfoCircle } from "iconsax-react";
 import { Maximize2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,8 +17,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { AppButton } from "@/components/shared";
+import { AppButton, RadioButton } from "@/components/shared";
 import type { Character } from "./Step2Character";
 import type { StoryData } from "@/app/createbook/page";
 import Image from "next/image";
@@ -66,6 +68,11 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
   const [selectedVoice, setSelectedVoice] = useState("ruth");
   const [selectedBookColor, setSelectedBookColor] = useState("#FFFFFF");
   const [selectedCoverStyle, setSelectedCoverStyle] = useState<CoverStyle>("new");
+  const [selectedPageCount, setSelectedPageCount] = useState(12);
+  const [adnotation, setAdnotation] = useState("By childbook.ai");
+  const [extrasLongerText, setExtrasLongerText] = useState("standard");
+  const [extrasRhymingStory, setExtrasRhymingStory] = useState("disabled");
+  const [isRhymingStoryChecked, setIsRhymingStoryChecked] = useState(false);
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center gap-8">
@@ -303,7 +310,6 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
               </CardContent>
             </Card>
 
-            {/* Cover Style Card */}
             <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
               <CardContent className="flex flex-col gap-6 px-0">
                 <div className="flex flex-col gap-1">
@@ -328,6 +334,20 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                             className="object-cover rounded-md"
                             sizes="190px"
                           />
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type="button"
+                                className="absolute top-2 right-2 z-10 hover:opacity-80 transition-opacity"
+                                aria-label="Premium information"
+                              >
+                                <InfoCircle size="26" color="#FFFFFF" variant="Bold" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Premium cover style with enhanced features</p>
+                            </TooltipContent>
+                          </Tooltip>
                         </div>
                       ) : (
                         <button
@@ -380,8 +400,299 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
+              <CardContent className="flex flex-col gap-6 px-0">
+                {/* Top Row: Heading, Description, and Check Button */}
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <HeadingText
+                      variant="h5"
+                      title="Page Count"
+                      className="font-semibold text-foreground"
+                    />
+                    <p className="text-sm text-gray-600">
+                      12 pages are available for a basic account
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Section: Two Columns */}
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 items-center">
+                  {/* Left Column: Megaphone Image */}
+                  <div className="flex items-center justify-center">
+                    <div className="relative w-48 h-48 flex items-center justify-center">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <Image src="/images/blue-book.svg" alt="Blue Book" width={200} height={200} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Page Count Selection */}
+                  <div className="flex flex-col gap-4">
+                    {/* Quantity Label and Radio Buttons */}
+                    <div className="flex flex-col gap-2">
+                      <Label className="text-sm font-medium text-foreground">
+                        Quantity
+                      </Label>
+                      <div className="flex flex-wrap gap-3">
+                        <RadioButton
+                          label="12"
+                          isSelected={selectedPageCount === 12}
+                          onClick={() => setSelectedPageCount(12)}
+                          gap="sm"
+                          paddingX="md"
+                          paddingY="md"
+                          iconSize="sm"
+                          radius="lg"
+                          fontSize="md"
+                          unselectedBgColor="bg-white"
+                        />
+                        <RadioButton
+                          label={
+                            <span className="flex items-center gap-1.5">
+                              <span>16</span>
+                              <Crown size={16} color="#EDBD38" variant="Bold" />
+                            </span>
+                          }
+                          isSelected={selectedPageCount === 16}
+                          onClick={() => setSelectedPageCount(16)}
+                          gap="sm"
+                          paddingX="sm"
+                          paddingY="md"
+                          iconSize="sm"
+                          radius="lg"
+                          fontSize="md"
+                          unselectedBgColor="bg-white"
+                        />
+                        <RadioButton
+                          label={
+                            <span className="flex items-center gap-1.5">
+                              <span>20</span>
+                              <Crown size={16} color="#EDBD38" variant="Bold" />
+                            </span>
+                          }
+                          isSelected={selectedPageCount === 20}
+                          onClick={() => setSelectedPageCount(20)}
+                          gap="sm"
+                          paddingX="sm"
+                          paddingY="md"
+                          iconSize="sm"
+                          radius="lg"
+                          fontSize="md"
+                          unselectedBgColor="bg-white"
+                        />
+                        <RadioButton
+                          label={
+                            <span className="flex items-center gap-1.5">
+                              <span>24</span>
+                              <Crown size={16} color="#EDBD38" variant="Bold" />
+                            </span>
+                          }
+                          isSelected={selectedPageCount === 24}
+                          onClick={() => setSelectedPageCount(24)}
+                          gap="sm"
+                          paddingX="sm"
+                          paddingY="md"
+                          iconSize="sm"
+                          radius="lg"
+                          fontSize="md"
+                          unselectedBgColor="bg-white"
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        You can choose how many pages your book will have.
+                      </p>
+                    </div>
+
+                    {/* Buy Premium Button */}
+                    <div className="flex justify-end">
+                      <AppButton
+                        variant="primary"
+                        size="sm"
+                        className="font-semibold"
+                      >
+                        Buy premium
+                      </AppButton>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
+              <CardContent className="flex flex-col gap-6 px-0">
+                {/* Top Row: Heading, Description, and Check Button */}
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <HeadingText
+                      variant="h5"
+                      title="Public"
+                      className="font-semibold text-foreground"
+                    />
+                    <p className="text-sm text-gray-600">
+                      Make your book visible to other users in the library
+                    </p>
+                  </div>
+                  <Checkbox
+                    checked={isAudiobookEnabled}
+                    onCheckedChange={(checked) => setIsAudiobookEnabled(checked === true)}
+                    className="size-5"
+                    aria-label="Toggle audiobook"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none bg-blue-100 px-6 py-4 shadow-sm">
+              <CardContent className="flex flex-col gap-6 px-0">
+                {/* Top Row: Heading, Description, and Check Button */}
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <HeadingText
+                      variant="h5"
+                      title="Extras"
+                      className="font-semibold text-foreground"
+                    />
+                    <p className="text-sm text-gray-600">
+                      12 pages are available for a basic account
+                    </p>
+                  </div>
+                  <Checkbox
+                    checked={isAudiobookEnabled}
+                    onCheckedChange={(checked) => setIsAudiobookEnabled(checked === true)}
+                    className="size-5"
+                    aria-label="Toggle audiobook"
+                  />
+                </div>
+
+                {/* Bottom Section: Two Columns */}
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 items-stretch">
+                  {/* Left Column: Crown illustration + Buy button at bottom */}
+                  <div className="flex h-full flex-col items-center justify-between gap-4">
+                    <div className="relative w-48 h-48 flex items-center justify-center">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <Image src="/images/golden-crown.svg" alt="Golden Crown" width={200} height={200} />
+                      </div>
+                    </div>
+                    <AppButton
+                      variant="primary"
+                      size="sm"
+                      className="font-semibold sm:w-auto"
+                    >
+                      Buy premium
+                    </AppButton>
+                  </div>
+
+                  {/* Right Column: Extras Controls */}
+                  <div className="flex flex-col gap-4">
+                    {/* 1. Adnotation - Input with info icon */}
+                    <div className="flex flex-col gap-2">
+                      <Label htmlFor="adnotation-input" className="text-sm font-medium text-foreground">
+                        Adnotation
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="adnotation-input"
+                          value={adnotation}
+                          onChange={(e) => setAdnotation(e.target.value)}
+                          className="pr-10"
+                        />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              className="absolute inset-y-0 right-3 flex items-center justify-center text-blue-800 hover:opacity-80"
+                              aria-label="Adnotation information"
+                            >
+                              <InfoCircle size="20" color="#30a0a6" variant="Bold" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Specify how the author/adnotation should appear.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </div>
+
+                    {/* 2. Longer text - Select */}
+                    <div className="flex flex-col gap-2">
+                      <Label htmlFor="extras-longer-text" className="text-sm font-medium text-foreground">
+                        Longer text
+                      </Label>
+                      <Select value={extrasLongerText} onValueChange={setExtrasLongerText}>
+                        <SelectTrigger id="extras-longer-text" className="w-full">
+                          <SelectValue placeholder="Choose text length" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="standard">Standard length</SelectItem>
+                          <SelectItem value="longer">Longer story</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* 3. Rhyming story - Select with checkbox inside content */}
+                    <div className="flex flex-col gap-2">
+                      <Label htmlFor="extras-rhyming-story" className="text-sm font-medium text-foreground">
+                        Rhyming story
+                      </Label>
+                      <Select value={extrasRhymingStory} onValueChange={setExtrasRhymingStory}>
+                        <SelectTrigger id="extras-rhyming-story" className="w-full">
+                          <SelectValue placeholder="Rhyming options" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="disabled">No rhymes</SelectItem>
+                          <SelectItem value="enabled">Rhyming enabled</SelectItem>
+                          <div className="mt-2 border-t border-gray-200 pt-2">
+                            <button
+                              type="button"
+                              className="flex w-full items-start gap-2 text-left"
+                              onClick={() => {
+                                const next = !isRhymingStoryChecked;
+                                setIsRhymingStoryChecked(next);
+                                setExtrasRhymingStory(next ? "enabled" : "disabled");
+                              }}
+                            >
+                              <Checkbox
+                                checked={isRhymingStoryChecked}
+                                onCheckedChange={(checked) => {
+                                  const next = checked === true;
+                                  setIsRhymingStoryChecked(next);
+                                  setExtrasRhymingStory(next ? "enabled" : "disabled");
+                                }}
+                                className="mt-0.5 size-4"
+                                aria-label="Toggle rhyming story"
+                              />
+                              <span className="text-xs text-gray-600">
+                                You can choose to have a rhyming story, so the story will be generated with rhymes.
+                              </span>
+                            </button>
+                          </div>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* 4. Disabled input for Colorbook */}
+                    <div className="mt-1">
+                      <Input
+                        disabled
+                        value="Colorbook (Coming soon)"
+                        className="bg-gray-100 text-gray-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </>
         )}
+      </div>
+
+      {/* Bottom Create CTA */}
+      <div className="w-full flex justify-center pb-8">
+        <AppButton variant="primary" size="md" shadow className="text-heading-sm font-semibold w-36">
+          Create
+        </AppButton>
       </div>
     </div>
   );

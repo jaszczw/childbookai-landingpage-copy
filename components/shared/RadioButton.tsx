@@ -1,11 +1,12 @@
 "use client";
 
+import * as React from "react";
 import { Circle, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface RadioButtonProps {
-  /** The label text for the radio button */
-  label: string;
+  /** The label text or content for the radio button */
+  label: React.ReactNode;
   /** Whether the radio button is selected */
   isSelected: boolean;
   /** Callback function when the radio button is clicked */
@@ -85,11 +86,11 @@ const gapClasses = {
 };
 
 const iconSizeClasses = {
-  xs: { container: "w-3 h-3", check: "w-1.5 h-1.5" },
-  sm: { container: "w-4 h-4", check: "w-2 h-2" },
-  md: { container: "w-5 h-5", check: "w-3 h-3" },
-  lg: { container: "w-6 h-6", check: "w-4 h-4" },
-  xl: { container: "w-8 h-8", check: "w-5 h-5" },
+  xs: { container: "w-3 h-3", check: "w-2 h-2" },
+  sm: { container: "w-4 h-4", check: "w-3 h-3" },
+  md: { container: "w-5 h-5", check: "w-4 h-4" },
+  lg: { container: "w-6 h-6", check: "w-5 h-5" },
+  xl: { container: "w-8 h-8", check: "w-6 h-6" },
 };
 
 export function RadioButton({
