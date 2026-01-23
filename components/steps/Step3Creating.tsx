@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import { Story, Verify } from "iconsax-react";
 import { HeadingText } from "../typography";
-import { ProgressBar } from "@/components/shared";
+import { ProgressBar, ProgressBadge } from "@/components/shared";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Step3Creating: React.FC = () => {
@@ -106,16 +105,10 @@ const Step3Creating: React.FC = () => {
                 }`}
               />
               {/* Progress badge */}
-              <div className={`absolute bottom-2 right-2 flex items-center gap-1 px-1 py-1.5 rounded-md bg-white`}>
-                <div className="flex items-center justify-center shrink-0">
-                  {isCompleted ? (
-                    <Verify size={16} color="#30a0a6" variant="Bold" />
-                  ) : (
-                    <Story size={16} color="#30a0a6" variant="Bold" />
-                  )}
-                </div>
-                <span className="text-foreground text-xs font-semibold whitespace-nowrap">{Math.round(imageProgress)}%</span>
-              </div>
+              <ProgressBadge 
+                progress={imageProgress} 
+                isCompleted={isCompleted}
+              />
             </div>
           );
         })}

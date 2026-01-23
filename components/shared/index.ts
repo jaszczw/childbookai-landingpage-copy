@@ -20,6 +20,7 @@ export { DecorativeElement, DecorativeElements } from "./DecorativeElement";
 export { InnerIconButton } from "./InnerIconButton";
 export { MobileBackgroundCard } from "./MobileBackgroundCard";
 export { default as ProgressBar } from "./ProgressBar";
+export { default as ProgressBadge } from "./ProgressBadge";
 export { RadioButton } from "./RadioButton";
 export { RadioCard } from "./RadioCard";
 export { SocialIcon } from "./SocialIcon";
