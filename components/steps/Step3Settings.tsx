@@ -474,29 +474,7 @@ const Step3Settings: React.FC<Step3SettingsProps> = ({ storyData, characters, on
                           label={
                             <span className="flex items-center gap-1.5">
                               <span>16</span>
-                              <span 
-                                className="inline-block relative"
-                                style={{
-                                  width: '16px',
-                                  height: '16px',
-                                }}
-                              >
-                                <span
-                                  className="absolute inset-0"
-                                  style={{
-                                    background: 'linear-gradient(to bottom, #E6EFF6, #82AAC7)',
-                                    WebkitMaskImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23000\' d=\'M12 2L10 7.5H12V16H12V7.5H14L12 2ZM4 20H12H16H20V22H4H8C4 22 4 20 4 20Z\'/%3E%3C/svg%3E")',
-                                    maskImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%23000\' d=\'M12 2L10 7.5H12V16H12V7.5H14L12 2ZM4 20H12H16H20V22H4H8C4 22 4 20 4 20Z\'/%3E%3C/svg%3E")',
-                                    WebkitMaskSize: 'contain',
-                                    maskSize: 'contain',
-                                    WebkitMaskRepeat: 'no-repeat',
-                                    maskRepeat: 'no-repeat',
-                                    WebkitMaskPosition: 'center',
-                                    maskPosition: 'center',
-                                  }}
-                                  aria-hidden="true"
-                                />
-                              </span>
+                              <Crown size={16} color="#82AAC7" variant="Bold" />
                             </span>
                           }
                           isSelected={selectedPageCount === 16}
