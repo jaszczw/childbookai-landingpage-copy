@@ -16,7 +16,6 @@ export { BackgroundShape } from "./BackgroundShape";
 export { CarouselMask } from "./CarouselMask";
 export { CustomCard } from "./CustomCard";
 export { DecorativeElement, DecorativeElements } from "./DecorativeElement";
-export { InnerIconButton } from "./InnerIconButton";
 export { MobileBackgroundCard } from "./MobileBackgroundCard";
 export { SectionContainer } from "./SectionContainer";
 export { SocialIcon } from "./SocialIcon";

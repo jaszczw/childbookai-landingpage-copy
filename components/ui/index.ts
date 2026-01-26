@@ -12,3 +12,4 @@ export { RadioButton } from "./radio-button";
 export { RadioCard } from "./radio-card";
 export { default as ProgressBar } from "./progress-bar";
 export { default as ProgressBadge } from "./progress-badge";
+export { InnerIconButton } from "./inner-icon-button";
