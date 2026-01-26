@@ -94,7 +94,7 @@ export function Features() {
           </div>
 
           <motion.div
-            className="flex items-end justify-end order-2 lg:order-0 my-4 sm:my-6 md:my-8 lg:my-0"
+            className="flex items-end justify-center md:items-end md:justify-center lg:items-end lg:justify-center order-2 lg:order-0 my-4 sm:my-6 md:my-8 lg:my-0"
             variants={scaleIn}
           >
             <div className="relative inline-block">
@@ -103,11 +103,11 @@ export function Features() {
                 alt="Book Illustration"
                 width={1240}
                 height={883}
-                className="w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-[1240px] h-auto object-contain"
-                sizes="(max-width: 640px) 280px, (max-width: 768px) 384px, (max-width: 1024px) 448px, (max-width: 1280px) 512px, 1240px"
+                className="relative z-10 w-full max-w-[240px] sm:max-w-[320px] md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-[1240px] h-auto object-contain"
+                sizes="(max-width: 640px) 240px, (max-width: 768px) 320px, (max-width: 1024px) 448px, (max-width: 1280px) 512px, 1240px"
               />
               <motion.div
-                className="absolute -top-48 left-1/2 -translate-x-1/2 w-16 sm:w-20 md:w-24 lg:w-64"
+                className="absolute -top-6 md:-top-16 lg:-top-48 left-1/2 -translate-x-1/2 z-0 w-18 sm:w-20 md:w-36 lg:w-64"
                 initial={{ x: 0, rotate: 0, scale: 1 }}
                 animate={{ x: [-10, 10, -10], rotate: [-5, 5, -5], scale: [1, 1.08, 1] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -118,7 +118,7 @@ export function Features() {
                   width={150}
                   height={150}
                   className="w-full h-auto object-contain"
-                  sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, (max-width: 1024px) 96px, (max-width: 1280px) 112px, 150px"
+                  sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, (max-width: 1024px) 192px, (max-width: 1280px) 256px, 150px"
                 />
               </motion.div>
             </div>
