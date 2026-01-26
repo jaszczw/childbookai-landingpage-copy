@@ -110,7 +110,7 @@ export function BusinessPricing({ isYearly }: BusinessPricingProps) {
                       variant="primary"
                       size="md"
                       shadow
-                      className="w-full text-body-sm md:text-heading-sm mt-2 md:mt-8 min-h-10 md:min-h-[44px] transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                      className="w-full text-heading-sm min-h-[44px]"
                     >
                       {typeof plan.buttonText === "string" ? plan.buttonText : plan.buttonText.text}
                     </AppButton>

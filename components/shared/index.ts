@@ -21,8 +21,6 @@ export { MobileBackgroundCard } from "./MobileBackgroundCard";
 export { SectionContainer } from "./SectionContainer";
 export { default as ProgressBar } from "./ProgressBar";
 export { default as ProgressBadge } from "./ProgressBadge";
-export { RadioButton } from "./RadioButton";
-export { RadioCard } from "./RadioCard";
 export { SocialIcon } from "./SocialIcon";
 export { SvgWideCard } from "./SvgWideCard";
 export { SvgWideCardAlt } from "./SvgWideCardAlt";

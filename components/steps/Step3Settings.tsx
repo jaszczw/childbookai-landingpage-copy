@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { AppButton } from "@/components/ui/app-button";
-import { RadioButton } from "@/components/shared";
+import { RadioButton } from "@/components/ui/radio-button";
 import type { StoryData } from "@/app/createbook/page";
 import Image from "next/image";
 import Step3Creating from "./Step3Creating";

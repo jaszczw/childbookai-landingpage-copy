@@ -157,7 +157,7 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                   variant="primary"
                   size="md"
                   shadow
-                  className="w-full text-heading-sm min-h-[44px] transition-all duration-200 ease-out md:hover:scale-[1.02] md:active:scale-[0.98]"
+                  className="w-full text-heading-sm min-h-[44px]"
                 >
                   {typeof plan.buttonText === "string"
                     ? plan.buttonText

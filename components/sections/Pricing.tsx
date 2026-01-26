@@ -37,7 +37,7 @@ export function Pricing() {
         {activeTab === "individual" ? (
           <>
             {/* Money Bag - Upper Right */}
-            <div className="absolute top-16 right-4 md:top-18 md:right-8 lg:top-8 lg:right-8" aria-hidden="true">
+            <div className="absolute top-16 right-4 md:top-18 md:right-8 lg:top-2 lg:right-2" aria-hidden="true">
               <Image
                 src="/illustrations/money-bag.svg"
                 alt=""
@@ -50,7 +50,7 @@ export function Pricing() {
             </div>
 
             {/* Coins - Bottom Left */}
-            <div className="absolute bottom-12 left-6 md:bottom-2 md:-left-6 lg:bottom-16 lg:left-12" aria-hidden="true">
+            <div className="absolute bottom-12 left-6 md:bottom-2 md:-left-6 lg:bottom-2 lg:left-0" aria-hidden="true">
               <Image
                 src="/illustrations/coins.svg"
                 alt=""

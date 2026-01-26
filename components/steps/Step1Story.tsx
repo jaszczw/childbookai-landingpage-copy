@@ -2,7 +2,8 @@
 
 import React, { useCallback, useState, useEffect } from "react";
 import { HeadingText } from "../typography";
-import { RadioButton, RadioCard } from "../shared";
+import { RadioButton } from "@/components/ui/radio-button";
+import { RadioCard } from "@/components/ui/radio-card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppButton } from "@/components/ui/app-button";
