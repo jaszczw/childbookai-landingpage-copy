@@ -5,7 +5,7 @@ import { HeadingText } from "../typography";
 import { RadioButton, RadioCard } from "../shared";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AppButton } from "@/components/shared";
+import { AppButton } from "@/components/ui/app-button";
 import { HighlightableInput } from "../shared/HighlightableInput";
 
 const themes = [

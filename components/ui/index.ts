@@ -1,0 +1,10 @@
+/**
+ * UI components barrel export
+ * Re-exports all reusable UI components for convenient imports
+ * 
+ * @example
+ * import { AppButton, RadioButton } from "@/components/ui";
+ */
+
+export { AppButton } from "./app-button";
+export { Sparkle } from "./sparkle";

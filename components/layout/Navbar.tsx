@@ -5,7 +5,7 @@ import { HambergerMenu, CloseCircle } from "iconsax-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppButton } from "@/components/shared";
+import { AppButton } from "@/components/ui/app-button";
 import { navItems } from "@/lib/data";
 import { IMAGE_DIMENSIONS } from "@/lib/constants";
 import { mobileMenu, mobileMenuContainer, fadeInUp } from "@/lib/utils/animations";

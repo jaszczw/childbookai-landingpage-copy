@@ -3,7 +3,7 @@
  * Re-exports all shared components for convenient imports
  * 
  * @example
- * import { AppButton, BackgroundShape } from "@/components/shared";
+ * import { BackgroundShape, SectionContainer } from "@/components/shared";
  */
 
 export { AnimatedDashedLine } from "./animated-graphics/AnimatedDashedLine";
@@ -12,7 +12,6 @@ export { AnimatedSparkleIconSecond } from "./animated-graphics/AnimatedSparkleIc
 export { AnimatedImageIcon } from "./animated-graphics/AnimatedImageIcon";
 export { AnimatedImageIconSecond } from "./animated-graphics/AnimatedImageIconSecond";
 export { AnimatedImageIconThird } from "./animated-graphics/AnimatedImageIconThird";
-export { AppButton } from "./AppButton";
 export { BackgroundShape } from "./BackgroundShape";
 export { CarouselMask } from "./CarouselMask";
 export { CustomCard } from "./CustomCard";
@@ -25,7 +24,6 @@ export { default as ProgressBadge } from "./ProgressBadge";
 export { RadioButton } from "./RadioButton";
 export { RadioCard } from "./RadioCard";
 export { SocialIcon } from "./SocialIcon";
-export { Sparkle } from "./Sparkle";
 export { SvgWideCard } from "./SvgWideCard";
 export { SvgWideCardAlt } from "./SvgWideCardAlt";
 

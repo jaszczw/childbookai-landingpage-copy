@@ -20,7 +20,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { AppButton, RadioButton } from "@/components/shared";
+import { AppButton } from "@/components/ui/app-button";
+import { RadioButton } from "@/components/shared";
 import type { StoryData } from "@/app/createbook/page";
 import Image from "next/image";
 import Step3Creating from "./Step3Creating";

@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { CustomCard, AppButton } from "@/components/shared";
+import { CustomCard } from "@/components/shared";
+import { AppButton } from "@/components/ui/app-button";
 import { HeadingText, ParagraphText } from "@/components/typography";
 import { FeatureList } from "@/components/ui/feature-list";
 import { cn } from "@/lib/utils";

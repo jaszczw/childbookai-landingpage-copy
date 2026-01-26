@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { AppButton, InnerIconButton } from "@/components/shared";
+import { AppButton } from "@/components/ui/app-button";
+import { InnerIconButton } from "@/components/shared";
 import { settings, kids } from "@/lib/data";
 import { IMAGE_DIMENSIONS, ASPECT_RATIOS, SCALE, CREATE_BOOK_CONFIG, BACKGROUND_SHAPES } from "@/lib/constants";
 import { SectionContainer } from "@/components/shared";
