@@ -19,8 +19,6 @@ export { DecorativeElement, DecorativeElements } from "./DecorativeElement";
 export { InnerIconButton } from "./InnerIconButton";
 export { MobileBackgroundCard } from "./MobileBackgroundCard";
 export { SectionContainer } from "./SectionContainer";
-export { default as ProgressBar } from "./ProgressBar";
-export { default as ProgressBadge } from "./ProgressBadge";
 export { SocialIcon } from "./SocialIcon";
 export { SvgWideCard } from "./SvgWideCard";
 export { SvgWideCardAlt } from "./SvgWideCardAlt";

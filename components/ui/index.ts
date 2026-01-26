@@ -10,3 +10,5 @@ export { AppButton } from "./app-button";
 export { Sparkle } from "./sparkle";
 export { RadioButton } from "./radio-button";
 export { RadioCard } from "./radio-card";
+export { default as ProgressBar } from "./progress-bar";
+export { default as ProgressBadge } from "./progress-badge";
