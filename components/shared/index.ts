@@ -14,6 +14,7 @@ export { AnimatedImageIconSecond } from "./animated-graphics/AnimatedImageIconSe
 export { AnimatedImageIconThird } from "./animated-graphics/AnimatedImageIconThird";
 export { BackgroundShape } from "./BackgroundShape";
 export { CarouselMask } from "./CarouselMask";
+export { CarouselMaskMobile } from "./CarouselMaskMobile";
 export { CustomCard } from "./CustomCard";
 export { DecorativeElement, DecorativeElements } from "./DecorativeElement";
 export { MobileBackgroundCard } from "./MobileBackgroundCard";

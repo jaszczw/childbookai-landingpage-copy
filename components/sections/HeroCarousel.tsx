@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { AppButton } from "@/components/ui/app-button";
-import { CarouselMask, DecorativeElements } from "@/components/shared";
+import { CarouselMask, CarouselMaskMobile, DecorativeElements } from "@/components/shared";
 import { HeadingText } from "@/components/typography";
 import { heroCarouselDecorations } from "@/lib/data";
 import { CAROUSEL_CONFIG } from "@/lib/constants";
@@ -129,20 +129,17 @@ function HeroCarousel() {
 
   return (
     <section
-      className="relative w-full mt-4 px-4 sm:px-0"
+      className="relative w-full mt-4 px-0"
       aria-label="Hero carousel"
       role="region"
     >
-      {/* Ratio-controlled hero frame */}
-      <div className="relative w-full aspect-[3/4] sm:aspect-1264/629 max-h-[640px] mx-0 md:mx-auto">
-        {/* SVG mask only on md+; basic rounded rectangle on xs/sm */}
-        <div className="hidden md:block">
-          <CarouselMask />
-        </div>
+      {/* Desktop / tablet hero frame using carousel-mask_1 */}
+      <div className="relative hidden md:block w-full aspect-1264/629 max-h-[640px] mx-auto overflow-hidden">
+        <CarouselMask />
 
         {/* Masked image layer */}
         <div
-          className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-2xl md:rounded-none"
+          className="absolute inset-0 overflow-hidden"
           style={{ clipPath: "url(#carouselMask)" }}
           aria-live="polite"
           aria-atomic="true"
@@ -165,8 +162,8 @@ function HeroCarousel() {
             {slides[active] && (
               <motion.div
                 key={active}
-                className="absolute inset-0 z-0"
-                variants={carouselFade}
+                className="absolute inset-0"
+                style={{ clipPath: "url(#carouselMask)" }}
                 initial="enter"
                 animate="center"
                 exit="exit"
@@ -185,13 +182,10 @@ function HeroCarousel() {
             )}
           </AnimatePresence>
 
-          {/* Gradient overlay to improve text legibility on all screens */}
-          <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-          {/* Slide content (headline + CTA) - overlaid for all breakpoints */}
-          <div className="absolute inset-0 z-10 flex items-end justify-center sm:items-center sm:justify-start pb-6 sm:pb-0 overflow-visible">
+          {/* Slide content (headline + CTA) - static, doesn't fade */}
+          <div className="absolute inset-0 z-10 flex items-center pt-4 sm:pt-0 overflow-visible">
             <motion.div
-              className="w-full max-w-[620px] px-2 sm:px-4 md:px-6 lg:px-6 mx-auto sm:mx-0 sm:ml-8 md:ml-10 lg:ml-16 xl:ml-[100px] text-center sm:text-left overflow-visible"
+              className="w-full max-w-[620px] p-4 md:p-6 lg:p-6 ml-8 md:ml-10 lg:ml-16 xl:ml-[100px] overflow-visible"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.4 }}
@@ -225,14 +219,14 @@ function HeroCarousel() {
                   endl={["hero of your own", "story"]}
                 />
               </motion.div>
-              <motion.div className="overflow-visible pt-3 pb-1 sm:pb-3" variants={fadeInUp}>
+              <motion.div className="overflow-visible pt-3 pb-3" variants={fadeInUp}>
                 <Link href="/createbook">
                   <AppButton
                     variant="primary"
                     size="hero"
                     shadow
                     withSparkles
-                    className="mt-1 sm:mt-4 w-full max-w-xs sm:max-w-none sm:w-auto transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                    className="mt-4 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
                   >
                     Create a Book
                   </AppButton>
@@ -241,14 +235,12 @@ function HeroCarousel() {
             </motion.div>
           </div>
 
-          {/* Decorative Elements - static, doesn't fade (hidden on mobile for cleaner UI) */}
-          <div className="hidden sm:block">
-            <DecorativeElements decorations={heroCarouselDecorations} />
-          </div>
+          {/* Decorative Elements - static, doesn't fade */}
+          <DecorativeElements decorations={heroCarouselDecorations} />
 
-          {/* Navigation Dots - pinned to bottom, visible on all breakpoints */}
-          <div 
-            className="absolute inset-x-0 bottom-4 z-20 flex items-center justify-center gap-2 sm:gap-3"
+          {/* Navigation Dots */}
+          <div
+            className="absolute inline-flex left-12 md:left-16 lg:left-22 xl:left-[120px] top-1/2 translate-y-[140px] lg:translate-y-[180px] xl:translate-y-[210px] z-10 items-center gap-3 max-w-full overflow-hidden"
             role="tablist"
             aria-label="Carousel navigation"
           >
@@ -265,14 +257,130 @@ function HeroCarousel() {
                 className={`
                 transition-all rounded-full touch-manipulation flex items-center justify-center
                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-                ${
-                  index === active
-                    ? "w-4 h-1 sm:w-5 sm:h-2 md:w-6 md:h-3 lg:w-6 lg:h-3 bg-primary"
-                    : "w-1 h-1 sm:w-2 sm:h-2 md:w-3 md:h-3 lg:w-3 lg:h-3 bg-primary/50"
-                }
+                ${index === active
+                    ? "w-5 h-2 md:w-6 md:h-3 lg:w-6 lg:h-3 bg-primary"
+                    : "w-2 h-2 md:w-3 md:h-3 lg:w-3 lg:h-3 bg-primary/50"
+                  }
               `}
               />
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile hero frame using carousel mask, full width with reduced height */}
+      <div className="relative block md:hidden w-full aspect-1240/700 mx-0 overflow-hidden">
+        <CarouselMaskMobile />
+
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: "url(#carouselMaskMobile)" }}
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {/* Fade transition layer - only the image fades */}
+          <AnimatePresence mode="sync" initial={false}>
+            {slides[active] && (
+              <motion.div
+                key={active}
+                className="absolute inset-0"
+                style={{ clipPath: "url(#carouselMaskMobile)" }}
+                initial="enter"
+                animate="center"
+                exit="exit"
+              >
+                <Image
+                  src={slides[active].src}
+                  alt={`${slides[active].alt} - Slide ${active + 1} of ${slides.length}`}
+                  fill
+                  priority={active === 0}
+                  className="object-cover"
+                  sizes="100vw"
+                  quality={85}
+                  fetchPriority={active === 0 ? "high" : "auto"}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Slide content (headline + CTA) - static, doesn't fade */}
+          <div className="absolute inset-0 z-10 flex items-center pt-4 overflow-visible">
+            <motion.div
+              className="w-full max-w-[620px] px-4 ml-4 overflow-visible"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.4 }}
+              variants={staggerContainer}
+            >
+              <motion.div variants={heroText}>
+                <HeadingText
+                  title={slides[active]?.title || ""}
+                  variant="display"
+                  className="font-bold text-3xl xs:text-4xl leading-tight"
+                  glyphs={[
+                    {
+                      word: "Become",
+                      position: 3,
+                    },
+                    {
+                      word: "hero",
+                      position: 3,
+                      variant: "blue2",
+                    },
+                  ]}
+                  coloredPhrases={[
+                    {
+                      text: "Become the hero",
+                      color: "text-primary",
+                    },
+                  ]}
+                  defaultTextColor="text-white"
+                  defaultGlyphVariant="blue1"
+                  glyphSizeClassName="w-[0.5em] h-[0.5em]"
+                  endl={["hero of your own", "story"]}
+                />
+              </motion.div>
+              <motion.div className="overflow-visible pt-3 pb-3" variants={fadeInUp}>
+                <Link href="/createbook">
+                  <AppButton
+                    variant="primary"
+                    size="hero"
+                    shadow
+                    withSparkles
+                    className="mt-3 transition-all duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    Create a Book
+                  </AppButton>
+                </Link>
+              </motion.div>
+              {/* Mobile navigation dots */}
+              <div
+                className="mt-4 flex items-center gap-2 justify-start"
+                role="tablist"
+                aria-label="Carousel navigation"
+              >
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => emblaApi && emblaApi.scrollTo(index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    aria-label={`Go to slide ${index + 1} of ${slides.length}`}
+                    aria-selected={index === active}
+                    role="tab"
+                    tabIndex={index === active ? 0 : -1}
+                    style={{ transitionDuration: `${CAROUSEL_CONFIG.TRANSITION_DURATION}ms` }}
+                    className={`
+                      transition-all rounded-full touch-manipulation flex items-center justify-center
+                      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+                      ${index === active
+                        ? "w-4 h-2 bg-primary"
+                        : "w-2 h-2 bg-primary/50"
+                      }
+                    `}
+                  />
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
