@@ -186,7 +186,7 @@ export function IndividualPricing({ isYearly }: IndividualPricingProps) {
                     {/* Price - make responsive, but keep desktop size similar */}
                     <span
                       className={cn(
-                        "font-bold text-4xl sm:text-5xl md:text-6xl lg:text-[65px] lg:leading-[55px]",
+                        "font-bold text-4xl sm:text-5xl md:text-6xl lg:text-heading-xl lg:leading-[55px]",
                         textColorClass
                       )}
                     >
