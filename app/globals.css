@@ -258,7 +258,7 @@
     /* Match the page background so dialog scroll locking doesn't reveal a white strip */
     background-image: url('/background/bg-2.png');
     background-size: contain;
-    background-position: center;
+    background-position: top center;
     background-repeat: repeat;
   }
 }
