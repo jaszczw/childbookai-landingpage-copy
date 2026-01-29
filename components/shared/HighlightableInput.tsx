@@ -153,12 +153,12 @@ export function HighlightableInput({
 
       {/* Footer */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-grey-200">
+        <p className="text-sm text-grey-200 w-[40%] sm:w-auto">
           Preferably no longer than {maxLength} characters
         </p>
 
         {/* Legend */}
-        <div className="flex gap-2 text-xs bg-blue-100 px-3 py-1 rounded-xl">
+        <div className="grid grid-cols-2 sm:flex w-[60%] sm:w-fit gap-2 text-xs bg-blue-100 px-3 py-1 rounded-xl">
           <Legend
             label="Who"
             color="bg-blue-200"
@@ -204,9 +204,8 @@ function Legend({
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-1 px-2 py-0.5 rounded-full border transition ${
-        active ? "border-blue-800" : "border-transparent"
-      }`}
+      className={`flex items-center gap-1 px-2 py-0.5 rounded-full border transition ${active ? "border-blue-800" : "border-transparent"
+        }`}
     >
       <span className={`w-3 h-3 rounded-full ${color}`} />
       <span>{label}</span>

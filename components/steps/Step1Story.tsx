@@ -94,7 +94,7 @@ const Step1Story: React.FC<Step1StoryProps> = ({ onNext, onStoryChange }) => {
       <HeadingText
         variant="h1"
         title="Create Your Story"
-        className="text-center font-bold"
+        className="text-center font-bold pt-16 lg:pt-10"
       />
 
       {/* Custom Story Option */}
@@ -118,7 +118,7 @@ const Step1Story: React.FC<Step1StoryProps> = ({ onNext, onStoryChange }) => {
       />
 
       {/* Theme Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 w-auto max-w-2xl">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 w-auto max-w-2xl">
         {themes.map((theme) => (
           <RadioButton
             key={theme}
