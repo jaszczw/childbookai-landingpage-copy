@@ -110,9 +110,9 @@ export default function AddCharacterDialog({
           </DialogTrigger>
         )}
 
-        <DialogContent className="sm:max-w-[720px] rounded-3xl p-8 sm:p-10">
+        <DialogContent className="sm:max-w-[720px] rounded-3xl p-6 sm:p-10 w-[95%]">
           <DialogHeader className="items-center text-center">
-            <DialogTitle className="text-5xl font-bold text-foreground">
+            <DialogTitle className="text-3xl sm:text-5xl font-bold text-foreground">
               Create Character
             </DialogTitle>
             <DialogDescription className="text-md text-foreground">
@@ -131,7 +131,7 @@ export default function AddCharacterDialog({
           </div>
 
           {/* Tabs */}
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
             {TABS.map((tab) => {
               const isActive = tab === activeTab;
               return (
@@ -140,7 +140,7 @@ export default function AddCharacterDialog({
                   type="button"
                   onClick={() => setActiveTab(tab)}
                   className={
-                    "min-w-[120px] mt-2 rounded-lg px-12 py-1.5 text-sm transition-colors " +
+                    "min-w-[80px] sm:min-w-[120px] mt-2 rounded-lg px-4 sm:px-12 py-1.5 text-xs sm:text-sm transition-colors " +
                     (isActive
                       ? "bg-blue-800 text-white"
                       : "bg-slate-100 text-foreground hover:bg-slate-200")
@@ -152,7 +152,7 @@ export default function AddCharacterDialog({
             })}
           </div>
 
-          <div className="mt-2 grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-6 mx-auto">
+          <div className="mt-2 grid grid-cols-3 sm:grid-cols-6 gap-4 sm:gap-6 mx-auto">
             {MOCK_CHARACTERS.map((name) => {
               const isSelected = selectedCharacter === name;
               return (
@@ -165,9 +165,8 @@ export default function AddCharacterDialog({
                     onClick={() =>
                       setSelectedCharacter(isSelected ? null : name)
                     }
-                    className={`relative size-16 overflow-hidden rounded-full bg-blue-800 shadow-sm ${
-                      isSelected ? "ring-2 ring-blue-800" : ""
-                    }`}
+                    className={`relative size-16 overflow-hidden rounded-full bg-blue-800 shadow-sm ${isSelected ? "ring-2 ring-blue-800" : ""
+                      }`}
                     aria-pressed={isSelected}
                   >
                     <Image

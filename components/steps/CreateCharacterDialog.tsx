@@ -87,11 +87,10 @@ function GenderRadioButtons({ value, onChange }: GenderRadioButtonsProps) {
       {GENDERS.map((genderOption) => (
         <label
           key={genderOption}
-          className={`flex items-center justify-start gap-2 px-4 py-2 rounded-md border-2 cursor-pointer transition-all flex-1 ${
-            value === genderOption
-              ? "bg-blue-800 text-white border-blue-800"
-              : "bg-white text-foreground border-blue-800 hover:bg-blue-800/10"
-          }`}
+          className={`flex items-center justify-start gap-2 px-4 py-2 rounded-md border-2 cursor-pointer transition-all flex-1 ${value === genderOption
+            ? "bg-blue-800 text-white border-blue-800"
+            : "bg-white text-foreground border-blue-800 hover:bg-blue-800/10"
+            }`}
         >
           <input
             type="radio"
@@ -102,9 +101,8 @@ function GenderRadioButtons({ value, onChange }: GenderRadioButtonsProps) {
             className="sr-only"
           />
           <div
-            className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-              value === genderOption ? "border-white" : "border-blue-800"
-            }`}
+            className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${value === genderOption ? "border-white" : "border-blue-800"
+              }`}
           >
             {value === genderOption && (
               <div className="w-2 h-2 rounded-full bg-white" />
@@ -156,11 +154,10 @@ function HairLengthSelector({ value, onChange }: HairLengthSelectorProps) {
                 key={hairLength.value}
                 type="button"
                 onClick={() => onChange(hairLength.value)}
-                className={`flex-1 h-2 rounded-md transition-all ${
-                  isSelected
-                    ? "bg-[#30A0A6]"
-                    : "bg-gray-200 hover:bg-gray-300"
-                }`}
+                className={`flex-1 h-2 rounded-md transition-all ${isSelected
+                  ? "bg-[#30A0A6]"
+                  : "bg-gray-200 hover:bg-gray-300"
+                  }`}
                 aria-label={hairLength.label}
               />
             );
@@ -220,7 +217,7 @@ const TOUR_STEPS: TourStep[] = [
 
 function UploadSection() {
   return (
-    <div className="mt-6 rounded-lg bg-gray-100 p-6 mx-12">
+    <div className="mt-6 rounded-lg bg-gray-100 p-6 mx-0 sm:mx-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="flex flex-col gap-4">
           <div className="relative border-2 border-dashed border-blue-800 rounded-lg p-8 flex flex-col h-full bg-transparent">
@@ -419,13 +416,13 @@ export default function CreateCharacterDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[820px] max-h-[90vh] rounded-3xl p-0 bg-[#F4FAFA] overflow-hidden flex flex-col">
+      <DialogContent className="sm:max-w-[820px] max-h-[90vh] rounded-3xl p-0 bg-[#F4FAFA] overflow-hidden flex flex-col w-[95%]">
         <div
           ref={scrollContainerRef}
-          className="overflow-y-auto flex-1 px-8 sm:px-10 pt-8 sm:pt-10 custom-scrollbar"
+          className="overflow-y-auto flex-1 px-4 sm:px-10 pt-4 sm:pt-10 custom-scrollbar"
         >
-          <DialogHeader className="items-center text-center pt-8">
-            <DialogTitle className="text-5xl font-bold text-foreground">
+          <DialogHeader className="items-center text-center pt-4 sm:pt-8">
+            <DialogTitle className="text-3xl sm:text-5xl font-bold text-foreground">
               Create Character
             </DialogTitle>
             <DialogDescription className="text-md text-foreground text-center mx-auto max-w-md">
@@ -437,7 +434,7 @@ export default function CreateCharacterDialog({
           <UploadSection />
 
           {/* Form Fields */}
-          <div className="mt-6 space-y-6 mx-12">
+          <div className="mt-6 space-y-6 mx-0 sm:mx-12">
             {/* First Row: Character name, Character type, Age */}
             <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] gap-4">
               <div className="space-y-2">
@@ -526,7 +523,7 @@ export default function CreateCharacterDialog({
               </div>
             </div>
 
-          {/* Fourth Row: Eye color and Hair length */}
+            {/* Fourth Row: Eye color and Hair length */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-2">
               <div className="flex flex-col gap-4">
                 <ColorPicker
@@ -554,42 +551,44 @@ export default function CreateCharacterDialog({
               ref={attributesSectionRef}
               className="space-y-2 pt-4 border-t border-gray-200"
             >
-              <div className="flex items-center justify-between gap-3 relative">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 relative">
                 <Label htmlFor="attributes">Attributes</Label>
 
                 {showAttributesPopover && (
                   <div className="relative shrink-0 z-10">
-                    <div className="absolute -left-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-blue-800" />
-                    <div className="flex items-center gap-3 rounded-lg bg-blue-800 px-4 py-1 text-sm text-white shadow-lg whitespace-nowrap">
+                    <div className="absolute -top-1.5 left-4 sm:-left-1.5 sm:top-1/2 h-3 w-3 sm:-translate-y-1/2 rotate-45 bg-blue-800" />
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 rounded-lg bg-blue-800 px-2 sm:px-4 py-2 sm:py-1 text-xs sm:text-sm text-white shadow-lg whitespace-normal sm:whitespace-nowrap">
                       <span>
                         Would you like to add glasses to this character?
                       </span>
-                      <AppButton
-                        variant="primary"
-                        size="sm"
-                        onClick={() => {
-                          if (!formData.attributes.includes("Glasses")) {
-                            updateFormData({
-                              attributes: [...formData.attributes, "Glasses"],
-                            });
-                          }
-                          setShowAttributesPopover(false);
-                          setAttributesPopoverDismissed(true);
-                        }}
-                        className="text-sm max-h-8 w-12 text-foreground font-semibold"
-                      >
-                        Yes
-                      </AppButton>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowAttributesPopover(false);
-                          setAttributesPopoverDismissed(true);
-                        }}
-                        className="text-sm font-semibold text-white/90 hover:text-white transition-colors"
-                      >
-                        No
-                      </button>
+                      <div className="flex items-center gap-3">
+                        <AppButton
+                          variant="primary"
+                          size="sm"
+                          onClick={() => {
+                            if (!formData.attributes.includes("Glasses")) {
+                              updateFormData({
+                                attributes: [...formData.attributes, "Glasses"],
+                              });
+                            }
+                            setShowAttributesPopover(false);
+                            setAttributesPopoverDismissed(true);
+                          }}
+                          className="text-sm max-h-8 w-12 text-foreground font-semibold"
+                        >
+                          Yes
+                        </AppButton>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowAttributesPopover(false);
+                            setAttributesPopoverDismissed(true);
+                          }}
+                          className="text-sm font-semibold text-white/90 hover:text-white transition-colors"
+                        >
+                          No
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -606,7 +605,7 @@ export default function CreateCharacterDialog({
                 earrings, wheelchair, pirate outfit, Cleopatra attire) - these
                 details will be reflected in all images of this character
               </p>
-              
+
               {/* Suggestion Buttons */}
               <div className="flex flex-wrap gap-2 mt-3">
                 {ATTRIBUTES.map((option, index) => {
@@ -698,7 +697,7 @@ export default function CreateCharacterDialog({
           </div>
         </div>
 
-        <DialogFooter className="flex flex-row justify-center gap-4 px-8 sm:px-10 mt-2 mb-8 mx-auto">
+        <DialogFooter className="flex flex-row justify-center gap-4 px-4 sm:px-10 mt-2 mb-8 mx-auto">
           <AppButton
             variant="secondary"
             size="sm"

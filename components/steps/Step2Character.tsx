@@ -19,8 +19,8 @@ export default function Step2Character({ characters, onNext, onAddCharacter }: S
     characters.length <= 1
       ? "md:grid-cols-1 lg:grid-cols-1"
       : characters.length === 2
-      ? "md:grid-cols-2 lg:grid-cols-2"
-      : "md:grid-cols-3 lg:grid-cols-3";
+        ? "md:grid-cols-2 lg:grid-cols-2"
+        : "md:grid-cols-3 lg:grid-cols-3";
 
   // Empty state when no characters
   if (characters.length === 0) {
@@ -30,7 +30,7 @@ export default function Step2Character({ characters, onNext, onAddCharacter }: S
           <HeadingText
             variant="h1"
             title="Create Your Story"
-            className="text-center font-bold"
+            className="text-center font-bold pt-16 lg:pt-10"
           />
           <ParagraphText
             as="p"
@@ -52,7 +52,7 @@ export default function Step2Character({ characters, onNext, onAddCharacter }: S
               className="opacity-50"
             />
           </div>
-          
+
           <div className="flex flex-col items-center gap-3 text-center max-w-md">
             <HeadingText
               variant="h2"
@@ -78,7 +78,7 @@ export default function Step2Character({ characters, onNext, onAddCharacter }: S
         <HeadingText
           variant="h1"
           title="Create Your Story"
-          className="text-center font-bold"
+          className="text-center font-bold pt-16 lg:pt-10"
         />
         <ParagraphText
           as="p"
@@ -112,7 +112,7 @@ export default function Step2Character({ characters, onNext, onAddCharacter }: S
               variant="secondary"
               size="md"
               shadow
-              className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px]"
+              className="w-full sm:w-auto sm:min-w-[190px] text-sm sm:text-heading-sm min-h-[44px] sm:font-semibold"
             >
               Add a Character
             </AppButton>
@@ -122,7 +122,7 @@ export default function Step2Character({ characters, onNext, onAddCharacter }: S
               onClick={onNext}
               size="md"
               shadow
-              className="w-full sm:w-auto sm:min-w-[190px] text-heading-sm min-h-[44px]"
+              className="w-full sm:w-auto sm:min-w-[190px] text-sm sm:text-heading-sm min-h-[44px] sm:font-semibold"
             >
               Next Step
             </AppButton>

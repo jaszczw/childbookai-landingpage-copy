@@ -322,24 +322,36 @@ export default function CreateBook() {
                   </div>
                 </>
               ) : (
-                <svg
-                  width="1240"
-                  height="953"
-                  viewBox="0 0 1240 953"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1240 912.689C1240 934.78 1222.09 952.689 1200 952.689L39.9999 952.689C17.9086 952.689 -0.000120505 934.78 -0.000118573 912.689L-4.55518e-05 77.4194C-4.36644e-05 55.8301 17.1322 38.1363 38.7103 37.4403L1198.71 0.0210535C1221.3 -0.70746 1240 17.4034 1240 40.0002L1240 912.689Z"
-                    fill="white"
-                  />
-                </svg>
+                <>
+                  {/* LG Screens: SVG Background */}
+                  <div className="hidden lg:block">
+                    <svg
+                      width="1240"
+                      height="953"
+                      viewBox="0 0 1240 953"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-full h-auto"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <path
+                        d="M1240 912.689C1240 934.78 1222.09 952.689 1200 952.689L39.9999 952.689C17.9086 952.689 -0.000120505 934.78 -0.000118573 912.689L-4.55518e-05 77.4194C-4.36644e-05 55.8301 17.1322 38.1363 38.7103 37.4403L1198.71 0.0210535C1221.3 -0.70746 1240 17.4034 1240 40.0002L1240 912.689Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+
+                  {/* Mobile/Tablet: Card Background */}
+                  <div className="lg:hidden absolute inset-0 z-0 flex items-center justify-center pointer-events-none top-0 mt-6 px-0">
+                    <div className="w-full h-full bg-white rounded-[40px] shadow-[0_18px_60px_rgba(15,23,42,0.14)]" />
+                  </div>
+                </>
               )}
 
               {/* Step content - positioned inside SVG card, below stepper, centered */}
               <div
                 ref={activeStep === 1 ? step1ContentRef : (activeStep === 3 ? step3ContentRef : null)}
-                className="relative mt-24 mx-auto lg:mt-0 lg:absolute lg:top-24 lg:left-1/2 lg:-translate-x-1/2 w-full max-w-5xl px-8 pb-16 z-10"
+                className="relative mt-24 mx-auto lg:mt-0 lg:absolute lg:top-24 lg:left-1/2 lg:-translate-x-1/2 w-full max-w-5xl px-8 pb-16 mb-12 md:mb-4 z-10"
               >
                 {activeStep === 1 && <Step1Story onNext={handleNextStep} onStoryChange={setStoryData} />}
                 {activeStep === 2 && <Step2Character characters={characters} onNext={handleNextStep} onAddCharacter={handleOpenAddCharacterDialog} />}
