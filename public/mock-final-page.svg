@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <rect width="200" height="200" rx="12" fill="#F4FAFA"/>
+  <rect x="30" y="30" width="140" height="100" rx="8" fill="#B0F2F6"/>
+  <circle cx="100" cy="75" r="25" fill="#FDE68A"/>
+  <circle cx="92" cy="70" r="2.5" fill="#1C1917"/>
+  <circle cx="108" cy="70" r="2.5" fill="#1C1917"/>
+  <path d="M95 82 Q100 87 105 82" stroke="#F97316" stroke-width="1.5" fill="none"/>
+  <circle cx="60" cy="50" r="5" fill="#54E6ED" opacity="0.4"/>
+  <circle cx="140" cy="55" r="4" fill="#54E6ED" opacity="0.3"/>
+  <text x="100" y="160" text-anchor="middle" font-family="system-ui" font-size="11" fill="#99AAAB">Ostatnia strona</text>
+  <text x="100" y="178" text-anchor="middle" font-family="system-ui" font-size="10" fill="#C6DADB">Twoje zdjcie tutaj</text>
+</svg>

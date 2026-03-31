@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" rx="16" fill="#FFF7ED"/>
+  <circle cx="200" cy="160" r="90" fill="#FBBF24" opacity="0.15"/>
+  <!-- Unicorn body -->
+  <ellipse cx="220" cy="250" rx="70" ry="45" fill="#E0E7FF"/>
+  <ellipse cx="270" cy="260" rx="12" ry="30" fill="#E0E7FF" transform="rotate(15 270 260)"/>
+  <ellipse cx="175" cy="265" rx="10" ry="28" fill="#E0E7FF" transform="rotate(-10 175 265)"/>
+  <!-- Unicorn head -->
+  <ellipse cx="290" cy="200" rx="30" ry="25" fill="#EDE9FE"/>
+  <polygon points="295,170 300,140 305,172" fill="#C084FC"/>
+  <!-- Unicorn mane -->
+  <path d="M260 195 Q250 180 255 165 Q265 175 270 190" fill="#DDD6FE"/>
+  <path d="M268 188 Q258 170 265 155 Q275 168 278 183" fill="#C4B5FD"/>
+  <!-- Girl on unicorn -->
+  <circle cx="230" cy="195" r="20" fill="#FDE68A"/>
+  <path d="M215 215 Q230 235 245 215" fill="#FB923C"/>
+  <!-- Hair -->
+  <path d="M212 190 Q210 170 225 165 Q215 175 218 190" fill="#92400E"/>
+  <path d="M248 190 Q250 170 235 165 Q245 175 242 190" fill="#92400E"/>
+  <!-- Face -->
+  <circle cx="224" cy="192" r="2" fill="#1C1917"/>
+  <circle cx="236" cy="192" r="2" fill="#1C1917"/>
+  <path d="M226 200 Q230 204 234 200" stroke="#F97316" stroke-width="1.5" fill="none"/>
+  <!-- Stars -->
+  <circle cx="120" cy="100" r="4" fill="#FBBF24" opacity="0.6"/>
+  <circle cx="320" cy="120" r="3" fill="#C084FC" opacity="0.5"/>
+  <circle cx="80" cy="200" r="3" fill="#FB923C" opacity="0.4"/>
+  <circle cx="350" cy="300" r="4" fill="#FBBF24" opacity="0.5"/>
+  <!-- Ground -->
+  <ellipse cx="200" cy="310" rx="150" ry="15" fill="#D1FAE5" opacity="0.5"/>
+  <!-- Label -->
+  <text x="200" y="370" text-anchor="middle" font-family="system-ui" font-size="14" fill="#A3A3A3">Podgld ilustracji</text>
+</svg>

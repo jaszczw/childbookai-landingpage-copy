@@ -258,23 +258,23 @@
     @apply text-foreground;
     overflow-x: hidden;
     /* Match the page background so dialog scroll locking doesn't reveal a white strip */
-    background-image: url('/background/bg-1.svg');
-    background-size: 100vw auto;
-    background-position: top left;
+    background-image: url('/background/bg-1-tile-480.svg');
     background-repeat: repeat;
+    background-size: 480px 480px;
   }
 }
 
 @layer utilities {
   .bg-hero {
-    background-image: url('/background/bg-1.svg');
-    background-size: 100vw auto;
-    background-position: top left;
+    background-image: url('/background/bg-1-tile-480.svg');
     background-repeat: repeat;
+    background-size: 480px 480px;
   }
 
   .bg-footer {
-    background-image: url('/background/bg-1.svg');
+    background-image: url('/background/bg-1-tile-480.svg');
+    background-repeat: repeat;
+    background-size: 480px 480px;
   }
 }
 

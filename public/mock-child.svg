@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <rect width="200" height="200" rx="12" fill="#F4FAFA"/>
+  <circle cx="100" cy="80" r="35" fill="#FDE68A"/>
+  <circle cx="88" cy="75" r="3" fill="#1C1917"/>
+  <circle cx="112" cy="75" r="3" fill="#1C1917"/>
+  <path d="M92 90 Q100 98 108 90" stroke="#F97316" stroke-width="2" fill="none"/>
+  <path d="M70 65 Q72 45 100 40 Q128 45 130 65" fill="#92400E"/>
+  <rect x="80" y="115" width="40" height="45" rx="8" fill="#54E6ED"/>
+  <text x="100" y="185" text-anchor="middle" font-family="system-ui" font-size="11" fill="#99AAAB">Zdjcie dziecka</text>
+</svg>
