@@ -1,48 +1,26 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { getVisibleStoryOptions } from "./storeCoverPresets";
+import {
+  addonUpsellPln,
+  defaultStoreCatalog,
+  getBookDiscountRate,
+  sizeExtraPln,
+  upsellPricesMap,
+  type StoreCatalog,
+} from "./storeCatalog";
+
+export type { StoreCatalog } from "./storeCatalog";
+export { defaultStoreCatalog } from "./storeCatalog";
+import type { StoreBookSizeId } from "./storeCatalog";
+
+export type { StoryOption } from "./storeCoverPresets";
+export { STORY_OPTIONS } from "./storeCoverPresets";
+
 export type Gender = "girl" | "boy";
 export type EyeColor = "blue" | "green" | "brown" | "black";
 export type HairColor = "blonde" | "brown" | "black" | "red" | "auburn";
 export type HairLength = "short" | "medium" | "long";
-
-export interface StoryOption {
-  id: string;
-  title: string;
-  description: string;
-  coverGradient: string;
-  coverEmoji: string;
-}
-
-export const STORY_OPTIONS: StoryOption[] = [
-  {
-    id: "adventure",
-    title: "Wielka Przygoda",
-    description: "Podróż przez magiczny las pełen niespodzianek",
-    coverGradient: "from-emerald-400 to-teal-600",
-    coverEmoji: "🌲",
-  },
-  {
-    id: "space",
-    title: "Kosmiczna Wyprawa",
-    description: "Odkrywanie gwiazd i planet z nowym przyjacielem",
-    coverGradient: "from-indigo-500 to-purple-700",
-    coverEmoji: "🚀",
-  },
-  {
-    id: "underwater",
-    title: "Podwodny Świat",
-    description: "Nurkowanie z delfinami i odkrywanie raf koralowych",
-    coverGradient: "from-cyan-400 to-blue-600",
-    coverEmoji: "🐬",
-  },
-  {
-    id: "dinosaurs",
-    title: "Kraina Dinozaurów",
-    description: "Spotkanie z przyjaznymi dinozaurami sprzed milionów lat",
-    coverGradient: "from-amber-500 to-orange-600",
-    coverEmoji: "🦕",
-  },
-];
 
 export type ProcessingPhase =
   | "idle"
@@ -51,7 +29,7 @@ export type ProcessingPhase =
   | "illustrating"
   | "done";
 
-export type BookSize = "21x21" | "30x30";
+export type BookSize = StoreBookSizeId;
 
 export interface DedicationConfig {
   enabled: boolean;
@@ -83,6 +61,8 @@ export interface StoreFormState {
   hairColor: HairColor | null;
   hairLength: HairLength | null;
   selectedStories: string[];
+  /** After choosing stories, user must confirm before per-book configuration appears. */
+  storySelectionConfirmed: boolean;
   bookConfigs: Record<string, BookConfig>;
   consentChecked: boolean;
 }
@@ -119,6 +99,7 @@ const INITIAL_STATE: StoreFormState = {
   hairColor: null,
   hairLength: null,
   selectedStories: [],
+  storySelectionConfirmed: false,
   bookConfigs: {},
   consentChecked: false,
 };
@@ -131,46 +112,68 @@ const PHASE_DURATIONS: Record<ProcessingPhase, number> = {
   done: 0,
 };
 
-export const BASE_PRICE = 89;
+export const BASE_PRICE = defaultStoreCatalog.baseBookPricePln;
 
-export const UPSELL_PRICES = {
-  size_30x30: 30,
-  dedication: 15,
-  finalPage: 15,
-} as const;
+export const UPSELL_PRICES = upsellPricesMap(defaultStoreCatalog);
 
-export const BOOK_DISCOUNTS = [0, 0.1, 0.15, 0.2] as const;
+export const BOOK_DISCOUNTS = defaultStoreCatalog.bookDiscountRates;
 
-export function getBookDiscount(bookIndex: number): number {
-  if (bookIndex <= 0) return 0;
-  if (bookIndex >= BOOK_DISCOUNTS.length)
-    return BOOK_DISCOUNTS[BOOK_DISCOUNTS.length - 1]!;
-  return BOOK_DISCOUNTS[bookIndex]!;
+export function getBookDiscount(
+  bookIndex: number,
+  catalog: StoreCatalog = defaultStoreCatalog,
+): number {
+  return getBookDiscountRate(catalog, bookIndex);
 }
 
-export function singleBookPrice(config: BookConfig): number {
-  let p = BASE_PRICE;
-  if (config.size === "30x30") p += UPSELL_PRICES.size_30x30;
-  if (config.dedication.enabled) p += UPSELL_PRICES.dedication;
-  if (config.finalPage.enabled) p += UPSELL_PRICES.finalPage;
+/** Labels for book addon upsells that are enabled (catalog-driven). */
+export function enabledBookAddonLabels(
+  config: BookConfig,
+  catalog: StoreCatalog = defaultStoreCatalog,
+): string[] {
+  const out: string[] = [];
+  if (config.dedication.enabled) {
+    const u = catalog.bookAddonUpsells.find((x) => x.id === "dedication");
+    if (u) out.push(u.label);
+  }
+  if (config.finalPage.enabled) {
+    const u = catalog.bookAddonUpsells.find((x) => x.id === "finalPage");
+    if (u) out.push(u.label);
+  }
+  return out;
+}
+
+export function singleBookPrice(
+  config: BookConfig,
+  catalog: StoreCatalog = defaultStoreCatalog,
+): number {
+  let p = catalog.baseBookPricePln;
+  p += sizeExtraPln(catalog, config.size);
+  if (config.dedication.enabled) p += addonUpsellPln(catalog, "dedication");
+  if (config.finalPage.enabled) p += addonUpsellPln(catalog, "finalPage");
   return p;
 }
 
-export function computePrice(form: StoreFormState): number {
+export function computePrice(
+  form: StoreFormState,
+  catalog: StoreCatalog = defaultStoreCatalog,
+): number {
   const { selectedStories, bookConfigs } = form;
-  if (selectedStories.length === 0) return BASE_PRICE;
+  if (selectedStories.length === 0) return catalog.baseBookPricePln;
   let total = 0;
   for (let i = 0; i < selectedStories.length; i++) {
     const storyId = selectedStories[i]!;
     const config = bookConfigs[storyId] ?? createDefaultBookConfig(storyId);
-    const full = singleBookPrice(config);
-    const discount = getBookDiscount(i);
+    const full = singleBookPrice(config, catalog);
+    const discount = getBookDiscount(i, catalog);
     total += Math.round(full * (1 - discount));
   }
   return total;
 }
 
-export function computePriceBreakdown(form: StoreFormState) {
+export function computePriceBreakdown(
+  form: StoreFormState,
+  catalog: StoreCatalog = defaultStoreCatalog,
+) {
   const { selectedStories, bookConfigs } = form;
   const count = Math.max(1, selectedStories.length);
   const lines: {
@@ -185,8 +188,8 @@ export function computePriceBreakdown(form: StoreFormState) {
   for (let i = 0; i < count; i++) {
     const storyId = selectedStories[i] ?? "";
     const config = bookConfigs[storyId] ?? createDefaultBookConfig(storyId);
-    const full = singleBookPrice(config);
-    const discount = getBookDiscount(i);
+    const full = singleBookPrice(config, catalog);
+    const discount = getBookDiscount(i, catalog);
     const final = Math.round(full * (1 - discount));
     lines.push({ index: i, storyId, full, discount, final });
     total += final;
@@ -194,7 +197,8 @@ export function computePriceBreakdown(form: StoreFormState) {
   return { lines, total };
 }
 
-export function useStoreState() {
+export function useStoreState(options?: { catalog?: StoreCatalog }) {
+  const catalog = options?.catalog ?? defaultStoreCatalog;
   const [form, setForm] = useState<StoreFormState>(INITIAL_STATE);
   const [processingPhase, setProcessingPhase] =
     useState<ProcessingPhase>("idle");
@@ -221,11 +225,12 @@ export function useStoreState() {
     setForm((prev) => {
       const has = prev.selectedStories.includes(id);
       if (has) {
-        const { [id]: _removed, ...rest } = prev.bookConfigs;
+        const nextConfigs = { ...prev.bookConfigs };
+        delete nextConfigs[id];
         return {
           ...prev,
           selectedStories: prev.selectedStories.filter((s) => s !== id),
-          bookConfigs: rest,
+          bookConfigs: nextConfigs,
         };
       }
       return {
@@ -295,6 +300,39 @@ export function useStoreState() {
     };
   }, []);
 
+  useEffect(() => {
+    if (form.gender === null) return;
+    const allowed = new Set(
+      getVisibleStoryOptions(form.gender).map((s) => s.id),
+    );
+    setForm((prev) => {
+      const nextSelected = prev.selectedStories.filter((id) => allowed.has(id));
+      if (nextSelected.length === prev.selectedStories.length) return prev;
+      const nextConfigs = { ...prev.bookConfigs };
+      for (const id of prev.selectedStories) {
+        if (!allowed.has(id)) delete nextConfigs[id];
+      }
+      return {
+        ...prev,
+        selectedStories: nextSelected,
+        bookConfigs: nextConfigs,
+      };
+    });
+  }, [form.gender]);
+
+  useEffect(() => {
+    if (form.selectedStories.length > 0) return;
+    setForm((prev) =>
+      prev.storySelectionConfirmed
+        ? { ...prev, storySelectionConfirmed: false }
+        : prev,
+    );
+  }, [form.selectedStories.length]);
+
+  const confirmStorySelection = useCallback(() => {
+    updateForm("storySelectionConfirmed", true);
+  }, [updateForm]);
+
   const canSubmit =
     form.name.trim().length > 0 &&
     form.gender !== null &&
@@ -307,20 +345,26 @@ export function useStoreState() {
     if (!form.eyeColor) return 3;
     if (!form.photoUploaded) return 4;
     if (form.selectedStories.length === 0) return 6;
+    if (!form.storySelectionConfirmed) return 6;
     if (!form.consentChecked) return 7;
     return 8;
   })();
 
   const totalSteps = 8;
 
-  const price = useMemo(() => computePrice(form), [form]);
-  const priceBreakdown = useMemo(() => computePriceBreakdown(form), [form]);
+  const price = useMemo(() => computePrice(form, catalog), [form, catalog]);
+  const priceBreakdown = useMemo(
+    () => computePriceBreakdown(form, catalog),
+    [form, catalog],
+  );
 
   return {
+    catalog,
     form,
     updateForm,
     setName,
     toggleStory,
+    confirmStorySelection,
     updateBookConfig,
     handlePhotoUpload,
     processingPhase,
@@ -334,15 +378,8 @@ export function useStoreState() {
   };
 }
 
-export function getBookTitle(name: string, gender: Gender | null): string {
-  if (!name.trim()) return "";
+export function getBookTitle(name: string): string {
   const trimmed = name.trim();
-  if (!gender) return `Przygoda ${trimmed}`;
-  if (gender === "girl") {
-    if (trimmed.endsWith("a")) {
-      return `Przygoda ${trimmed.slice(0, -1)}i`;
-    }
-    return `Przygoda ${trimmed}`;
-  }
-  return `Przygoda ${trimmed}a`;
+  if (!trimmed) return "";
+  return `${trimmed} i niesamowite przygody`;
 }

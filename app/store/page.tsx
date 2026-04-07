@@ -14,10 +14,10 @@ export default function StorePage() {
   const hasPreviewContent = form.name.trim().length > 0;
 
   return (
-    <main className="min-h-screen bg-blue-800 bg-hero">
+    <main className="bg-hero min-h-screen bg-blue-800">
       <Navbar />
 
-      <div className="mx-auto max-w-6xl px-4 pt-6 pb-8 sm:px-6 lg:px-8 lg:pt-10 lg:pb-12">
+      <div className="mx-auto max-w-6xl px-4 pb-8 pt-6 sm:px-6 lg:px-8 lg:pb-12 lg:pt-10">
         {/* Header -- sits above the white card, on the teal background */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -38,6 +38,7 @@ export default function StorePage() {
             {/* LEFT: Flow */}
             <div className="order-2 lg:order-1">
               <StoreFlow
+                catalog={state.catalog}
                 form={state.form}
                 currentStep={state.currentStep}
                 totalSteps={state.totalSteps}
@@ -48,6 +49,7 @@ export default function StorePage() {
                 updateForm={state.updateForm}
                 updateBookConfig={state.updateBookConfig}
                 toggleStory={state.toggleStory}
+                confirmStorySelection={state.confirmStorySelection}
                 handlePhotoUpload={state.handlePhotoUpload}
                 mobilePreviewOpen={mobilePreviewOpen}
               />
@@ -55,8 +57,9 @@ export default function StorePage() {
 
             {/* RIGHT: Sticky preview (desktop) */}
             <div className="order-1 hidden lg:order-2 lg:block">
-              <div className="sticky top-24">
+              <div className="sticky top-4">
                 <StorePreviewPanel
+                  catalog={state.catalog}
                   form={state.form}
                   processingPhase={state.processingPhase}
                   price={state.price}
@@ -72,7 +75,7 @@ export default function StorePage() {
         {hasPreviewContent && !mobilePreviewOpen && (
           <button
             onClick={() => setMobilePreviewOpen(true)}
-            className="fixed bottom-20 right-4 z-30 flex items-center gap-2 rounded-full bg-white/90 px-4 py-2.5 text-sm font-medium text-blue-1000 shadow-lg backdrop-blur-md transition-all"
+            className="text-blue-1000 fixed bottom-20 right-4 z-30 flex items-center gap-2 rounded-full bg-white/90 px-4 py-2.5 text-sm font-medium shadow-lg backdrop-blur-md transition-all"
           >
             <BookOpen className="h-4 w-4" />
             Podgląd
@@ -91,20 +94,21 @@ export default function StorePage() {
                 damping: 25,
                 stiffness: 300,
               }}
-              className="fixed inset-x-0 bottom-0 z-40 max-h-[60vh] overflow-y-auto rounded-t-3xl border-t border-grey-100 bg-white/95 shadow-2xl backdrop-blur-md"
+              className="border-grey-100 fixed inset-x-0 bottom-0 z-40 max-h-[60vh] overflow-y-auto rounded-t-3xl border-t bg-white/95 shadow-2xl backdrop-blur-md"
             >
               <button
                 onClick={() => setMobilePreviewOpen(false)}
                 className="sticky top-0 z-10 flex w-full flex-col items-center bg-white/95 pb-2 pt-3 backdrop-blur-md"
               >
-                <div className="mb-2 h-1 w-10 rounded-full bg-grey-100" />
-                <div className="flex items-center gap-1.5 text-xs font-medium text-blue-1000/60">
+                <div className="bg-grey-100 mb-2 h-1 w-10 rounded-full" />
+                <div className="text-blue-1000/60 flex items-center gap-1.5 text-xs font-medium">
                   <ChevronUp className="h-3.5 w-3.5 rotate-180" />
                   Zamknij podgląd
                 </div>
               </button>
               <div className="px-6 pb-6">
                 <StorePreviewPanel
+                  catalog={state.catalog}
                   form={state.form}
                   processingPhase={state.processingPhase}
                   price={state.price}

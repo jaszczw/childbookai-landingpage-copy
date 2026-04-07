@@ -27,7 +27,6 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
-
   /* App background & text */
   --color-background: var(--white);
   --color-foreground: var(--blue-1000);
@@ -124,9 +123,7 @@
   --text-cta-line-height: 24px;
   --text-cta-letter-spacing: 0em;
   --text-cta-weight: 600;
-
 }
-
 
 :root {
   --radius: 0.625rem;
@@ -164,50 +161,50 @@
 
   --white: #ffffff;
 
-  --blue-100: #F4FAFA;
-  --blue-200: #B0F2F6;
-  --blue-400: #54E6ED;
-  --blue-600: #4AD4DB;
-  --blue-800: #30A0A6;
-  --blue-1000: #203B53;
+  --blue-100: #f4fafa;
+  --blue-200: #b0f2f6;
+  --blue-400: #54e6ed;
+  --blue-600: #4ad4db;
+  --blue-800: #30a0a6;
+  --blue-1000: #203b53;
 
-  --grey-100: #C6DADB;
-  --grey-200: #99AAAB;
-  --grey-hover: #B7D5D6;
-  --grey-active: #AFCED0;
-  --grey-disabled: #C1C1C1;
-  --grey-disabled-shadow: #A6A6A6;
+  --grey-100: #c6dadb;
+  --grey-200: #99aaab;
+  --grey-hover: #b7d5d6;
+  --grey-active: #afced0;
+  --grey-disabled: #c1c1c1;
+  --grey-disabled-shadow: #a6a6a6;
 
-  --button-shadow: #30A0A6;
+  --button-shadow: #30a0a6;
 
-  --red: #FA5252;
-  --yellow-100: #FFFBEF;
-  --yellow-200: #FBF4B4;
-  --yellow-300: #F7EE8E;
-  --yellow-400: #F3E868;
-  --yellow-500: #EFE242;
-  --yellow-600: #EBEC1C;
-  --yellow-700: #E7E616;
-  --yellow-800: #E3E010;
-  --yellow-900: #DFDA0A;
-  --green-100: #B2FADF;
-  --green-200: #A0E9D1;
-  --green-300: #8EE7C7;
-  --green-400: #7CE5BD;
-  --green-500: #6AE3B3;
-  --green-600: #58E1A9;
-  --green-700: #46DF9F;
-  --green-800: #34DD95;
-  --green-900: #22DB8B;
-  --pink-100: #FCC3E9;
-  --pink-200: #F8A8D9;
-  --pink-300: #F48DCB;
-  --pink-400: #F072BD;
-  --pink-500: #EC56AF;
-  --pink-600: #E83A91;
-  --pink-700: #E41E73;
-  --pink-800: #E00255;
-  --pink-900: #C8024A;
+  --red: #fa5252;
+  --yellow-100: #fffbef;
+  --yellow-200: #fbf4b4;
+  --yellow-300: #f7ee8e;
+  --yellow-400: #f3e868;
+  --yellow-500: #efe242;
+  --yellow-600: #ebec1c;
+  --yellow-700: #e7e616;
+  --yellow-800: #e3e010;
+  --yellow-900: #dfda0a;
+  --green-100: #b2fadf;
+  --green-200: #a0e9d1;
+  --green-300: #8ee7c7;
+  --green-400: #7ce5bd;
+  --green-500: #6ae3b3;
+  --green-600: #58e1a9;
+  --green-700: #46df9f;
+  --green-800: #34dd95;
+  --green-900: #22db8b;
+  --pink-100: #fcc3e9;
+  --pink-200: #f8a8d9;
+  --pink-300: #f48dcb;
+  --pink-400: #f072bd;
+  --pink-500: #ec56af;
+  --pink-600: #e83a91;
+  --pink-700: #e41e73;
+  --pink-800: #e00255;
+  --pink-900: #c8024a;
 }
 
 .dark {
@@ -256,9 +253,9 @@
 
   body {
     @apply text-foreground;
-    overflow-x: hidden;
+    overflow-x: visible;
     /* Match the page background so dialog scroll locking doesn't reveal a white strip */
-    background-image: url('/background/bg-1-tile-480.svg');
+    background-image: url("/background/bg-1-tile-480.svg");
     background-repeat: repeat;
     background-size: 480px 480px;
   }
@@ -266,20 +263,19 @@
 
 @layer utilities {
   .bg-hero {
-    background-image: url('/background/bg-1-tile-480.svg');
+    background-image: url("/background/bg-1-tile-480.svg");
     background-repeat: repeat;
     background-size: 480px 480px;
   }
 
   .bg-footer {
-    background-image: url('/background/bg-1-tile-480.svg');
+    background-image: url("/background/bg-1-tile-480.svg");
     background-repeat: repeat;
     background-size: 480px 480px;
   }
 }
 
 @layer utilities {
-
   /* Screen reader only utility */
   .sr-only {
     position: absolute;
@@ -399,7 +395,7 @@
   }
 
   .custom-scrollbar:hover {
-    scrollbar-color: #30A0A6 transparent;
+    scrollbar-color: #30a0a6 transparent;
     /* Firefox - more visible on hover */
   }
 
@@ -427,7 +423,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #30A0A6;
+    background: #30a0a6;
     /* Full color on thumb hover */
   }
 
@@ -473,7 +469,7 @@
     }
 
     to {
-      transform: scale(1.10);
+      transform: scale(1.1);
     }
   }
 
@@ -483,12 +479,11 @@
     }
 
     to {
-      fill: var(--sparkle-fill-color, #54E6ED);
+      fill: var(--sparkle-fill-color, #54e6ed);
     }
   }
 
   .animate-sparkle-fill {
     animation: sparkleFill 0.9s ease-in-out forwards;
   }
-
 }
