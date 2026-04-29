@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { StoreCatalog } from "./storeCatalog";
 import { defaultStoreCatalog } from "./storeCatalog";
 import { StoreBookConfigCard } from "./flow/StoreBookConfigCard";
@@ -18,11 +18,17 @@ import {
 import { StorePriceBreakdown } from "./flow/StorePriceBreakdown";
 import { StoreStorySelection } from "./flow/StoreStorySelection";
 import { StoreTrustBadges } from "./flow/StoreTrustBadges";
-import { STORY_OPTIONS } from "./useStoreState";
+import { getStoryOption, type StoryOption } from "./storeCoverPresets";
 import type { BookConfig, StoreFormState } from "./useStoreState";
 
 export interface StoreFlowProps {
   catalog?: StoreCatalog;
+  /**
+   * Storefront-driven extra stories (e.g. a preselected book) that are not
+   * part of the hardcoded `STORY_OPTIONS` list. Rendered as the first cards
+   * in the picker so the user sees their current pick.
+   */
+  extraStories?: readonly StoryOption[];
   form: StoreFormState;
   currentStep: number;
   totalSteps: number;
@@ -55,6 +61,7 @@ export interface StoreFlowProps {
 
 export function StoreFlow({
   catalog = defaultStoreCatalog,
+  extraStories,
   form,
   currentStep,
   totalSteps,
@@ -69,6 +76,10 @@ export function StoreFlow({
   handlePhotoUpload,
   mobilePreviewOpen,
 }: StoreFlowProps) {
+  const extras = useMemo(
+    () => (extraStories ? [...extraStories] : []),
+    [extraStories],
+  );
   const onUploadClick = useCallback(() => {
     handlePhotoUpload();
   }, [handlePhotoUpload]);
@@ -154,6 +165,7 @@ export function StoreFlow({
 
       <StoreStorySelection
         catalog={catalog}
+        extraStories={extras}
         form={form}
         priceBreakdown={priceBreakdown}
         toggleStory={toggleStory}
@@ -171,7 +183,7 @@ export function StoreFlow({
       />
 
       {form.selectedStories.map((storyId, idx) => {
-        const story = STORY_OPTIONS.find((s) => s.id === storyId);
+        const story = getStoryOption(storyId, extras);
         if (!story) return null;
         const config = form.bookConfigs[storyId];
         if (!config) return null;
@@ -195,6 +207,7 @@ export function StoreFlow({
       <StorePriceBreakdown
         visible={showLateSteps}
         catalog={catalog}
+        extraStories={extras}
         bookConfigs={form.bookConfigs}
         price={price}
         priceBreakdown={priceBreakdown}

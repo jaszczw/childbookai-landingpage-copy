@@ -1,56 +1,79 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { carouselFade } from "@/utils/animations";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 interface HeroSlideImageProps {
     active: number;
     slides: ReadonlyArray<{ id: number; src: StaticImageData; alt: string }>;
-    isImageLoaded: boolean;
-    onImageLoad: () => void;
     onAnimationComplete: () => void;
     clipPathUrl: string;
 }
 
+const imageCrossfade = {
+    duration: 0.5,
+    ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+};
+
 export function HeroSlideImage({
     active,
     slides,
-    isImageLoaded,
-    onImageLoad,
     onAnimationComplete,
-    clipPathUrl
+    clipPathUrl,
 }: HeroSlideImageProps) {
+    const [loadedByIndex, setLoadedByIndex] = useState<Record<number, boolean>>({});
+    const [shownIndex, setShownIndex] = useState(0);
+    const introAnnouncedRef = useRef(false);
+
+    useEffect(() => {
+        if (!loadedByIndex[active]) return;
+
+        const frame = requestAnimationFrame(() => {
+            setShownIndex(active);
+        });
+
+        return () => cancelAnimationFrame(frame);
+    }, [active, loadedByIndex]);
+
+    const handleImageLoad = (index: number) => {
+        setLoadedByIndex((prev) => ({ ...prev, [index]: true }));
+        if (index === 0) {
+            requestAnimationFrame(() => {
+                if (introAnnouncedRef.current) return;
+                introAnnouncedRef.current = true;
+                onAnimationComplete();
+            });
+        }
+    };
+
     return (
-        <AnimatePresence mode="sync" initial={false}>
-            {slides[active] && (
+        <div className="absolute inset-0">
+            {slides.map((slide, i) => (
                 <motion.div
-                    key={active}
+                    key={slide.id}
                     className="absolute inset-0"
                     style={{ clipPath: `url(${clipPathUrl})` }}
-                    variants={carouselFade}
-                    initial="enter"
-                    animate={active === 0 ? (isImageLoaded ? "center" : "enter") : "center"}
-                    exit="exit"
-                    onAnimationComplete={() => {
-                        if (active === 0 && isImageLoaded) onAnimationComplete();
+                    initial={false}
+                    animate={{
+                        opacity: shownIndex === i ? 1 : 0,
+                        zIndex: shownIndex === i ? 1 : 0,
                     }}
+                    transition={imageCrossfade}
                 >
                     <Image
-                        src={slides[active].src}
-                        alt={`${slides[active].alt} - Slide ${active + 1} of ${slides.length}`}
+                        src={slide.src}
+                        alt={`${slide.alt} - Slide ${i + 1} of ${slides.length}`}
                         fill
-                        priority={active === 0}
+                        priority={i === 0}
                         className="object-cover"
                         sizes="100vw"
                         quality={85}
-                        fetchPriority={active === 0 ? "high" : "auto"}
-                        onLoad={() => {
-                            if (active === 0) onImageLoad();
-                        }}
+                        fetchPriority={i === 0 ? "high" : "auto"}
+                        onLoad={() => handleImageLoad(i)}
                     />
                 </motion.div>
-            )}
-        </AnimatePresence>
+            ))}
+        </div>
     );
 }

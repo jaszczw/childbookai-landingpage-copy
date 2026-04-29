@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/utils";
+import { getStoryOption, type StoryOption } from "../storeCoverPresets";
 import type { StoreCatalog } from "../storeCatalog";
 import { defaultStoreCatalog } from "../storeCatalog";
 import { StoreStepCard } from "../StoreStepCard";
 import {
-  STORY_OPTIONS,
   type BookConfig,
   enabledBookAddonLabels,
 } from "../useStoreState";
@@ -13,12 +13,14 @@ import {
 export function StorePriceBreakdown({
   visible,
   catalog = defaultStoreCatalog,
+  extraStories,
   bookConfigs,
   price,
   priceBreakdown,
 }: {
   visible: boolean;
   catalog?: StoreCatalog;
+  extraStories?: readonly StoryOption[];
   bookConfigs: Record<string, BookConfig>;
   price: number;
   priceBreakdown: {
@@ -32,11 +34,12 @@ export function StorePriceBreakdown({
     total: number;
   };
 }) {
+  const extras = extraStories ?? [];
   return (
     <StoreStepCard visible={visible} autoScroll={false}>
       <div className="space-y-2 rounded-xl bg-blue-100/60 px-4 py-3">
         {priceBreakdown.lines.map((line, i) => {
-          const story = STORY_OPTIONS.find((s) => s.id === line.storyId);
+          const story = getStoryOption(line.storyId, extras);
           const config = bookConfigs[line.storyId];
           const addonLabels =
             config != null ? enabledBookAddonLabels(config, catalog) : [];

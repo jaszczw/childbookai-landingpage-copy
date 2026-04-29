@@ -7,19 +7,19 @@ import { BookOpen, Check, ChevronDown, ChevronRight, Percent } from "lucide-reac
 import Image from "next/image";
 import { useMemo } from "react";
 import {
+  getStoryOption,
   getVisibleStoryOptions,
   pickCoverIllustrationVariant,
+  type StoryOption,
 } from "../storeCoverPresets";
 import { StoreStepCard } from "../StoreStepCard";
 import type { StoreCatalog } from "../storeCatalog";
-import {
-  getBookDiscount,
-  STORY_OPTIONS,
-} from "../useStoreState";
+import { getBookDiscount } from "../useStoreState";
 import type { StoreFormState } from "../useStoreState";
 
 export function StoreStorySelection({
   catalog,
+  extraStories,
   form,
   priceBreakdown,
   toggleStory,
@@ -28,6 +28,7 @@ export function StoreStorySelection({
   onToggleStoriesSection,
 }: {
   catalog: StoreCatalog;
+  extraStories?: readonly StoryOption[];
   form: StoreFormState;
   priceBreakdown: {
     lines: {
@@ -44,17 +45,21 @@ export function StoreStorySelection({
   storiesSectionExpanded: boolean;
   onToggleStoriesSection: () => void;
 }) {
+  const extras = useMemo(
+    () => (extraStories ? [...extraStories] : []),
+    [extraStories],
+  );
   const visibleStories = useMemo(
-    () => getVisibleStoryOptions(form.gender),
-    [form.gender],
+    () => getVisibleStoryOptions(form.gender, extras),
+    [form.gender, extras],
   );
 
   const selectedStoryTitles = useMemo(
     () =>
       form.selectedStories
-        .map((id) => STORY_OPTIONS.find((s) => s.id === id)?.title)
+        .map((id) => getStoryOption(id, extras)?.title)
         .filter((t): t is string => Boolean(t)),
-    [form.selectedStories],
+    [form.selectedStories, extras],
   );
 
   const showStoryPickerBody =

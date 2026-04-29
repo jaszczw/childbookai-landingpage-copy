@@ -6,43 +6,15 @@ import Autoplay from "embla-carousel-autoplay";
 import { CarouselMask, CarouselMaskMobile, DecorativeElements } from "@/shared";
 import { heroCarouselDecorations } from "@/lib/data/heroCarousel";
 import { CAROUSEL_CONFIG } from "@/constants";
-import { useLoading } from "@/components/providers/LoadingProvider";
 import { HERO_SLIDES } from "@/constants/hero";
 import { NavigationDots } from "@/sections/hero/NavigationDots";
 import { HeroSlideContent, HeroSlideContentMobile } from "@/sections/hero/HeroSlideContent";
 import { HeroSlideImage } from "@/sections/hero/HeroSlideImage";
 
-// Assuming heroCarouselDecorations is in data? 
-// Original import: import { heroCarouselDecorations } from "@/lib/data";
-// Now likely: "@/data" or "@/lib/data" if I didn't move `lib/data`.
-// Step 58 I didn't move `lib/data`. So it should be "@/lib/data" or "@/data" if I verify.
-// Wait, I didn't see `lib/data` in the move list.
-// `lib` has `data`.
-// I'll assume `@/lib/data` (which maps to `lib/data` via tsconfig if I didn't define alias for lib/data).
-// But `tsconfig` has `@/*` -> `./*`. So `@/lib/data` works.
-
-// Actually I saw import: import { heroCarouselDecorations } from "@/lib/data";
-// Since I didn't move `lib/data`, it is still at `lib/data`.
-// So import should be `@/lib/data`. 
-
-// Wait, I removed `lib` alias in `components.json`? No, I kept it `@/lib` -> `@/lib`.
-// But I moved `lib/constants` to `constants`.
-// And `lib/utils` to `utils`.
-// `lib/data` is still there.
-
 function HeroCarousel() {
   const [active, setActive] = useState(0);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [animationFinished, setAnimationFinished] = useState(false);
-  const { setHeroLoaded } = useLoading();
 
-  useEffect(() => {
-    if (active === 0 && isImageLoaded && animationFinished) {
-      setHeroLoaded(true);
-    }
-  }, [active, isImageLoaded, animationFinished, setHeroLoaded]);
-
-  // Stable autoplay plugin instance
   const autoplay = useRef(
     Autoplay({
       delay: CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL,
@@ -87,8 +59,6 @@ function HeroCarousel() {
     };
   }, [emblaApi]);
 
-
-
   useEffect(() => {
     const handleArrowKeys = (e: globalThis.KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -102,6 +72,17 @@ function HeroCarousel() {
     window.addEventListener("keydown", handleArrowKeys);
     return () => window.removeEventListener("keydown", handleArrowKeys);
   }, [emblaApi]);
+
+  useEffect(() => {
+    const seen = new Set<string>();
+    for (const slide of HERO_SLIDES) {
+      const src = slide.src.src;
+      if (seen.has(src)) continue;
+      seen.add(src);
+      const img = new window.Image();
+      img.src = src;
+    }
+  }, []);
 
   return (
     <section className="relative w-full mt-4 px-0" aria-label="Hero carousel" role="region">
@@ -126,8 +107,6 @@ function HeroCarousel() {
           <HeroSlideImage
             active={active}
             slides={HERO_SLIDES}
-            isImageLoaded={isImageLoaded}
-            onImageLoad={() => setIsImageLoaded(true)}
             onAnimationComplete={() => setAnimationFinished(true)}
             clipPathUrl="#carouselMask"
           />
@@ -167,8 +146,6 @@ function HeroCarousel() {
           <HeroSlideImage
             active={active}
             slides={HERO_SLIDES}
-            isImageLoaded={isImageLoaded}
-            onImageLoad={() => setIsImageLoaded(true)}
             onAnimationComplete={() => setAnimationFinished(true)}
             clipPathUrl="#carouselMaskMobile"
           />

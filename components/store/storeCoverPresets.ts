@@ -387,10 +387,19 @@ export function isStoryOfferedForChildGender(
 
 export function getVisibleStoryOptions(
   childGender: StoreChildGender | null,
+  extras: readonly StoryOption[] = [],
 ): StoryOption[] {
-  return STORY_OPTIONS.filter((s) =>
+  const builtIn = STORY_OPTIONS.filter((s) =>
     isStoryOfferedForChildGender(s.protagonistGender, childGender),
   );
+  if (extras.length === 0) return builtIn;
+  // Extras come first (preselected book is the user's current choice).
+  const filteredExtras = extras.filter((s) =>
+    isStoryOfferedForChildGender(s.protagonistGender, childGender),
+  );
+  // Avoid duplicates if a preselect story id matches a built-in id.
+  const extraIds = new Set(filteredExtras.map((s) => s.id));
+  return [...filteredExtras, ...builtIn.filter((s) => !extraIds.has(s.id))];
 }
 
 export function pickCoverIllustrationVariant(
@@ -518,6 +527,9 @@ export function getStoreCoverPreloadUrls(
   return [...new Set(urls)];
 }
 
-export function getStoryOption(id: string): StoryOption | undefined {
-  return STORY_OPTIONS.find((s) => s.id === id);
+export function getStoryOption(
+  id: string,
+  extras: readonly StoryOption[] = [],
+): StoryOption | undefined {
+  return extras.find((s) => s.id === id) ?? STORY_OPTIONS.find((s) => s.id === id);
 }

@@ -8,10 +8,10 @@ import { BlankStoreBookMockup } from "./BlankStoreBookMockup";
 import { ProcessingStatusBar } from "./ProcessingStatusBar";
 import { FloatingBook } from "./FloatingBook";
 import {
-  STORY_OPTIONS,
   buildStoreRemotionCoverUrl,
   getStoreCoverPreloadUrls,
   getStoryOption,
+  type StoryOption,
 } from "./storeCoverPresets";
 import type { StoreCatalog } from "./storeCatalog";
 import { defaultStoreCatalog } from "./storeCatalog";
@@ -107,6 +107,7 @@ function stackPreviewLayout(
 
 interface StorePreviewPanelProps {
   catalog?: StoreCatalog;
+  extraStories?: readonly StoryOption[];
   form: StoreFormState;
   processingPhase: ProcessingPhase;
   price: number;
@@ -121,6 +122,7 @@ function StoreBookPreview({
   isRevealed,
   stacked,
   bookSize,
+  extraStories,
 }: {
   storyId: string;
   childName: string;
@@ -130,8 +132,9 @@ function StoreBookPreview({
   isRevealed: boolean;
   stacked: boolean;
   bookSize: "21x21" | "30x30";
+  extraStories?: readonly StoryOption[];
 }) {
-  const story = getStoryOption(storyId);
+  const story = getStoryOption(storyId, extraStories);
   if (!story) return null;
 
   const coverUrl = buildStoreRemotionCoverUrl(story.remotion, {
@@ -202,10 +205,12 @@ function StoreBookPreview({
 
 export function StorePreviewPanel({
   catalog = defaultStoreCatalog,
+  extraStories,
   form,
   processingPhase,
   price,
 }: StorePreviewPanelProps) {
+  const extras = extraStories ?? [];
   useEffect(() => {
     const urls = getStoreCoverPreloadUrls({
       childName: "Maja",
@@ -235,8 +240,8 @@ export function StorePreviewPanel({
   const isRevealed = processingPhase === "done";
 
   const primaryStory =
-    form.selectedStories.length > 0
-      ? STORY_OPTIONS.find((s) => s.id === form.selectedStories[0])
+    form.selectedStories.length > 0 && form.selectedStories[0]
+      ? (getStoryOption(form.selectedStories[0], extras) ?? null)
       : null;
   const primaryStoryId = form.selectedStories[0];
   const primaryBookSize =
@@ -338,7 +343,7 @@ export function StorePreviewPanel({
                   }}
                 >
                   {stackSortedIds.map((storyId, idx) => {
-                    const story = STORY_OPTIONS.find((s) => s.id === storyId);
+                    const story = getStoryOption(storyId, extras);
                     if (!story) return null;
                     const bookSize = form.bookConfigs[storyId]?.size ?? "21x21";
                     const dx = idx * STACK_DX_PER_BOOK;
@@ -365,6 +370,7 @@ export function StorePreviewPanel({
                           isRevealed={isRevealed}
                           stacked
                           bookSize={bookSize}
+                          extraStories={extras}
                         />
                       </div>
                     );
@@ -381,6 +387,7 @@ export function StorePreviewPanel({
                 isRevealed={isRevealed}
                 stacked={false}
                 bookSize={primaryBookSize}
+                extraStories={extras}
               />
             ) : (
               <BlankStoreBookMockup
@@ -408,7 +415,7 @@ export function StorePreviewPanel({
           {form.selectedStories.length > 1 ? (
             <div className="space-y-2">
               {form.selectedStories.map((storyId) => {
-                const story = STORY_OPTIONS.find((s) => s.id === storyId);
+                const story = getStoryOption(storyId, extras);
                 const config = form.bookConfigs[storyId];
                 if (!story || !config) return null;
                 const size = config.size === "30x30" ? "30×30" : "21×21";

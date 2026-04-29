@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { getVisibleStoryOptions } from "./storeCoverPresets";
+import { getVisibleStoryOptions, type StoryOption } from "./storeCoverPresets";
 import {
   addonUpsellPln,
   defaultStoreCatalog,
@@ -104,6 +104,18 @@ const INITIAL_STATE: StoreFormState = {
   consentChecked: false,
 };
 
+function buildInitialState(preselect: StoryOption | null): StoreFormState {
+  if (!preselect) return INITIAL_STATE;
+  return {
+    ...INITIAL_STATE,
+    selectedStories: [preselect.id],
+    storySelectionConfirmed: true,
+    bookConfigs: {
+      [preselect.id]: createDefaultBookConfig(preselect.id),
+    },
+  };
+}
+
 const PHASE_DURATIONS: Record<ProcessingPhase, number> = {
   idle: 0,
   analyzing: 8000,
@@ -197,9 +209,25 @@ export function computePriceBreakdown(
   return { lines, total };
 }
 
-export function useStoreState(options?: { catalog?: StoreCatalog }) {
+export function useStoreState(options?: {
+  catalog?: StoreCatalog;
+  /**
+   * Optional storefront-driven preselected book. When provided, the flow boots
+   * directly into per-book configuration with this story already selected as
+   * the first one — letting users layer additional stories on top to claim the
+   * multi-book discount.
+   */
+  preselect?: StoryOption | null;
+}) {
   const catalog = options?.catalog ?? defaultStoreCatalog;
-  const [form, setForm] = useState<StoreFormState>(INITIAL_STATE);
+  const preselect = options?.preselect ?? null;
+  const extraStories = useMemo<StoryOption[]>(
+    () => (preselect ? [preselect] : []),
+    [preselect],
+  );
+  const [form, setForm] = useState<StoreFormState>(() =>
+    buildInitialState(preselect),
+  );
   const [processingPhase, setProcessingPhase] =
     useState<ProcessingPhase>("idle");
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
@@ -303,7 +331,7 @@ export function useStoreState(options?: { catalog?: StoreCatalog }) {
   useEffect(() => {
     if (form.gender === null) return;
     const allowed = new Set(
-      getVisibleStoryOptions(form.gender).map((s) => s.id),
+      getVisibleStoryOptions(form.gender, extraStories).map((s) => s.id),
     );
     setForm((prev) => {
       const nextSelected = prev.selectedStories.filter((id) => allowed.has(id));
@@ -318,7 +346,7 @@ export function useStoreState(options?: { catalog?: StoreCatalog }) {
         bookConfigs: nextConfigs,
       };
     });
-  }, [form.gender]);
+  }, [form.gender, extraStories]);
 
   useEffect(() => {
     if (form.selectedStories.length > 0) return;
@@ -360,6 +388,7 @@ export function useStoreState(options?: { catalog?: StoreCatalog }) {
 
   return {
     catalog,
+    extraStories,
     form,
     updateForm,
     setName,
