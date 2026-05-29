@@ -14,8 +14,24 @@ import type {
  * public procedures from the server only, so requests stay inside our network
  * and credentials/headers are never exposed to the browser.
  */
-const TRPC_BASE_URL =
-  process.env.BOOK_ILLUSTRATOR_TRPC_URL ?? "http://localhost:3000/api/trpc";
+const DEFAULT_TRPC_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://www.childbook.ai/api/trpc"
+    : "http://localhost:3000/api/trpc";
+
+const TRPC_BASE_URL = resolveTrpcBaseUrl(
+  process.env.BOOK_ILLUSTRATOR_TRPC_URL ?? DEFAULT_TRPC_BASE_URL,
+);
+
+function resolveTrpcBaseUrl(value: string): string {
+  const trimmed = value.trim().replace(/\/+$/, "");
+
+  if (trimmed.endsWith("/api/trpc")) {
+    return trimmed;
+  }
+
+  return `${trimmed}/api/trpc`;
+}
 
 type TrpcSuccess = {
   result: { data: unknown };
